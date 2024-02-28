@@ -19,6 +19,5 @@ public record User(
         @NotBlank
         enums.Role role
 
-
 ) {
 }
