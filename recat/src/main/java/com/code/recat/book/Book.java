@@ -2,10 +2,11 @@ package com.code.recat.book;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.net.URL;
-import java.time.Year;
 
+@Table("books")
 public record Book(
         @Id
         int book_id,
@@ -13,10 +14,9 @@ public record Book(
         String title,
         int author_id,
         String description_text,
-        Year publication_year,
+        int publication_year,
         int category_id,
         String isbn,
         URL cover_image_url
-) {
-}
+) {}
 
