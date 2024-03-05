@@ -12,6 +12,7 @@ public record Book(
         int book_id,
         @NotBlank
         String title,
+        @NotBlank
         int author_id,
         String description_text,
         int publication_year,

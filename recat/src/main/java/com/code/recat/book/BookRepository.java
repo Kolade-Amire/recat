@@ -3,6 +3,8 @@ package com.code.recat.book;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
+
+import java.net.URL;
 import java.util.List;
 
 
@@ -24,9 +26,12 @@ public interface BookRepository extends ListCrudRepository<Book, Integer> {
             """)
     List<Book> findBooksByAuthorName(@Param("author_name") String author_name);
 
-    void editBook(@Param("book_id") String book_id);
+    @Query("""
+            
+            """)
+    void editBook(@Param("book_id") int book_id, String title, int author_id, String description_text, int pub_year, int cat_id, String isbn, URL cover_image_url);
 
-    void deleteBookByBook_id(int book_id);
+    void deleteBooksByBook_id(int book_id);
 
 
 

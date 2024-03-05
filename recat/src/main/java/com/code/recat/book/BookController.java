@@ -1,5 +1,6 @@
 package com.code.recat.book;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,10 +33,16 @@ public class BookController {
         return repository.findBooksByAuthorName(author);
     }
 
-    @PostMapping("/book/{book_id}")
-    public void editBook(@PathVariable String book_id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/book/{book_id}")
+    public void editBook(@PathVariable int book_id){
 
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/delete/{book_id}")
+    public void deleteBook(@PathVariable int book_id){
+        repository.deleteBooksByBook_id(book_id);
+    }
 
 }
