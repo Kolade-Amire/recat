@@ -27,7 +27,7 @@ public interface BookRepository extends ListCrudRepository<Book, Integer> {
     List<Book> findBooksByAuthorName(@Param("author_name") String author_name);
 
     @Query("""
-            
+
             """)
     void editBook(@Param("book_id") int book_id, String title, int author_id, String description_text, int pub_year, int cat_id, String isbn, URL cover_image_url);
 
