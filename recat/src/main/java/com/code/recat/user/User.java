@@ -1,7 +1,5 @@
 package com.code.recat.user;
 
-import com.code.recat.enums;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -9,17 +7,16 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("users")
 public record User(
         @Id
-        int id,
+        int user_id,
         @NotBlank
         String name,
         @NotBlank
         String username,
         String email,
-        enums.Gender gender,
+        String gender,
         @NotBlank
         String password,
         @NotBlank
-        enums.Role role
-
+        String role
 ) {
 }
