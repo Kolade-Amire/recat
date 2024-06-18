@@ -1,5 +1,10 @@
+logging.level:
+  org.springframework.security: TRACE
+
+
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/recat
-    username: ***
-    password: ***
+    url: ${db_url}
+    username: ${db_user}
+    password: ${db_password}
+

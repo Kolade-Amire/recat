@@ -7,6 +7,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("users")
 public record User(
         @Id
+        @NotBlank
         int user_id,
         @NotBlank
         String name,
@@ -17,6 +18,8 @@ public record User(
         @NotBlank
         String password,
         @NotBlank
-        String role
+        String role,
+        boolean isBlocked,
+        boolean isLocked
 ) {
 }

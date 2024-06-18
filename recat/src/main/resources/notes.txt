@@ -1,0 +1,39 @@
+User:
+    Register a new user
+    Login/authentication
+    View user profile (user can set to public/private)
+    view book details
+    Add book to favorites
+    Books added to favorites
+    Books read
+    Authors added to favorites
+    Edit user details
+    delete profile
+
+Book:
+    Add new book (admin privilege)
+    View all books (all privileges)
+    Search books based on:
+        Name (filter - every book that contains query)
+        categories(genre)
+    Author name (returns all books by author)
+    Isbn
+    Edit book details (admin privilege)
+    Delete book (admin privilege)
+
+genre
+    Add genre (admin privilege)
+    View all genre
+    Edit and Update genre details (admin privilege)
+    Delete genre (admin privilege)
+
+Author
+    Add new author (admin privilege)
+    View all authors (ordered by first name, ASC)
+    Search for author by name and display author information
+    Update author details (admin privilege)
+    Delete author (admin privilege)
+
+Special Features:
+    chat? (based on genre)
+    book thread
