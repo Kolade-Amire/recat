@@ -36,3 +36,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+private.pem
+keypair.pem
+public.pem

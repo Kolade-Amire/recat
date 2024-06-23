@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookRepository extends ListCrudRepository<Book, Long> {
 
-    Page<Book> findBooksByTitleOrderByTitle(Pageable pageable);
+    Page<Book> findAllByOrderByTitle(Pageable pageable);
 }

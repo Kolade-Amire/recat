@@ -34,16 +34,16 @@ public class UserJsonTest {
     @BeforeEach
     void setUp() {
         users = Arrays.array(
-                new User(1, "Nate Giabucci", "ngiabucci0", "ngiabucci0@yelp.com", "F", "uP0~!$hpmIQ#~8", "user"),
-                new User(2, "Rodolphe Prover", "rprover1", "rprover1@artisteer.com", "M", "gB5.5\\ZM(", "user"),
-                new User(3, "Sonny Stean", "sstean2", "sstean2@berkeley.edu", "M", "sR2*+6PSw\\b", "user"),
-                new User(4, "Valentijn Wabe", "vwabe3", "vwabe3@myspace.com", "F", "pJ7'N#Dc%A<", "user"),
-                new User(5, "Tan Hellin", "thellin4", "thellin4@cdc.gov", "M", "hB3+{D)+{'=", "user"),
-                new User(6, "Herbie Featherstone", "hfeatherstone5", "hfeatherstone5@netlog.com", "M", "pW8'g%B?.iUG't7{", "admin"),
-                new User(7, "Olive Deppe", "odeppe6", "odeppe6@123-reg.co.uk", "F", "tN4\\ISE7aa", "user"),
-                new User(8, "Alvis Darrigrand", "adarrigrand7", "adarrigrand7@ifeng.com", "M", "wE6.SetT8", "admin"),
-                new User(9, "Celesta Buttrey", "cbuttrey8", "cbuttrey8@meetup.com", "M", "iM3&px)/=", "user"),
-                new User(10, "Karie Hourican", "khourican9", "khourican9@hatena.ne.jp", "M", "pK2}>o.=Ief?!", "user")
+                new User(1, "Nate Giabucci", "ngiabucci0", "ngiabucci0@yelp.com", "F", "uP0~!$hpmIQ#~8", "user", false, false),
+                new User(2, "Rodolphe Prover", "rprover1", "rprover1@artisteer.com", "M", "gB5.5\\ZM(", "user", false, false),
+                new User(3, "Sonny Stean", "sstean2", "sstean2@berkeley.edu", "M", "sR2*+6PSw\\b", "user", false, false),
+                new User(4, "Valentijn Wabe", "vwabe3", "vwabe3@myspace.com", "F", "pJ7'N#Dc%A<", "user", false, false),
+                new User(5, "Tan Hellin", "thellin4", "thellin4@cdc.gov", "M", "hB3+{D)+{'=", "user", false, false),
+                new User(6, "Herbie Featherstone", "hfeatherstone5", "hfeatherstone5@netlog.com", "M", "pW8'g%B?.iUG't7{", "admin", false, false),
+                new User(7, "Olive Deppe", "odeppe6", "odeppe6@123-reg.co.uk", "F", "tN4\\ISE7aa", "user", false, false),
+                new User(8, "Alvis Darrigrand", "adarrigrand7", "adarrigrand7@ifeng.com", "M", "wE6.SetT8", "admin", false, false),
+                new User(9, "Celesta Buttrey", "cbuttrey8", "cbuttrey8@meetup.com", "M", "iM3&px)/=", "user", false, false),
+                new User(10, "Karie Hourican", "khourican9", "khourican9@hatena.ne.jp", "M", "pK2}>o.=Ief?!", "user", false, false)
         );
     }
 
@@ -82,7 +82,7 @@ public class UserJsonTest {
                 """;
 
         assertThat(userJson.parse(expected))
-                .isEqualTo(new User(1, "Nate Giabucci", "ngiabucci0", "ngiabucci0@yelp.com", "F", "uP0~!$hpmIQ#~8", "user"));
+                .isEqualTo(new User(1, "Nate Giabucci", "ngiabucci0", "ngiabucci0@yelp.com", "F", "uP0~!$hpmIQ#~8", "user", false, false));
         assertThat(userJson.parseObject(expected).user_id()).isEqualTo(1);
         assertThat(userJson.parseObject(expected).name()).isEqualTo("Nate Giabucci");
         assertThat(userJson.parseObject(expected).username()).isEqualTo("ngiabucci0");
