@@ -1,22 +1,19 @@
 package com.code.recat.book;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.Table;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.net.URL;
 
-@Table("books")
+@Table(name = "books")
 public record Book(
         @Id
         int book_id,
-        @NotBlank
         String title,
-        @NotBlank
         int author_id,
         String description_text,
         int publication_year,
-        int category_id,
+        int genre_id,
         String isbn,
         URL cover_image_url
 ) {}
