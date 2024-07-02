@@ -31,7 +31,7 @@ public class User implements UserDetails {
         private String password;
         @Enumerated(EnumType.STRING)
         private Role role;
-        boolean isBlocked;
+        boolean isActive;
         boolean isLocked;
 
         @Override
