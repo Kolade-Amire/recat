@@ -1,6 +1,5 @@
 package com.code.recat.auth;
 
-import com.code.recat.book.BookService;
 import com.code.recat.util.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

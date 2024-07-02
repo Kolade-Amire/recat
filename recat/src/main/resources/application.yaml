@@ -15,9 +15,6 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-rsa:
-  private-key: file:private.pem
-  public-key: file:public.pem
 logging.level:
   org.springframework.security: TRACE
 server:

@@ -12,7 +12,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/books")
+@RequestMapping("api/v1/books")
 public class BookController {
 
     private final BookServiceImpl bookService;
