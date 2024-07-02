@@ -1,12 +1,24 @@
 package com.code.recat.genre;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import org.springframework.data.annotation.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Table(name = "genre")
-public record Genre(
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "genres")
+@Data
+@Entity
+public class Genre{
         @Id
-        int id,
-        String name
-) {
+        @GeneratedValue
+        int id;
+        String name;
 }
