@@ -12,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -32,6 +34,7 @@ public class AuthService {
                 .role(Role.USER)
                 .gender(request.getGender())
                 .username(request.getUsername())
+                .dateJoined(LocalDateTime.now())
                 .isActive(true)
                 .isLocked(false)
                 .build();

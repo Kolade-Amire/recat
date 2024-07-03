@@ -9,8 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 
 @Builder
@@ -22,17 +22,21 @@ import java.util.List;
 public class User implements UserDetails {
 
         @Id
-        @GeneratedValue
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(nullable = false, updatable = false)
         private Integer user_id;
         private String name;
         private String username;
+        private String password;
         private String email;
         private String gender;
-        private String password;
         @Enumerated(EnumType.STRING)
         private Role role;
-        boolean isActive;
-        boolean isLocked;
+        private LocalDateTime dateJoined;
+        @ElementCollection(targetClass = Integer.class)
+        private Set<Integer> favoriteBooks = new HashSet<>();
+        private boolean isActive;
+        private boolean isLocked;
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {

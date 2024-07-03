@@ -1,16 +1,14 @@
 package com.code.recat.book;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.code.recat.genre.Genre;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @NoArgsConstructor
@@ -20,14 +18,16 @@ import java.net.URL;
 @Entity
 public class Book{
         @Id
-        @GeneratedValue
-        int book_id;
-        String title;
-        int author_id;
-        String description_text;
-        int publication_year;
-        int genre_id;
-        String isbn;
-        URL cover_image_url;
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(nullable = false, updatable = false)
+        private Integer book_id;
+        private String title;
+        private Integer author_id;
+        private String blurb;
+        private Integer publication_year;
+        @ElementCollection(targetClass = Integer.class)
+        private Set<Integer> genres = new HashSet<>();
+        private String isbn;
+        private String cover_image_url;
 }
 
