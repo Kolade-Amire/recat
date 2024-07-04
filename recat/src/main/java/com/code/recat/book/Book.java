@@ -25,8 +25,13 @@ public class Book{
         private Integer author_id;
         private String blurb;
         private Integer publication_year;
-        @ElementCollection(targetClass = Integer.class)
-        private Set<Integer> genres = new HashSet<>();
+        @OneToMany
+        @JoinTable(
+                name = "book_genre",
+                joinColumns = @JoinColumn(name = "book_id"),
+                inverseJoinColumns = @JoinColumn(name = "genre_id")
+        )
+        private Set<Genre> genres = new HashSet<>();
         private String isbn;
         private String cover_image_url;
 }

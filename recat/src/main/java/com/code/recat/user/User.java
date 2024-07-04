@@ -1,5 +1,6 @@
 package com.code.recat.user;
 
+import com.code.recat.book.Book;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -33,8 +34,14 @@ public class User implements UserDetails {
         @Enumerated(EnumType.STRING)
         private Role role;
         private LocalDateTime dateJoined;
-        @ElementCollection(targetClass = Integer.class)
-        private Set<Integer> favoriteBooks = new HashSet<>();
+
+        @OneToMany
+        @JoinTable(
+                name = "user_favorite_books",
+                joinColumns = @JoinColumn(name = "user_id"),
+                inverseJoinColumns = @JoinColumn(name = "book_id")
+        )
+        private Set<Book> favoriteBooks = new HashSet<>();
         private boolean isActive;
         private boolean isLocked;
 
