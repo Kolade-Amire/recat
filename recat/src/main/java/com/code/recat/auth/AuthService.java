@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,7 @@ public class AuthService {
                 .gender(request.getGender())
                 .username(request.getUsername())
                 .dateJoined(LocalDateTime.now())
+                .favoriteBooks(new HashSet<>())
                 .isActive(true)
                 .isLocked(false)
                 .build();
