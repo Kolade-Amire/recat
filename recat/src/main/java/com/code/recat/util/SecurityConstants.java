@@ -11,5 +11,5 @@ public class SecurityConstants {
     public static final String TOKEN_CANNOT_BE_VERIFIED = "Token cannot be verified";
     public static final String FORBIDDEN_MESSAGE = "You need to log in to access this page";
     public static final String ACCESS_DENIED = "You do not have permission to access this page";
-    public static final String[] PUBLIC_URLS = {"/api/v1/auth/**"};
+    public static final String[] PUBLIC_URLS = {"api/v1/auth/**"};
 }

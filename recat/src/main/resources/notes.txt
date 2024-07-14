@@ -37,3 +37,15 @@ Author
 Special Features:
     chat? (based on genre)
     book thread
+
+
+@Query("SELECT b FROM Book b JOIN Author a ON b.authorId = a.authorId WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :searchQuery, '%')) OR LOWER(a.name) LIKE LOWER(CONCAT('%', :searchQuery, '%'))")
+
+
+SELECT b.*
+FROM books b
+JOIN authors a ON b.author_id = a.author_id
+WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :searchQuery, '%'))
+   OR LOWER(a.name) LIKE LOWER(CONCAT('%', :searchQuery, '%'));
+
+

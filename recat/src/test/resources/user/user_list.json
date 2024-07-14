@@ -4,89 +4,17 @@
     "name": "Nate Giabucci",
     "username": "ngiabucci0",
     "email": "ngiabucci0@yelp.com",
-    "gender": "F",
+    "gender": "female",
     "password": "uP0~!$hpmIQ#~8",
-    "role": "user"
+    "role": "USER"
   },
   {
     "user_id": 2,
     "name": "Rodolphe Prover",
     "username": "rprover1",
     "email": "rprover1@artisteer.com",
-    "gender": "M",
-    "password": "gB5.5\\ZM(",
-    "role": "user"
-  },
-  {
-    "user_id": 3,
-    "name": "Sonny Stean",
-    "username": "sstean2",
-    "email": "sstean2@berkeley.edu",
-    "gender": "M",
-    "password": "sR2*+6PSw\\b",
-    "role": "user"
-  },
-  {
-    "user_id": 4,
-    "name": "Valentijn Wabe",
-    "username": "vwabe3",
-    "email": "vwabe3@myspace.com",
-    "gender": "F",
-    "password": "pJ7'N#Dc%A<",
-    "role": "user"
-  },
-  {
-    "user_id": 5,
-    "name": "Tan Hellin",
-    "username": "thellin4",
-    "email": "thellin4@cdc.gov",
-    "gender": "M",
-    "password": "hB3+{D)+{'=",
-    "role": "user"
-  },
-  {
-    "user_id": 6,
-    "name": "Herbie Featherstone",
-    "username": "hfeatherstone5",
-    "email": "hfeatherstone5@netlog.com",
-    "gender": "M",
-    "password": "pW8'g%B?.iUG't7{",
-    "role": "admin"
-  },
-  {
-    "user_id": 7,
-    "name": "Olive Deppe",
-    "username": "odeppe6",
-    "email": "odeppe6@123-reg.co.uk",
-    "gender": "F",
-    "password": "tN4\\ISE7aa",
-    "role": "user"
-  },
-  {
-    "user_id": 8,
-    "name": "Alvis Darrigrand",
-    "username": "adarrigrand7",
-    "email": "adarrigrand7@ifeng.com",
-    "gender": "M",
-    "password": "wE6.SetT8",
-    "role": "admin"
-  },
-  {
-    "user_id": 9,
-    "name": "Celesta Buttrey",
-    "username": "cbuttrey8",
-    "email": "cbuttrey8@meetup.com",
-    "gender": "M",
-    "password": "iM3&px)/=",
-    "role": "user"
-  },
-  {
-    "user_id": 10,
-    "name": "Karie Hourican",
-    "username": "khourican9",
-    "email": "khourican9@hatena.ne.jp",
-    "gender": "M",
-    "password": "pK2}>o.=Ief?!",
-    "role": "user"
+    "gender": "male",
+    "password": "password(",
+    "role": "ADMIN"
   }
 ]
