@@ -35,13 +35,13 @@ public class User implements UserDetails {
         private Role role;
         private LocalDateTime dateJoined;
 
-        @OneToMany
+        @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "user_favorite_books",
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "book_id")
         )
-        private Set<Book> favoriteBooks = new HashSet<>();
+        private Set<Book> favoriteBooks;
         private boolean isActive;
         private boolean isLocked;
 

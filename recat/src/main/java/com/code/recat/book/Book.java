@@ -25,7 +25,7 @@ public class Book{
         private Integer author_id;
         private String blurb;
         private Integer publication_year;
-        @OneToMany
+        @ManyToMany
         @JoinTable(
                 name = "book_genre",
                 joinColumns = @JoinColumn(name = "book_id"),

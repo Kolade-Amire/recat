@@ -40,10 +40,10 @@ public class JwtService {
     ){
         return Jwts
                 .builder()
-                .setIssuer(SecurityConstants.JWT_ISSUER)
-                .setAudience(SecurityConstants.AUDIENCE)
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
+                .setIssuer(SecurityConstants.JWT_ISSUER)
+                .setAudience(SecurityConstants.AUDIENCE)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_DATE))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)

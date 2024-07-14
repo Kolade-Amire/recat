@@ -6,6 +6,7 @@ import com.code.recat.user.User;
 import com.code.recat.user.UserRepository;
 import com.code.recat.util.HttpResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

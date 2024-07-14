@@ -8,7 +8,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
@@ -23,6 +23,9 @@ server:
 
 jwt:
   secret: ${jwt_secret}
+
+
+
 
 
  
