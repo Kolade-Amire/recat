@@ -3,9 +3,14 @@
     "book_id": 1,
     "title": "Catcher in the Rye",
     "author_id": 61,
-    "description_text": "The Giver - Jonas discovers the truth about his dystopian society and seeks change.",
-    "publication_year": "2004",
-    "category_id": 1,
+    "blurb": "Jonas discovers the truth about his dystopian society and seeks change.",
+    "publication_year": 2004,
+    "genres": [
+      {
+        "genre_id": 14,
+        "name": "Dystopian"
+      }
+    ],
     "isbn": "796013036-1",
     "cover_image_url": "http://dummyimage.com/234x100.png/dddddd/000000"
   },
@@ -13,90 +18,15 @@
     "book_id": 2,
     "title": "The Stranger",
     "author_id": 83,
-    "description_text": "The Hunger Games - Katniss Everdeen fights for survival in a dystopian society.",
-    "publication_year": "1985",
-    "category_id": 2,
+    "blurb": "Katniss Everdeen fights for survival in a dystopian society.",
+    "publication_year": 1985,
+    "genres": [
+      {
+        "genre_id": 10,
+        "name": "Thriller"
+      }
+    ],
     "isbn": "184252720-7",
     "cover_image_url": "http://dummyimage.com/236x100.png/cc0000/ffffff"
-  },
-  {
-    "book_id": 3,
-    "title": "The Alchemist",
-    "author_id": 35,
-    "description_text": "The Adventures of Huckleberry Finn - Huck Finn and Jim's journey down the Mississippi River.",
-    "publication_year": "2012",
-    "category_id": 3,
-    "isbn": "028904857-5",
-    "cover_image_url": "http://dummyimage.com/188x100.png/5fa2dd/ffffff"
-  },
-  {
-    "book_id": 4,
-    "title": "Catcher in the Rye",
-    "author_id": 23,
-    "description_text": "The Time Traveler's Wife - Clare and Henry's love story transcends time.",
-    "publication_year": "2004",
-    "category_id": 4,
-    "isbn": "841841860-5",
-    "cover_image_url": "http://dummyimage.com/176x100.png/cc0000/ffffff"
-  },
-  {
-    "book_id": 5,
-    "title": "One Hundred Years of Solitude",
-    "author_id": 67,
-    "description_text": "Ulysses - Modernist novel follows Leopold Bloom's day in Dublin.",
-    "publication_year": "1989",
-    "category_id": 5,
-    "isbn": "599963831-3",
-    "cover_image_url": "http://dummyimage.com/183x100.png/5fa2dd/ffffff"
-  },
-  {
-    "book_id": 6,
-    "title": "The Great Gatsby",
-    "author_id": 65,
-    "description_text": "The Giver - Jonas discovers the truth about his dystopian society and seeks change.",
-    "publication_year": "1997",
-    "category_id": 6,
-    "isbn": "185955943-3",
-    "cover_image_url": "http://dummyimage.com/216x100.png/cc0000/ffffff"
-  },
-  {
-    "book_id": 7,
-    "title": "The Secret Garden",
-    "author_id": 19,
-    "description_text": "The Adventures of Huckleberry Finn - Huck Finn and Jim's journey down the Mississippi River.",
-    "publication_year": "1993",
-    "category_id": 7,
-    "isbn": "053685530-7",
-    "cover_image_url": "http://dummyimage.com/179x100.png/dddddd/000000"
-  },
-  {
-    "book_id": 8,
-    "title": "Pride and Prejudice",
-    "author_id": 23,
-    "description_text": "The Color Purple - Celie overcomes abuse and oppression to find her voice.",
-    "publication_year": "2011",
-    "category_id": 8,
-    "isbn": "057655495-2",
-    "cover_image_url": "http://dummyimage.com/204x100.png/ff4444/ffffff"
-  },
-  {
-    "book_id": 9,
-    "title": "The Book Thief",
-    "author_id": 13,
-    "description_text": "The Count of Monte Cristo - Edmond Dantès seeks revenge after being wrongfully imprisoned.",
-    "publication_year": "2002",
-    "category_id": 9,
-    "isbn": "204553612-2",
-    "cover_image_url": "http://dummyimage.com/112x100.png/dddddd/000000"
-  },
-  {
-    "book_id": 10,
-    "title": "The Count of Monte Cristo",
-    "author_id": 35,
-    "description_text": "A young girl discovers a hidden",
-    "publication_year": "2007",
-    "category_id": 10,
-    "isbn": "576723207-5",
-    "cover_image_url": "http://dummyimage.com/144x100.png/dddddd/000000"
   }
 ]

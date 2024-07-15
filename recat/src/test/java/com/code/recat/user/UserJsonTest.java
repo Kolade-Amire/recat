@@ -1,5 +1,6 @@
 package com.code.recat.user;
 
+import com.code.recat.book.Book;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.JsonContent;
 import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,21 +48,25 @@ public class UserJsonTest {
     @Test
     void userSerializationTest() throws IOException {
         UserDto user = users[0];
-        assertThat(userJson.write(user)).isStrictlyEqualToJson(singleFile);
-        assertThat(userJson.write(user)).hasJsonPathNumberValue("@.user_id");
-        assertThat(userJson.write(user)).extractingJsonPathNumberValue("@.user_id").isEqualTo(1);
-        assertThat(userJson.write(user)).hasJsonPathStringValue("@.name");
-        assertThat(userJson.write(user)).extractingJsonPathStringValue("@.name").isEqualTo("Nate Giabucci");
-        assertThat(userJson.write(user)).hasJsonPathStringValue("@.username");
-        assertThat(userJson.write(user)).extractingJsonPathStringValue("@.username").isEqualTo("ngiabucci0");
-        assertThat(userJson.write(user)).hasJsonPathStringValue("@.email");
-        assertThat(userJson.write(user)).extractingJsonPathStringValue("@.email").isEqualTo("ngiabucci0@yelp.com");
-        assertThat(userJson.write(user)).hasJsonPathStringValue("@.gender");
-        assertThat(userJson.write(user)).extractingJsonPathStringValue("@.gender").isEqualTo("female");
-        assertThat(userJson.write(user)).hasJsonPathStringValue("@.password");
-        assertThat(userJson.write(user)).extractingJsonPathStringValue("@.password").isEqualTo("uP0~!$hpmIQ#~8");
-        assertThat(userJson.write(user)).hasJsonPathStringValue("@.role");
-        assertThat(userJson.write(user)).extractingJsonPathStringValue("@.role").isEqualTo("USER");
+
+        // Write the book to JSON
+        JsonContent<UserDto> jsonNode = userJson.write(user);
+        
+        assertThat(jsonNode).isStrictlyEqualToJson(singleFile);
+        assertThat(jsonNode).hasJsonPathNumberValue("@.user_id");
+        assertThat(jsonNode).extractingJsonPathNumberValue("@.user_id").isEqualTo(1);
+        assertThat(jsonNode).hasJsonPathStringValue("@.name");
+        assertThat(jsonNode).extractingJsonPathStringValue("@.name").isEqualTo("Nate Giabucci");
+        assertThat(jsonNode).hasJsonPathStringValue("@.username");
+        assertThat(jsonNode).extractingJsonPathStringValue("@.username").isEqualTo("ngiabucci0");
+        assertThat(jsonNode).hasJsonPathStringValue("@.email");
+        assertThat(jsonNode).extractingJsonPathStringValue("@.email").isEqualTo("ngiabucci0@yelp.com");
+        assertThat(jsonNode).hasJsonPathStringValue("@.gender");
+        assertThat(jsonNode).extractingJsonPathStringValue("@.gender").isEqualTo("female");
+        assertThat(jsonNode).hasJsonPathStringValue("@.password");
+        assertThat(jsonNode).extractingJsonPathStringValue("@.password").isEqualTo("uP0~!$hpmIQ#~8");
+        assertThat(jsonNode).hasJsonPathStringValue("@.role");
+        assertThat(jsonNode).extractingJsonPathStringValue("@.role").isEqualTo("USER");
     }
 
     @Test

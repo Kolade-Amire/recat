@@ -39,6 +39,8 @@ Special Features:
     book thread
 
 
+SQL
+
 @Query("SELECT b FROM Book b JOIN Author a ON b.authorId = a.authorId WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :searchQuery, '%')) OR LOWER(a.name) LIKE LOWER(CONCAT('%', :searchQuery, '%'))")
 
 
