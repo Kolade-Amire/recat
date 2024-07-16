@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import java.security.Key;
@@ -17,9 +16,6 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-
-    @Value("${jwt.secret}")
-    private String secret_key;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -55,7 +51,7 @@ public class JwtService {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -63,7 +59,7 @@ public class JwtService {
        return extractClaim(token, Claims::getExpiration);
     }
 
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignInKey())
@@ -72,9 +68,11 @@ public class JwtService {
                 .getBody();
     }
 
-    private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret_key);
+    public Key getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SecurityConstants.SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+
 }
 

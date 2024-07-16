@@ -14,15 +14,12 @@ spring:
       hibernate:
         format_sql: true
     database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
 logging.level:
   org.springframework.security: TRACE
 server:
   error:
     include-message: always
 
-jwt:
-  secret: ${jwt_secret}
 
 
 
