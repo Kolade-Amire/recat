@@ -78,14 +78,14 @@ public class AuthService {
                 .build();
     }
 
-    private String doPasswordsMatch(String p1 , String p2){
+    public String doPasswordsMatch(String p1 , String p2){
         if (!p1.equals(p2)){
             throw new PasswordsDoNotMatchException("Passwords do not match");
         }
         else return p2;
     }
 
-    private String concatenateFullName(String firstname, String lastname){
+    public String concatenateFullName(String firstname, String lastname){
         return firstname + " " + lastname;
     }
 }
