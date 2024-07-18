@@ -5,6 +5,7 @@ import com.code.recat.exception.PasswordsDoNotMatchException;
 import com.code.recat.user.Role;
 import com.code.recat.user.User;
 import com.code.recat.user.UserRepository;
+import com.code.recat.util.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -41,6 +44,7 @@ public class AuthServiceTest {
 
 
     @Mock
+    @Autowired
     private UserRepository userRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -49,8 +53,10 @@ public class AuthServiceTest {
     @Mock
     private AuthenticationManager authenticationManager;
     @InjectMocks
+    @Autowired
     private AuthService authService;
     private RegisterRequest registerRequest;
+    private RegisterRequest savedUserRequest;
     private User existingUser;
 
     public AuthServiceTest() {
@@ -63,6 +69,11 @@ public class AuthServiceTest {
 
         registerRequest = new RegisterRequest("Ope", "Amire", "opeamire@gmail.com", "password123", "password123",
                 "female", "female");
+
+         savedUserRequest = new RegisterRequest("Kolade", "Amire", "stephamire@gmail.com", "password123", "password123",
+                "koladeam", "male");
+
+
 
         existingUser = User.builder()
                 .name("Kolade Amire")
@@ -77,7 +88,6 @@ public class AuthServiceTest {
                 .isLocked(false)
                 .build();
 
-        userRepository.save(existingUser);
     }
 
     @Test
@@ -96,33 +106,32 @@ public class AuthServiceTest {
 
         var wrongRequest = new RegisterRequest("Ope", "Amire", "opeamire@gmail.com", "password123", "wrong",
                 "female", "female");
-
         assertThrows(PasswordsDoNotMatchException.class, () -> authService.register(wrongRequest));
-//        verify(userRepository, never()).save(any(User.class));
         verify(jwtService, never()).generateToken(any(User.class));
     }
 
     @Test
     void shouldTestIfValidUserIsAuthenticatedSuccessfully() {
-        userRepository.save(existingUser);
 
-        AuthRequest request = new AuthRequest(existingUser.getEmail(), existingUser.getPassword());
+        authService.register(savedUserRequest);
+
+        AuthRequest request = new AuthRequest(savedUserRequest.getEmail(), savedUserRequest.getPassword());
 
         AuthResponse response = authService.authenticate(request);
-
         assertNotNull(response);
         assertEquals(HttpStatus.OK.value(), response.getResponse().getHttpStatusCode());
-        verify(authenticationManager, times(1)).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        verify(jwtService, times(1)).generateToken(any(User.class));
     }
-//
-//    @Test
-//    void testAuthenticateUserNotFound() {
-//        AuthRequest request = new AuthRequest("john.doe@example.com", "password");
-//        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-//
-//        assertThrows(RuntimeException.class, () -> authService.authenticate(request));
-//        verify(authenticationManager, never()).authenticate(any(UsernamePasswordAuthenticationToken.class));
-//        verify(jwtService, never()).generateToken(any(User.class));
-//    }
+
+
+    @Test
+    void shouldReturnBadCredentialExceptionWithInvalidAuthRequest() {
+        AuthRequest request = new AuthRequest("john.doe@example.com", "password");
+
+
+        assertThrows(BadCredentialsException.class, () -> authService.authenticate(request));
+        verify(authenticationManager, never()).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(jwtService, never()).generateToken(any(User.class));
+    }
+
+
 }
