@@ -26,8 +26,5 @@ public class BookController {
         return ResponseEntity.ok(eventPage.getContent());
     }
 
-    @GetMapping("/principal")
-    public String home(Principal principal){
-        return "Hello, " + principal.getName();
-    }
+
 }

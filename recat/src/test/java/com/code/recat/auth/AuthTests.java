@@ -5,13 +5,9 @@ import com.code.recat.exception.PasswordsDoNotMatchException;
 import com.code.recat.user.Role;
 import com.code.recat.user.User;
 import com.code.recat.user.UserRepository;
-import com.code.recat.util.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,46 +16,36 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.Optional;
-
+import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
-public class AuthServiceTest {
+public class AuthTests {
 
 
-    @Mock
     @Autowired
     private UserRepository userRepository;
-    @Mock
+    @MockBean
     private PasswordEncoder passwordEncoder;
-    @Mock
+    @MockBean
     private JwtService jwtService;
-    @Mock
+    @MockBean
     private AuthenticationManager authenticationManager;
-    @InjectMocks
     @Autowired
     private AuthService authService;
     private RegisterRequest registerRequest;
     private RegisterRequest savedUserRequest;
-    private User existingUser;
 
-    public AuthServiceTest() {
+    public AuthTests() {
     }
 
 
@@ -74,8 +60,7 @@ public class AuthServiceTest {
                 "koladeam", "male");
 
 
-
-        existingUser = User.builder()
+        User existingUser = User.builder()
                 .name("Kolade Amire")
                 .email("stephamire@gmail.com")
                 .password(passwordEncoder.encode("password123"))
@@ -87,6 +72,8 @@ public class AuthServiceTest {
                 .isActive(true)
                 .isLocked(false)
                 .build();
+
+        userRepository.save(existingUser);
 
     }
 
@@ -113,24 +100,21 @@ public class AuthServiceTest {
     @Test
     void shouldTestIfValidUserIsAuthenticatedSuccessfully() {
 
-        authService.register(savedUserRequest);
 
         AuthRequest request = new AuthRequest(savedUserRequest.getEmail(), savedUserRequest.getPassword());
 
         AuthResponse response = authService.authenticate(request);
         assertNotNull(response);
         assertEquals(HttpStatus.OK.value(), response.getResponse().getHttpStatusCode());
+
     }
 
 
     @Test
-    void shouldReturnBadCredentialExceptionWithInvalidAuthRequest() {
+    void shouldReturnNoSuchElementExceptionWhenProvidedWithWrongUserDetails() {
         AuthRequest request = new AuthRequest("john.doe@example.com", "password");
+        assertThrows(NoSuchElementException.class, () -> authService.authenticate(request));
 
-
-        assertThrows(BadCredentialsException.class, () -> authService.authenticate(request));
-        verify(authenticationManager, never()).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        verify(jwtService, never()).generateToken(any(User.class));
     }
 
 

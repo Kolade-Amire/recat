@@ -1,6 +1,5 @@
 package com.code.recat.auth;
 
-
 import com.code.recat.util.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,37 +11,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.TestPropertySource;
-
 import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
+@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 public class JwtServiceTests {
 
     @InjectMocks
-    @Autowired
     private JwtService jwtService;
 
     private UserDetails userDetails;
@@ -57,9 +46,8 @@ public class JwtServiceTests {
         userDetails = new User(
                 "opeyemiamire@gmail.com", "password123", Collections.emptyList()
         );
-        byte[] keyBytes = Decoders.BASE64.decode(SecurityConstants.SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(System.getenv("jwt_secret"));
         signInKey = Keys.hmacShaKeyFor(keyBytes);
-
         token = jwtService.generateToken(userDetails);
     }
 
