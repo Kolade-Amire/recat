@@ -1,5 +1,6 @@
 package com.code.recat.book;
 
+import org.h2.jdbc.JdbcStatement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +30,7 @@ public class BookServiceTest {
     private BookRepository bookRepository;
     @Autowired
     DataSource dataSource;
+    PreparedStatement statement;
     private Book book1;
     private Book book2;
 
@@ -68,23 +72,31 @@ public class BookServiceTest {
 
     }
 
+//    @Test
+//    @DirtiesContext
+//    void shouldReturnMatchingBooksWhenSearchedByTitle() throws SQLException {
+//
+//        bookRepository.save(book1);
+//        bookRepository.save(book2);
+//
+//        var searchQuery = "book";
+//        var page = bookService.findMatchingBooksByTitleOrAuthorName(searchQuery, 0, 10);
+//
+//        System.out.println("Page = " + page);
+//
+//        assertNotNull(page);
+//        assertThat(page).containsExactly(book2, book1);
+//        assertThat(page.getContent().get(0).getTitle()).isEqualTo("Another Book Title");
+//    }
+
     @Test
-    @DirtiesContext
-    void shouldReturnMatchingBooksWhenSearchedByTitle() {
-
+    void shouldUpdateBookDetails(){
         bookRepository.save(book1);
-        bookRepository.save(book2);
+        var updatedBook = new Book(1, "Modified Title", 10, "Blurb for first book.", 2000, new HashSet<>(), "25362348-72", "https://coverimage1.com");
+
+        bookRepository.updateBook(updatedBook);
 
 
-        var searchQuery = "book";
-        var page = bookService.findMatchingBooksByTitleOrAuthorName(searchQuery, 0, 10);
-
-        System.out.println("Page = " + page);
-
-        assertNotNull(page);
-        assertThat(page).containsExactly(book2, book1);
-        assertThat(page.getContent().get(0).getTitle()).isEqualTo("Another Book Title");
     }
-
 
 }

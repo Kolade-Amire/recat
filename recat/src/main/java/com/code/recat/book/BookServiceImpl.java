@@ -31,4 +31,9 @@ public class BookServiceImpl implements BookService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return bookRepository.searchBooksByTitleOrAuthorName(searchQuery, pageable);
     }
+
+    @Override
+    public Book updateBook(Book book) {
+        return bookRepository.updateBook(book);
+    }
 }

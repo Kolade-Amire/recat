@@ -15,6 +15,6 @@ public interface BookRepository extends ListCrudRepository<Book, Long> {
     @Query("SELECT b FROM Book b JOIN Author a ON b.author_id = a.author_id WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :searchQuery, '%')) OR LOWER(a.name) LIKE LOWER(CONCAT('%', :searchQuery, '%'))")
     Page<Book> searchBooksByTitleOrAuthorName(@Param("searchQuery") String searchQuery, Pageable pageable);
 
-    
 
+    Book updateBook(Book updatedBook);
 }

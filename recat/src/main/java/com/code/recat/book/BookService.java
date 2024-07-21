@@ -10,4 +10,6 @@ public interface BookService {
     Book addNewBook(Book newBook);
 
     Page<Book> findMatchingBooksByTitleOrAuthorName(String searchQuery,int pageNumber, int pageSize);
+
+    Book updateBook(Book book);
 }
