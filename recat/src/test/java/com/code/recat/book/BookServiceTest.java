@@ -72,22 +72,22 @@ public class BookServiceTest {
 
     }
 
-//    @Test
-//    @DirtiesContext
-//    void shouldReturnMatchingBooksWhenSearchedByTitle() throws SQLException {
-//
-//        bookRepository.save(book1);
-//        bookRepository.save(book2);
-//
-//        var searchQuery = "book";
-//        var page = bookService.findMatchingBooksByTitleOrAuthorName(searchQuery, 0, 10);
-//
-//        System.out.println("Page = " + page);
-//
-//        assertNotNull(page);
-//        assertThat(page).containsExactly(book2, book1);
-//        assertThat(page.getContent().get(0).getTitle()).isEqualTo("Another Book Title");
-//    }
+    @Test
+    @DirtiesContext
+    void shouldReturnMatchingBooksWhenSearchedByTitle() throws SQLException {
+
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+
+        var searchQuery = "book";
+        var page = bookService.findMatchingBooksByTitleOrAuthorName(searchQuery, 0, 10);
+
+        System.out.println("Page = " + page);
+
+        assertNotNull(page);
+        assertThat(page).containsExactly(book2, book1);
+        assertThat(page.getContent().get(0).getTitle()).isEqualTo("Another Book Title");
+    }
 
     @Test
     void shouldUpdateBookDetails(){
