@@ -1,9 +1,13 @@
 package com.code.recat.book;
 
+import com.code.recat.genre.Genre;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -33,7 +37,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book updateBook(Book book) {
-        return bookRepository.updateBook(book);
+    public Book updateBook(Integer book_id, String title, String blurb, Integer publication_year, Set<Genre> genres, String isbn, String cover_image_url) {
+
+        Book savedBook = bookRepository.findById(Long.valueOf(book_id)).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
+        if (title != null){ savedBook.setTitle(title);}
+        if (blurb != null){ savedBook.setBlurb(blurb);}
+        if (publication_year != null){ savedBook.setPublication_year(publication_year);}
+        if (genres != null){ savedBook.setGenres(genres);}
+        if (isbn!= null){ savedBook.setIsbn(isbn);}
+        if (cover_image_url != null){ savedBook.setCover_image_url(cover_image_url);}
+
+        return bookRepository.save(savedBook);
     }
 }
