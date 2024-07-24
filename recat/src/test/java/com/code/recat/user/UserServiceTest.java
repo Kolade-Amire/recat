@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class UserServiceTests {
+public class UserServiceTest {
 
     private List<UserDto> users;
 

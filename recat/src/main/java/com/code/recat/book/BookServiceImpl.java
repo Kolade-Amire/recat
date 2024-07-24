@@ -2,6 +2,7 @@ package com.code.recat.book;
 
 import com.code.recat.genre.Genre;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book addNewBook(Book newBook) {
+    @Transactional
+    public Book addNewBook(BookRequest bookRequest) {
+
+        var newBook = Book.builder()
+                .title(bookRequest.getTitle())
+                .author_id(bookRequest.getAuthor_id())
+                .blurb(bookRequest.getBlurb())
+                .publication_year(bookRequest.getPublication_year())
+                .genres(bookRequest.getGenres())
+                .isbn(bookRequest.getIsbn())
+                .cover_image_url(bookRequest.getCover_image_url())
+                .build();
+
         return bookRepository.save(newBook);
     }
 
@@ -37,16 +50,29 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book updateBook(Integer book_id, String title, String blurb, Integer publication_year, Set<Genre> genres, String isbn, String cover_image_url) {
+    @Transactional
+    public void deleteBook(Integer bookId) {
+        Book book = bookRepository.findById(Long.valueOf(bookId)).orElseThrow( () -> new EntityNotFoundException("Book does not exist"));
+        book.getGenres().clear();
+        bookRepository.delete(book);
+    }
+
+    @Override
+    public Book updateBook(Integer book_id, BookRequest bookRequest) {
 
         Book savedBook = bookRepository.findById(Long.valueOf(book_id)).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
-        if (title != null){ savedBook.setTitle(title);}
-        if (blurb != null){ savedBook.setBlurb(blurb);}
-        if (publication_year != null){ savedBook.setPublication_year(publication_year);}
-        if (genres != null){ savedBook.setGenres(genres);}
-        if (isbn!= null){ savedBook.setIsbn(isbn);}
-        if (cover_image_url != null){ savedBook.setCover_image_url(cover_image_url);}
+        if (bookRequest.getTitle() != null){ savedBook.setTitle(bookRequest.getTitle());}
+        if (bookRequest.getBlurb() != null){ savedBook.setBlurb(bookRequest.getBlurb());}
+        if (bookRequest.getPublication_year() != null){ savedBook.setPublication_year(bookRequest.getPublication_year());}
+        if (bookRequest.getGenres() != null){ savedBook.setGenres(bookRequest.getGenres());}
+        if (bookRequest.getIsbn() != null){ savedBook.setIsbn(bookRequest.getIsbn());}
+        if (bookRequest.getCover_image_url() != null){ savedBook.setCover_image_url(bookRequest.getCover_image_url());}
 
         return bookRepository.save(savedBook);
+    }
+
+    @Override
+    public Book findBookById(Integer bookId) {
+        return bookRepository.findById(Long.valueOf(bookId)).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
     }
 }

@@ -1,7 +1,7 @@
 package com.code.recat.book;
 
 import com.code.recat.genre.Genre;
-import org.h2.jdbc.JdbcStatement;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,9 +17,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,14 +69,15 @@ public class BookServiceTest {
     @DirtiesContext
     void shouldAddANewBook() {
 
-        Book newBook = new Book(1, "New Book Title", 10, "Blurb for New book.", 2020, new HashSet<>(), "25362348-72", "https://coverimagefornewbook.com");
+        var newBookRequest = new BookRequest( "New Book Title", 10, "Blurb for New book.", 2020, new HashSet<>(), "25362348-72", "https://coverimagefornewbook.com");
 
-        var savedBook = bookService.addNewBook(newBook);
+        var savedBook = bookService.addNewBook(newBookRequest);
 
         assertNotNull(savedBook);
-        assertEquals(savedBook, newBook);
-        assertThat(newBook.getBook_id()).isEqualTo(savedBook.getBook_id());
-        assertThat(newBook.getTitle()).isEqualTo(savedBook.getTitle());
+
+        assertEquals(newBookRequest.getIsbn(), savedBook.getIsbn());
+        assertEquals(newBookRequest.getTitle(), savedBook.getTitle());
+        System.out.println("book created with id: " + savedBook.getBook_id());
 
     }
 
@@ -106,7 +105,7 @@ public class BookServiceTest {
 
     @Test
     @DirtiesContext
-    void shouldUpdateBookDetails() throws SQLException{
+    void shouldUpdateExistingBookDetailsWithNewDetails() throws SQLException{
         bookRepository.save(book1);
 
         try (Connection connection = dataSource.getConnection();
@@ -116,18 +115,35 @@ public class BookServiceTest {
 
 
 
-        var newBook = new Book(1, "Modified Title", 10, "Modified Blurb", 2000, Set.of(new Genre(2, "Non-Fiction")), "25362348-72", "https://updatedCoverUrl.com");
+        var newBookRequest = new BookRequest("Modified Title", book1.getAuthor_id(),"Modified Blurb", book1.getPublication_year(), Set.of(new Genre(2, "Non-Fiction")), "25362348-72", "https://updatedCoverUrl.com");
 
-        var updatedBook = bookService.updateBook(newBook.getBook_id(), newBook.getTitle(), newBook.getBlurb(), newBook.getPublication_year(), newBook.getGenres(), newBook.getIsbn(), newBook.getCover_image_url());
+        var updatedBook = bookService.updateBook(book1.getBook_id(), newBookRequest);
 
         assertNotNull(updatedBook);
-        assertEquals(newBook.getBook_id(), updatedBook.getBook_id());
-        assertEquals(newBook.getTitle(), updatedBook.getTitle());
-        assertEquals(newBook.getBlurb(), updatedBook.getBlurb());
-        assertEquals(newBook.getGenres(), updatedBook.getGenres());
-        assertEquals(newBook.getCover_image_url(), updatedBook.getCover_image_url());
+        assertEquals(newBookRequest.getTitle(), updatedBook.getTitle());
+        assertEquals(newBookRequest.getBlurb(), updatedBook.getBlurb());
+        assertEquals(newBookRequest.getGenres(), updatedBook.getGenres());
+        assertEquals(newBookRequest.getCover_image_url(), updatedBook.getCover_image_url());
 
 
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldDeleteExistingBookUsingBookId(){
+        bookRepository.save(book1);
+        var bookId = book1.getBook_id();
+
+        bookService.deleteBook(bookId);
+        assertThrows(EntityNotFoundException.class, () -> bookService.deleteBook(bookId));
+        assertThat(bookRepository.findById(Long.valueOf(bookId))).isNotPresent();
+
+    }
+
+    @Test
+    void shouldReturnEntityNotFoundForBookThatDoesNotExist(){
+        Integer bookId = 14;
+        assertThrows(EntityNotFoundException.class, () -> bookService.findBookById(bookId));
     }
 
 }

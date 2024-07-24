@@ -35,7 +35,7 @@ public class User implements UserDetails {
         private Role role;
         private LocalDateTime dateJoined;
 
-        @ManyToMany(fetch = FetchType.EAGER)
+        @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
         @JoinTable(
                 name = "user_favorite_books",
                 joinColumns = @JoinColumn(name = "user_id"),
