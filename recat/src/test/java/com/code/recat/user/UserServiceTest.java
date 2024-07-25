@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -26,11 +23,11 @@ public class UserServiceTest {
     @BeforeEach
     void setup (){
          users = List.of(
-                 UserDto.builder().user_id(1).name("Nate Giabucci").username("ngiabucci0")
+                 UserDto.builder().userId(1L).name("Nate Giabucci").username("ngiabucci0")
                          .email("ngiabucci0@yelp.com").gender("female").password("uP0~!$hpmIQ#~8")
                          .role(Role.USER)
                          .build(),
-                 UserDto.builder().user_id(2).name("Rodolphe Prover").username("rprover1")
+                 UserDto.builder().userId(2L).name("Rodolphe Prover").username("rprover1")
                          .email("rprover1@artisteer.com").gender("male").password("password(")
                          .role(Role.ADMIN)
                          .build()

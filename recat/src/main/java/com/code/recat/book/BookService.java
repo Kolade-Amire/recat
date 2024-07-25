@@ -1,9 +1,7 @@
 package com.code.recat.book;
 
-import com.code.recat.genre.Genre;
 import org.springframework.data.domain.Page;
 
-import java.util.Set;
 
 
 public interface BookService {
@@ -14,9 +12,9 @@ public interface BookService {
 
     Page<Book> findMatchingBooksByTitleOrAuthorName(String searchQuery,int pageNumber, int pageSize);
 
-    Book updateBook(Integer book_id, BookRequest bookRequest);
+    Book updateBook(Long bookId, BookRequest bookRequest);
 
-    void deleteBook(Integer bookId);
+    void deleteBook(Long bookId);
 
-    Book findBookById(Integer bookId);
+    Book findBookById(Long bookId);
 }

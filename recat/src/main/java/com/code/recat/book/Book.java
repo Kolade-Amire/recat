@@ -1,5 +1,7 @@
 package com.code.recat.book;
 
+import com.code.recat.author.Author;
+import com.code.recat.book.comment.Comment;
 import com.code.recat.genre.Genre;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,11 +22,16 @@ public class Book{
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(nullable = false, updatable = false)
-        private Integer book_id;
+        private Long bookId;
         private String title;
-        private Integer author_id;
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "author_id", nullable = false)
+        private Author author;
+
         private String blurb;
-        private Integer publication_year;
+        private Integer publicationYear;
+
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "book_genre",
@@ -32,7 +39,11 @@ public class Book{
                 inverseJoinColumns = @JoinColumn(name = "genre_id")
         )
         private Set<Genre> genres = new HashSet<>();
+
         private String isbn;
-        private String cover_image_url;
+        private String coverImageUrl;
+
+        @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+        private Set<Comment> comments;
 }
 

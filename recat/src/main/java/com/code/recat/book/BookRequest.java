@@ -1,11 +1,11 @@
 package com.code.recat.book;
 
+import com.code.recat.author.Author;
 import com.code.recat.genre.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 public class BookRequest {
     private String title;
-    private Integer author_id;
+    private Author author;
     private String blurb;
     private Integer publication_year;
     private Set<Genre> genres;

@@ -1,6 +1,5 @@
 package com.code.recat.user;
 
-import com.code.recat.book.Book;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,11 +33,11 @@ public class UserJsonTest {
     @BeforeEach
     void setUp() {
         users = Arrays.array(
-                UserDto.builder().user_id(1).name("Nate Giabucci").username("ngiabucci0")
+                UserDto.builder().userId(1).name("Nate Giabucci").username("ngiabucci0")
                         .email("ngiabucci0@yelp.com").gender("female").password("uP0~!$hpmIQ#~8")
                         .role(Role.USER)
                         .build(),
-                UserDto.builder().user_id(2).name("Rodolphe Prover").username("rprover1")
+                UserDto.builder().userId(2).name("Rodolphe Prover").username("rprover1")
                         .email("rprover1@artisteer.com").gender("male").password("password(")
                         .role(Role.ADMIN)
                         .build()
@@ -95,7 +94,7 @@ public class UserJsonTest {
 
         assertThat(userJson.parse(expected))
                 .isEqualTo(newUser);
-        assertThat(userJson.parseObject(expected).getUser_id()).isEqualTo(1);
+        assertThat(userJson.parseObject(expected).getUserId()).isEqualTo(1);
         assertThat(userJson.parseObject(expected).getName()).isEqualTo("Nate Giabucci");
         assertThat(userJson.parseObject(expected).getUsername()).isEqualTo("ngiabucci0");
         assertThat(userJson.parseObject(expected).getEmail()).isEqualTo("ngiabucci0@yelp.com");

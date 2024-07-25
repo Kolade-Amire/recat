@@ -1,5 +1,6 @@
 package com.code.recat.book;
 
+import com.code.recat.author.Author;
 import com.code.recat.genre.Genre;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,19 +39,19 @@ public class BookServiceTest {
     @Autowired
     DataSource dataSource;
 
-
     private Book book1;
     private Book book2;
+    private Author author1;
 
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        author1 = new Author(10L, "Author One", LocalDate.now(), "Female", new HashSet<>());
+        var author2 = new Author(20L, "Author Two", LocalDate.now(), "Male", new HashSet<>());
 
-        book1 = new Book(1, "Book One Title", 10, "Blurb for first book.", 2000, new HashSet<>(), "25362348-72", "https://coverimage1.com");
-        book2 = new Book(2, "Another Book Title", 20, "Blurb for second book.", 2010, new HashSet<>() , "25485210-89", "https://coverimage2.com");
-
-
+        book1 = new Book(1L, "Book One Title", author1, "Blurb for first book.", 2000, new HashSet<>(), "25362348-72", "https://coverimage1.com", new HashSet<>());
+        book2 = new Book(2L, "Another Book Title", author2, "Blurb for second book.", 2010, new HashSet<>() , "25485210-89", "https://coverimage2.com", new HashSet<>());
 
     }
 
@@ -69,7 +71,7 @@ public class BookServiceTest {
     @DirtiesContext
     void shouldAddANewBook() {
 
-        var newBookRequest = new BookRequest( "New Book Title", 10, "Blurb for New book.", 2020, new HashSet<>(), "25362348-72", "https://coverimagefornewbook.com");
+        var newBookRequest = new BookRequest( "New Book Title", author1, "Blurb for New book.", 2020, new HashSet<>(), "25362348-72", "https://coverimagefornewbook.com");
 
         var savedBook = bookService.addNewBook(newBookRequest);
 
@@ -77,7 +79,7 @@ public class BookServiceTest {
 
         assertEquals(newBookRequest.getIsbn(), savedBook.getIsbn());
         assertEquals(newBookRequest.getTitle(), savedBook.getTitle());
-        System.out.println("book created with id: " + savedBook.getBook_id());
+        System.out.println("book created with id: " + savedBook.getBookId());
 
     }
 
@@ -115,15 +117,15 @@ public class BookServiceTest {
 
 
 
-        var newBookRequest = new BookRequest("Modified Title", book1.getAuthor_id(),"Modified Blurb", book1.getPublication_year(), Set.of(new Genre(2, "Non-Fiction")), "25362348-72", "https://updatedCoverUrl.com");
+        var newBookRequest = new BookRequest("Modified Title", book1.getAuthor(),"Modified Blurb", book1.getPublicationYear(), Set.of(new Genre(2L, "Non-Fiction")), "25362348-72", "https://updatedCoverUrl.com");
 
-        var updatedBook = bookService.updateBook(book1.getBook_id(), newBookRequest);
+        var updatedBook = bookService.updateBook(book1.getBookId(), newBookRequest);
 
         assertNotNull(updatedBook);
         assertEquals(newBookRequest.getTitle(), updatedBook.getTitle());
         assertEquals(newBookRequest.getBlurb(), updatedBook.getBlurb());
         assertEquals(newBookRequest.getGenres(), updatedBook.getGenres());
-        assertEquals(newBookRequest.getCover_image_url(), updatedBook.getCover_image_url());
+        assertEquals(newBookRequest.getCover_image_url(), updatedBook.getCoverImageUrl());
 
 
     }
@@ -132,17 +134,17 @@ public class BookServiceTest {
     @DirtiesContext
     void shouldDeleteExistingBookUsingBookId(){
         bookRepository.save(book1);
-        var bookId = book1.getBook_id();
+        var bookId = book1.getBookId();
 
         bookService.deleteBook(bookId);
         assertThrows(EntityNotFoundException.class, () -> bookService.deleteBook(bookId));
-        assertThat(bookRepository.findById(Long.valueOf(bookId))).isNotPresent();
+        assertThat(bookRepository.findById(bookId)).isNotPresent();
 
     }
 
     @Test
     void shouldReturnEntityNotFoundForBookThatDoesNotExist(){
-        Integer bookId = 14;
+        Long bookId = 14L;
         assertThrows(EntityNotFoundException.class, () -> bookService.findBookById(bookId));
     }
 

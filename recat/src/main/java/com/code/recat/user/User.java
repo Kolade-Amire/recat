@@ -25,7 +25,7 @@ public class User implements UserDetails {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(nullable = false, updatable = false)
-        private Integer user_id;
+        private Long userId;
         private String name;
         private String username;
         private String password;
@@ -41,7 +41,7 @@ public class User implements UserDetails {
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "book_id")
         )
-        private Set<Book> favoriteBooks;
+        private Set<Book> favoriteBooks = new HashSet<>();
         private boolean isActive;
         private boolean isLocked;
 

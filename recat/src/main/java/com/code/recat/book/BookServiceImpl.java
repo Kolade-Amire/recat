@@ -1,23 +1,20 @@
 package com.code.recat.book;
 
-import com.code.recat.genre.Genre;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-    public BookServiceImpl (BookRepository bookRepository){
-        this.bookRepository = bookRepository;
-    }
-
 
 
     @Override
@@ -32,12 +29,12 @@ public class BookServiceImpl implements BookService {
 
         var newBook = Book.builder()
                 .title(bookRequest.getTitle())
-                .author_id(bookRequest.getAuthor_id())
+                .author(bookRequest.getAuthor())
                 .blurb(bookRequest.getBlurb())
-                .publication_year(bookRequest.getPublication_year())
+                .publicationYear(bookRequest.getPublication_year())
                 .genres(bookRequest.getGenres())
                 .isbn(bookRequest.getIsbn())
-                .cover_image_url(bookRequest.getCover_image_url())
+                .coverImageUrl(bookRequest.getCover_image_url())
                 .build();
 
         return bookRepository.save(newBook);
@@ -51,28 +48,29 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void deleteBook(Integer bookId) {
-        Book book = bookRepository.findById(Long.valueOf(bookId)).orElseThrow( () -> new EntityNotFoundException("Book does not exist"));
+    public void deleteBook(Long bookId) {
+        var book = findBookById(bookId);
         book.getGenres().clear();
         bookRepository.delete(book);
     }
 
     @Override
-    public Book updateBook(Integer book_id, BookRequest bookRequest) {
+    @Transactional
+    public Book updateBook(Long bookId, BookRequest bookRequest) {
 
-        Book savedBook = bookRepository.findById(Long.valueOf(book_id)).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
-        if (bookRequest.getTitle() != null){ savedBook.setTitle(bookRequest.getTitle());}
-        if (bookRequest.getBlurb() != null){ savedBook.setBlurb(bookRequest.getBlurb());}
-        if (bookRequest.getPublication_year() != null){ savedBook.setPublication_year(bookRequest.getPublication_year());}
-        if (bookRequest.getGenres() != null){ savedBook.setGenres(bookRequest.getGenres());}
-        if (bookRequest.getIsbn() != null){ savedBook.setIsbn(bookRequest.getIsbn());}
-        if (bookRequest.getCover_image_url() != null){ savedBook.setCover_image_url(bookRequest.getCover_image_url());}
+        Book existingBook = findBookById(bookId);
+        if (bookRequest.getTitle() != null){ existingBook.setTitle(bookRequest.getTitle());}
+        if (bookRequest.getBlurb() != null){ existingBook.setBlurb(bookRequest.getBlurb());}
+        if (bookRequest.getPublication_year() != null){ existingBook.setPublicationYear(bookRequest.getPublication_year());}
+        if (bookRequest.getGenres() != null){ existingBook.setGenres(bookRequest.getGenres());}
+        if (bookRequest.getIsbn() != null){ existingBook.setIsbn(bookRequest.getIsbn());}
+        if (bookRequest.getCover_image_url() != null){ existingBook.setCoverImageUrl(bookRequest.getCover_image_url());}
 
-        return bookRepository.save(savedBook);
+        return bookRepository.save(existingBook);
     }
 
     @Override
-    public Book findBookById(Integer bookId) {
-        return bookRepository.findById(Long.valueOf(bookId)).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
+    public Book findBookById(Long bookId) {
+        return bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
     }
 }

@@ -3,6 +3,7 @@ package com.code.recat.book;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class BookController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<Book> addNewBook(@RequestBody BookRequest bookRequest){
         var createdBook = bookService.addNewBook(bookRequest);
         return ResponseEntity.ok(createdBook);
@@ -31,7 +33,7 @@ public class BookController {
 
     @PutMapping("/{bookId}")
     ResponseEntity<Book> updateBook(
-            @PathVariable Integer bookId,
+            @PathVariable Long bookId,
             @RequestBody BookRequest bookRequest
     ) {
 
@@ -40,13 +42,13 @@ public class BookController {
     }
 
     @DeleteMapping("/{bookId}")
-    ResponseEntity<Void> deleteBook(@PathVariable Integer bookId) {
+    ResponseEntity<Void> deleteBook(@PathVariable Long bookId) {
         bookService.deleteBook(bookId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{bookId}")
-    ResponseEntity<Book> findBookById(@PathVariable Integer bookId) {
+    ResponseEntity<Book> findBookById(@PathVariable Long bookId) {
         Book book = bookService.findBookById(bookId);
         return ResponseEntity.ok(book);
     }
