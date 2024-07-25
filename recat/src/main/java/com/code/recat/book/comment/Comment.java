@@ -31,7 +31,7 @@ public class Comment {
     private Comment parent;
 
     @ManyToOne
-    @JoinColumn(name = "commentAuthor_id")
+    @JoinColumn(name = "comment_author_id")
     private User commentAuthor;
     private String content;
     private LocalDateTime createdAt;

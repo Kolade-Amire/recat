@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
@@ -26,6 +27,6 @@ public class ApplicationAuditAware implements AuditorAware<Integer> {
         }
 
         User userPrincipal = (User) authentication.getPrincipal();
-        return Optional.ofNullable(userPrincipal.getUser_id());
+        return Optional.of(userPrincipal.getUserId().intValue());
     }
 }

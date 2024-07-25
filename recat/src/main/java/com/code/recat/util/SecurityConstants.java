@@ -1,10 +1,9 @@
 package com.code.recat.util;
 
 
-import org.springframework.beans.factory.annotation.Value;
-
 public class SecurityConstants {
-    public static final int EXPIRATION_DATE = 602_000_000; // 5 days
+    public static final Long JWT_EXPIRATION_DATE = 602000000L; // 5 days
+    public static final Long REFRESH_TOKEN__EXPIRATION_DATE = 86400000L; // 5 days
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String JWT_TOKEN_HEADER = "Jwt-Token";
     public static final String JWT_ISSUER = "recat";

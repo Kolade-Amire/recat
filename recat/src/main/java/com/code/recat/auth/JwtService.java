@@ -17,6 +17,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -31,9 +32,21 @@ public class JwtService {
     }
 
     public String generateToken(
-        Map<String, Object> extraClaims,
-        UserDetails userDetails
-    ){
+            Map<String, Object> extraClaims,
+            UserDetails userDetails
+    ) {
+        long jwtExpiration = SecurityConstants.JWT_EXPIRATION_DATE;
+        return buildToken(extraClaims, userDetails, jwtExpiration);
+    }
+
+    public String generateRefreshToken(
+            UserDetails userDetails
+    ) {
+        long refreshExpiration = SecurityConstants.REFRESH_TOKEN__EXPIRATION_DATE;
+        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+    }
+
+    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, Long expiration) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -41,10 +54,11 @@ public class JwtService {
                 .setIssuer(SecurityConstants.JWT_ISSUER)
                 .setAudience(SecurityConstants.AUDIENCE)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_DATE))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     public boolean isTokenValid(String token, UserDetails userDetails){
         final String username = extractUsername(token);
