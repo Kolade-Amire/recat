@@ -1,6 +1,7 @@
 package com.code.recat.user;
 
 import com.code.recat.book.Book;
+import com.code.recat.token.Token;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -45,6 +46,9 @@ public class User implements UserDetails {
         private boolean isActive;
         private boolean isLocked;
 
+        @OneToMany(mappedBy = "user")
+        private List<Token> tokens;
+
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
                 return List.of(new SimpleGrantedAuthority(role.name()));
@@ -68,7 +72,7 @@ public class User implements UserDetails {
 
         @Override
         public boolean isAccountNonLocked() {
-                return true;
+                return isLocked;
         }
 
         @Override
@@ -78,6 +82,6 @@ public class User implements UserDetails {
 
         @Override
         public boolean isEnabled() {
-                return true;
+                return isActive;
         }
 }
