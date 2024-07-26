@@ -17,12 +17,12 @@ import java.io.IOException;
 public class UserJsonTest {
 
     @Autowired
-    private JacksonTester<UserDto> userJson;
+    private JacksonTester<UserTestDto> userJson;
 
     @Autowired
-    private JacksonTester<UserDto[]> userJsonList;
+    private JacksonTester<UserTestDto[]> userJsonList;
 
-    private UserDto[] users;
+    private UserTestDto[] users;
 
     @Value("classpath:user/user_single.json")
     Resource singleFile;
@@ -33,11 +33,11 @@ public class UserJsonTest {
     @BeforeEach
     void setUp() {
         users = Arrays.array(
-                UserDto.builder().userId(1).name("Nate Giabucci").username("ngiabucci0")
+                UserTestDto.builder().userId(1).name("Nate Giabucci").username("ngiabucci0")
                         .email("ngiabucci0@yelp.com").gender("female").password("uP0~!$hpmIQ#~8")
                         .role(Role.USER)
                         .build(),
-                UserDto.builder().userId(2).name("Rodolphe Prover").username("rprover1")
+                UserTestDto.builder().userId(2).name("Rodolphe Prover").username("rprover1")
                         .email("rprover1@artisteer.com").gender("male").password("password(")
                         .role(Role.ADMIN)
                         .build()
@@ -46,10 +46,10 @@ public class UserJsonTest {
 
     @Test
     void userSerializationTest() throws IOException {
-        UserDto user = users[0];
+        UserTestDto user = users[0];
 
         // Write the book to JSON
-        JsonContent<UserDto> jsonNode = userJson.write(user);
+        JsonContent<UserTestDto> jsonNode = userJson.write(user);
         
         assertThat(jsonNode).isStrictlyEqualToJson(singleFile);
         assertThat(jsonNode).hasJsonPathNumberValue("@.user_id");
@@ -82,7 +82,7 @@ public class UserJsonTest {
                 }
                 """;
 
-        UserDto newUser = new UserDto(
+        UserTestDto newUser = new UserTestDto(
                 1,
                 "Nate Giabucci",
                 "ngiabucci0",

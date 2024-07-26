@@ -42,7 +42,7 @@ public class JwtService {
     public String generateRefreshToken(
             UserDetails userDetails
     ) {
-        long refreshExpiration = SecurityConstants.REFRESH_TOKEN__EXPIRATION_DATE;
+        long refreshExpiration = SecurityConstants.REFRESH_TOKEN_EXPIRATION_DATE;
         return buildToken(new HashMap<>(), userDetails, refreshExpiration);
     }
 

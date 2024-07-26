@@ -20,8 +20,9 @@ import java.util.Set;
 @Entity
 public class Book{
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "books_seq")
         @Column(nullable = false, updatable = false)
+        @SequenceGenerator(name = "books_seq", sequenceName = "public.books_seq", allocationSize = 1)
         private Long bookId;
         private String title;
 
@@ -32,7 +33,8 @@ public class Book{
         private String blurb;
         private Integer publicationYear;
 
-        @ManyToMany(fetch = FetchType.EAGER)
+        @ManyToMany(fetch = FetchType.LAZY)
+        @Builder.Default
         @JoinTable(
                 name = "book_genre",
                 joinColumns = @JoinColumn(name = "book_id"),
@@ -43,7 +45,8 @@ public class Book{
         private String isbn;
         private String coverImageUrl;
 
+        @Builder.Default
         @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-        private Set<Comment> comments;
+        private Set<Comment> comments = new HashSet<>();
 }
 

@@ -2,13 +2,10 @@ package com.code.recat.user;
 
 import com.code.recat.book.Book;
 import com.code.recat.token.Token;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -24,18 +21,23 @@ import java.util.*;
 public class User implements UserDetails {
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+        @SequenceGenerator(name = "user_seq", sequenceName = "public.users_seq", allocationSize = 1)
         @Column(nullable = false, updatable = false)
         private Long userId;
         private String name;
         private String username;
         private String password;
+        @Column(unique = true)
         private String email;
         private String gender;
+
         @Enumerated(EnumType.STRING)
         private Role role;
+
         private LocalDateTime dateJoined;
 
+        @Builder.Default
         @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
         @JoinTable(
                 name = "user_favorite_books",
@@ -46,12 +48,17 @@ public class User implements UserDetails {
         private boolean isActive;
         private boolean isLocked;
 
-        @OneToMany(mappedBy = "user")
-        private List<Token> tokens;
+
+
+        @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+        @Builder.Default
+        @ToString.Exclude
+        @JsonIgnore
+        private List<Token> tokens = new ArrayList<>();
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-                return List.of(new SimpleGrantedAuthority(role.name()));
+                return (role.getAuthorities());
         }
 
 
@@ -72,7 +79,7 @@ public class User implements UserDetails {
 
         @Override
         public boolean isAccountNonLocked() {
-                return isLocked;
+                return !isLocked;
         }
 
         @Override

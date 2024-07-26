@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
@@ -55,7 +56,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
     public Book updateBook(Long bookId, BookRequest bookRequest) {
 
         Book existingBook = findBookById(bookId);

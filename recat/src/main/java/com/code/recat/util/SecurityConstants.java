@@ -3,7 +3,7 @@ package com.code.recat.util;
 
 public class SecurityConstants {
     public static final Long JWT_EXPIRATION_DATE = 602000000L; // 5 days
-    public static final Long REFRESH_TOKEN__EXPIRATION_DATE = 86400000L; // 5 days
+    public static final Long REFRESH_TOKEN_EXPIRATION_DATE = 86400000L; // 5 days
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String JWT_TOKEN_HEADER = "Jwt-Token";
     public static final String JWT_ISSUER = "recat";
