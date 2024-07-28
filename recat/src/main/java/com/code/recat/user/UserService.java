@@ -23,7 +23,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO getUserWithTokensByEmail(String email) throws UsernameNotFoundException {
+    public UserDTO getUserWithToensByEmail(String email) throws UsernameNotFoundException {
         var user = userRepository.findUserWithTokens(email).orElseThrow(
                 () -> new UsernameNotFoundException("User does not exist")
         );
