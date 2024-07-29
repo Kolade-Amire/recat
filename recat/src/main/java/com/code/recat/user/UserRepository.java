@@ -12,7 +12,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByEmail(String email);
 
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.tokens WHERE u.email = :email")
+//    @Query("SELECT u FROM User u LEFT JOIN FETCH u.tokens WHERE u.email = :email")
+//    Optional<User> findUserWithTokens(@Param("email") String email);
+
+    @Query("SELECT t.user FROM Token t WHERE t.user.email = :email AND (t.expired = false OR t.revoked = false)")
     Optional<User> findUserWithTokens(@Param("email") String email);
 
 }

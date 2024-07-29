@@ -2,7 +2,6 @@ package com.code.recat.token;
 
 
 import com.code.recat.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,8 +28,6 @@ public class Token {
     public boolean expired;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @ToString.Exclude
-    @JsonIgnore
+    @JoinColumn(name = "user_id", nullable = false)
     public User user;
 }

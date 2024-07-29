@@ -1,7 +1,7 @@
 package com.code.recat.user;
 
 import com.code.recat.dto.UserDTO;
-import com.code.recat.dto.UserMapper;
+//import com.code.recat.dto.UserMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,12 +23,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO getUserWithToensByEmail(String email) throws UsernameNotFoundException {
-        var user = userRepository.findUserWithTokens(email).orElseThrow(
+    public User getUserWithTokensByEmail(String email) throws UsernameNotFoundException {
+        return userRepository.findUserWithTokens(email).orElseThrow(
                 () -> new UsernameNotFoundException("User does not exist")
         );
-        user.getTokens().size();
-        return UserMapper.mapUserToUserDto(user);
     }
 
     public User saveUser(User user){

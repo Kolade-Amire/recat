@@ -48,13 +48,9 @@ public class User implements UserDetails {
         private boolean isActive;
         private boolean isLocked;
 
-
-
-        @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-        @Builder.Default
-        @ToString.Exclude
-        @JsonIgnore
-        private List<Token> tokens = new ArrayList<>();
+//        @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+//        @Builder.Default
+//        private List<Token> tokens = new ArrayList<>();
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
