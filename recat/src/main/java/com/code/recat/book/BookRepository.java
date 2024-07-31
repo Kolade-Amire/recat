@@ -12,7 +12,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Page<Book> findAllByOrderByTitle(Pageable pageable);
 
-    @Query("SELECT b FROM Book b JOIN Author a ON b.author.authorId = a.authorId WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :searchQuery, '%')) OR LOWER(a.name) LIKE LOWER(CONCAT('%', :searchQuery, '%'))")
+    @Query("SELECT b FROM Book b JOIN FETCH Author a ON b.author.authorId = a.authorId WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :searchQuery, '%')) OR LOWER(a.name) LIKE LOWER(CONCAT('%', :searchQuery, '%'))")
     Page<Book> searchBooksByTitleOrAuthorName(@Param("searchQuery") String searchQuery, Pageable pageable);
 
 }

@@ -26,14 +26,14 @@ public class Book{
         private Long bookId;
         private String title;
 
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne
         @JoinColumn(name = "author_id", nullable = false)
         private Author author;
 
         private String blurb;
         private Integer publicationYear;
 
-        @ManyToMany(fetch = FetchType.LAZY)
+        @ManyToMany
         @Builder.Default
         @JoinTable(
                 name = "book_genre",

@@ -1,5 +1,7 @@
 package com.code.recat.user;
 
+import com.code.recat.dto.UserDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,12 +12,21 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
+    @Transactional
     Optional<User> findByEmail(String email);
 
-//    @Query("SELECT u FROM User u LEFT JOIN FETCH u.tokens WHERE u.email = :email")
-//    Optional<User> findUserWithTokens(@Param("email") String email);
+//    @Query("SELECT u FROM User u JOIN FETCH u.tokens WHERE u.email = :email")
+//    @Transactional
+//    Optional<UserDTO> findUserAndTokensByEmail(@Param("email") String email);
 
-    @Query("SELECT t.user FROM Token t WHERE t.user.email = :email AND (t.expired = false OR t.revoked = false)")
-    Optional<User> findUserWithTokens(@Param("email") String email);
+    @Query("SELECT DISTINCT u FROM User u " +
+            "LEFT JOIN FETCH u.tokens t " +
+            "LEFT JOIN FETCH u.favoriteBooks fb " +
+            "WHERE u.email = :email")
+    @Transactional
+    Optional<User> findUserAndTokensByEmail(@Param("email") String email);
+
+
+
 
 }

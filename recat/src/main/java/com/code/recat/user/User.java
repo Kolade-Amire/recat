@@ -4,12 +4,18 @@ import com.code.recat.book.Book;
 import com.code.recat.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Builder
@@ -38,26 +44,40 @@ public class User implements UserDetails {
         private LocalDateTime dateJoined;
 
         @Builder.Default
-        @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+        @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
         @JoinTable(
                 name = "user_favorite_books",
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "book_id")
         )
+        @JsonIgnore
         private Set<Book> favoriteBooks = new HashSet<>();
         private boolean isActive;
         private boolean isLocked;
 
-//        @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-//        @Builder.Default
-//        private List<Token> tokens = new ArrayList<>();
+        @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+        @JsonIgnore
+        private List<Token> tokens;
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
                 return (role.getAuthorities());
         }
 
-
+        @Override
+        public String toString(){
+                return "User{" +
+                        "userId=" + userId +
+                        ", name='" + name + '\'' +
+                        ", username='" + username + '\'' +
+                        ", email='" + email + '\'' +
+                        ", gender='" + gender + '\'' +
+                        ", role=" + role +
+                        ", dateJoined=" + dateJoined +
+                        ", isActive=" + isActive +
+                        ", isLocked=" + isLocked +
+                        '}';
+        }
         @Override
         public String getUsername() {
                 return email;
