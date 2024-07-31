@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
-    public UserController(UserService userService){this.userService = userService;}
+    public UserController(UserServiceImpl userServiceImpl){this.userServiceImpl = userServiceImpl;}
 }

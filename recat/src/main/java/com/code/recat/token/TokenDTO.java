@@ -1,4 +1,4 @@
-package com.code.recat.dto;
+package com.code.recat.token;
 
 import com.code.recat.token.TokenType;
 import lombok.AllArgsConstructor;

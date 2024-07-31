@@ -68,7 +68,7 @@ public class AuthorServiceImpl implements AuthorService{
     public Set<Book> addBookToAuthorProfile(Long authorId, Long bookId) {
         var author = getAuthor(authorId);
         var existingAuthorBooks = author.getBooks();
-        var book = bookService.findBookById(bookId);
+        var book = bookService.findById(bookId);
         existingAuthorBooks.add(book);
 
         return existingAuthorBooks;

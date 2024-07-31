@@ -26,7 +26,6 @@ public class Author {
     private LocalDate dateOfBirth;
     private String gender;
 
-    @Builder.Default
     @OneToMany(mappedBy = "author")
-    private Set<Book> books = new HashSet<>();
+    private Set<Book> books;
 }

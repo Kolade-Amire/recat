@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -34,19 +33,17 @@ public class Book{
         private Integer publicationYear;
 
         @ManyToMany
-        @Builder.Default
         @JoinTable(
                 name = "book_genre",
                 joinColumns = @JoinColumn(name = "book_id"),
                 inverseJoinColumns = @JoinColumn(name = "genre_id")
         )
-        private Set<Genre> genres = new HashSet<>();
+        private Set<Genre> genres;
 
         private String isbn;
         private String coverImageUrl;
 
-        @Builder.Default
         @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-        private Set<Comment> comments = new HashSet<>();
+        private Set<Comment> comments;
 }
 

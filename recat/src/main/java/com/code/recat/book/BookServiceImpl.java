@@ -19,9 +19,10 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public Page<Book> findAllBooks(int pageNumber, int pageSize) {
+    public Page<BookDto> findAllBooks(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return bookRepository.findAllByOrderByTitle(pageable);
+        var book = bookRepository.findAllByOrderByTitle(pageable);
+        return BookDtoMapper.mapBookPageToDto(book);
     }
 
     @Override
@@ -42,23 +43,27 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<Book> findMatchingBooksByTitleOrAuthorName(String searchQuery, int pageNumber, int pageSize) {
+    public Page<BookDto> findMatchingBooksByTitleOrAuthorName(String searchQuery, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return bookRepository.searchBooksByTitleOrAuthorName(searchQuery, pageable);
+        var books = bookRepository.searchBooksByTitleOrAuthorName(searchQuery, pageable);
+        return BookDtoMapper.mapBookPageToDto(books);
     }
 
     @Override
     @Transactional
     public void deleteBook(Long bookId) {
-        var book = findBookById(bookId);
+        var book = findById(bookId);
         book.getGenres().clear();
+        book.getComments().clear();
         bookRepository.delete(book);
     }
 
     @Override
+    @Transactional
     public Book updateBook(Long bookId, BookRequest bookRequest) {
 
-        Book existingBook = findBookById(bookId);
+        var existingBook = findById(bookId);
+
         if (bookRequest.getTitle() != null){ existingBook.setTitle(bookRequest.getTitle());}
         if (bookRequest.getBlurb() != null){ existingBook.setBlurb(bookRequest.getBlurb());}
         if (bookRequest.getPublication_year() != null){ existingBook.setPublicationYear(bookRequest.getPublication_year());}
@@ -69,8 +74,16 @@ public class BookServiceImpl implements BookService {
         return bookRepository.save(existingBook);
     }
 
-    @Override
-    public Book findBookById(Long bookId) {
+    @Override //this method returns a book DTO (for use in the view layer)
+    public BookDto findBookById(Long bookId) {
+        var book = findById(bookId);
+        return BookDtoMapper.mapBookToDto(book);
+    }
+
+    @Override //this method is for internal use only (NOT exposed to the view layer)
+    public Book findById(Long bookId){
         return bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
     }
+
+
 }

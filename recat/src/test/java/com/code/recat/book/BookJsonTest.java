@@ -1,6 +1,7 @@
 package com.code.recat.book;
 
 
+import com.code.recat.author.Author;
 import com.code.recat.genre.Genre;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,21 +39,23 @@ public class BookJsonTest {
     void setUp() {
         books = Arrays.array(
                 Book.builder()
-                        .book_id(1)
-                        .title("Catcher in the Rye").author_id(61)
+                        .bookId(1L)
+                        .title("Catcher in the Rye")
+                        .author(new Author())
                         .blurb("Jonas discovers the truth about his dystopian society and seeks change.")
-                        .publication_year(2004)
-                        .genres(Set.of(new Genre(14, "Dystopian")))
+                        .publicationYear(2004)
+                        .genres(Set.of(new Genre(14L, "Dystopian")))
                         .isbn("796013036-1")
-                        .cover_image_url("http://dummyimage.com/234x100.png/dddddd/000000")
+                        .coverImageUrl("https://dummyimage.com/234x100.png/dddddd/000000")
                         .build(),
-                Book.builder().book_id(2)
-                        .title("The Stranger").author_id(83)
+                Book.builder().bookId(2L)
+                        .title("The Stranger")
+                        .author(new Author())
                         .blurb("Katniss Everdeen fights for survival in a dystopian society.")
-                        .publication_year(1985)
-                        .genres(Set.of(new Genre(10, "Thriller")))
+                        .publicationYear(1985)
+                        .genres(Set.of(new Genre(10L, "Thriller")))
                         .isbn("184252720-7")
-                        .cover_image_url("http://dummyimage.com/236x100.png/cc0000/ffffff")
+                        .coverImageUrl("https://dummyimage.com/236x100.png/cc0000/ffffff")
                         .build()
         );
     }
@@ -81,7 +84,7 @@ public class BookJsonTest {
         assertThat(jsonNode).hasJsonPathStringValue("@.isbn");
         assertThat(jsonNode).extractingJsonPathStringValue("@.isbn").isEqualTo("796013036-1");
         assertThat(jsonNode).hasJsonPathStringValue("@.cover_image_url");
-        assertThat(jsonNode).extractingJsonPathStringValue("@.cover_image_url").isEqualTo("http://dummyimage.com/234x100.png/dddddd/000000");
+        assertThat(jsonNode).extractingJsonPathStringValue("@.cover_image_url").isEqualTo("https://dummyimage.com/234x100.png/dddddd/000000");
     }
 
     @Test
@@ -100,30 +103,31 @@ public class BookJsonTest {
                        }
                      ],
                      "isbn": "796013036-1",
-                     "cover_image_url": "http://dummyimage.com/234x100.png/dddddd/000000"
+                     "cover_image_url": "https://dummyimage.com/234x100.png/dddddd/000000"
                    }
                 """;
 
         Book newBook = Book.builder()
-                .book_id(1)
-                .title("Catcher in the Rye").author_id(61)
+                .bookId(1L)
+                .title("Catcher in the Rye")
+                .author(new Author())
                 .blurb("Jonas discovers the truth about his dystopian society and seeks change.")
-                .publication_year(2004)
-                .genres(Set.of(new Genre(14, "Dystopian")))
+                .publicationYear(2004)
+                .genres(Set.of(new Genre(14L, "Dystopian")))
                 .isbn("796013036-1")
-                .cover_image_url("http://dummyimage.com/234x100.png/dddddd/000000")
+                .coverImageUrl("https://dummyimage.com/234x100.png/dddddd/000000")
                 .build();
 
         assertThat(bookJson.parse(expected))
                 .isEqualTo(newBook);
-        assertThat(bookJson.parseObject(expected).getBook_id()).isEqualTo(1);
+        assertThat(bookJson.parseObject(expected).getBookId()).isEqualTo(1);
         assertThat(bookJson.parseObject(expected).getTitle()).isEqualTo(newBook.getTitle());
-        assertThat(bookJson.parseObject(expected).getAuthor_id()).isEqualTo(newBook.getAuthor_id());
+        assertThat(bookJson.parseObject(expected).getAuthor()).isEqualTo(newBook.getAuthor());
         assertThat(bookJson.parseObject(expected).getBlurb()).isEqualTo(newBook.getBlurb());
-        assertThat(bookJson.parseObject(expected).getPublication_year()).isEqualTo(newBook.getPublication_year());
+        assertThat(bookJson.parseObject(expected).getPublicationYear()).isEqualTo(newBook.getPublicationYear());
         assertThat(bookJson.parseObject(expected).getGenres()).isEqualTo(newBook.getGenres());
         assertThat(bookJson.parseObject(expected).getIsbn()).isEqualTo(newBook.getIsbn());
-        assertThat(bookJson.parseObject(expected).getCover_image_url()).isEqualTo(newBook.getCover_image_url());
+        assertThat(bookJson.parseObject(expected).getCoverImageUrl()).isEqualTo(newBook.getCoverImageUrl());
     }
 
     @Test
@@ -148,7 +152,7 @@ public class BookJsonTest {
                         }
                       ],
                       "isbn": "796013036-1",
-                      "cover_image_url": "http://dummyimage.com/234x100.png/dddddd/000000"
+                      "cover_image_url": "https://dummyimage.com/234x100.png/dddddd/000000"
                     },
                     {
                       "book_id": 2,
@@ -163,7 +167,7 @@ public class BookJsonTest {
                         }
                       ],
                       "isbn": "184252720-7",
-                      "cover_image_url": "http://dummyimage.com/236x100.png/cc0000/ffffff"
+                      "cover_image_url": "https://dummyimage.com/236x100.png/cc0000/ffffff"
                     }
                   ]
                 """;

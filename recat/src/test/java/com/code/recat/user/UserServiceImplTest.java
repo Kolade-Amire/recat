@@ -11,12 +11,12 @@ import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class UserServiceTest {
+public class UserServiceImplTest {
 
     private List<UserTestDto> users;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     @MockBean
     private UserRepository userRepository;
 

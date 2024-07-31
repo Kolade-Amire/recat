@@ -1,7 +1,7 @@
 package com.code.recat.config;
 
 import com.code.recat.audit.ApplicationAuditAware;
-import com.code.recat.user.UserService;
+import com.code.recat.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,12 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Bean
     @Transactional
     public UserDetailsService userDetailsService(){
-        return userService::getUserWithTokensByEmail;
+        return userServiceImpl::getUserWithTokensByEmail;
     }
 
     @Bean

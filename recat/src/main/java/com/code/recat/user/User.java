@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,7 +42,6 @@ public class User implements UserDetails {
 
         private LocalDateTime dateJoined;
 
-        @Builder.Default
         @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
         @JoinTable(
                 name = "user_favorite_books",
@@ -51,7 +49,7 @@ public class User implements UserDetails {
                 inverseJoinColumns = @JoinColumn(name = "book_id")
         )
         @JsonIgnore
-        private Set<Book> favoriteBooks = new HashSet<>();
+        private Set<Book> favoriteBooks;
         private boolean isActive;
         private boolean isLocked;
 

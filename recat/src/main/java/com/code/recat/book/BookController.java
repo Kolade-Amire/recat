@@ -24,8 +24,8 @@ public class BookController {
     }
 
     @GetMapping
-    ResponseEntity<List<Book>> getAllBooks(@RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
-        Page<Book> eventPage = bookService.findAllBooks(pageNum, pageSize);
+    ResponseEntity<List<BookDto>> getAllBooks(@RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+        Page<BookDto> eventPage = bookService.findAllBooks(pageNum, pageSize);
         return ResponseEntity.ok(eventPage.getContent());
     }
 
@@ -46,8 +46,8 @@ public class BookController {
     }
 
     @GetMapping("/{bookId}")
-    ResponseEntity<Book> findBookById(@PathVariable Long bookId) {
-        Book book = bookService.findBookById(bookId);
+    ResponseEntity<BookDto> findBookById(@PathVariable Long bookId) {
+        BookDto book = bookService.findBookById(bookId);
         return ResponseEntity.ok(book);
     }
 

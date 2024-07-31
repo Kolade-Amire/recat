@@ -10,8 +10,9 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.JsonContent;
 import org.springframework.core.io.Resource;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @JsonTest
 public class UserJsonTest {
@@ -33,11 +34,11 @@ public class UserJsonTest {
     @BeforeEach
     void setUp() {
         users = Arrays.array(
-                UserTestDto.builder().userId(1).name("Nate Giabucci").username("ngiabucci0")
+                UserTestDto.builder().userId(1L).name("Nate Giabucci").username("ngiabucci0")
                         .email("ngiabucci0@yelp.com").gender("female").password("uP0~!$hpmIQ#~8")
                         .role(Role.USER)
                         .build(),
-                UserTestDto.builder().userId(2).name("Rodolphe Prover").username("rprover1")
+                UserTestDto.builder().userId(2L).name("Rodolphe Prover").username("rprover1")
                         .email("rprover1@artisteer.com").gender("male").password("password(")
                         .role(Role.ADMIN)
                         .build()
@@ -83,7 +84,7 @@ public class UserJsonTest {
                 """;
 
         UserTestDto newUser = new UserTestDto(
-                1,
+                1L,
                 "Nate Giabucci",
                 "ngiabucci0",
                 "ngiabucci0@yelp.com",

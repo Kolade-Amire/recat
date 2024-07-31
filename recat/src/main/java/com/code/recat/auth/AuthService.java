@@ -5,7 +5,7 @@ import com.code.recat.token.Token;
 import com.code.recat.token.TokenService;
 import com.code.recat.user.Role;
 import com.code.recat.user.User;
-import com.code.recat.user.UserService;
+import com.code.recat.user.UserServiceImpl;
 import com.code.recat.util.HttpResponse;
 import com.code.recat.util.SecurityConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +29,7 @@ import java.util.HashSet;
 @Transactional
 public class AuthService {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final JwtService jwtService;
@@ -59,7 +59,7 @@ public class AuthService {
                 "User registered successfully."
         );
 
-        var savedUser = userService.saveUser(user);
+        var savedUser = userServiceImpl.saveUser(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
@@ -76,7 +76,7 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        var user = userService.getUserWithTokensByEmail(request.getEmail());
+        var user = userServiceImpl.getUserWithTokensByEmail(request.getEmail());
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
 
@@ -130,7 +130,7 @@ public class AuthService {
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
         if (userEmail != null) {
-            var user = userService.getUserWithTokensByEmail(userEmail);
+            var user = userServiceImpl.getUserWithTokensByEmail(userEmail);
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
