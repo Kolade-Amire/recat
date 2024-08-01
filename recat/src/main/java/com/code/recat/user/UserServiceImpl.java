@@ -1,11 +1,16 @@
 package com.code.recat.user;
 
+import com.code.recat.book.Book;
+import com.code.recat.book.BookDto;
+import com.code.recat.book.BookDtoMapper;
+import com.code.recat.book.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 
 @Service
@@ -14,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final BookService bookService;
 
 
     @Transactional
@@ -39,6 +45,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO getUserProfile(Long id) {
+        var user = getUserById(id);
+        return UserMapper.mapUserToDto(user);
+    }
+
+    @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User does not exist")
@@ -47,19 +59,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateName(String email, UserRequest userRequest) {
+    public User updateName(Long id, UserRequest userRequest) {
         var fullName = userRequest.getFirstName() + " " + userRequest.getLastName();
-        var user = getUserByEmail(email);
+        var user = getUserById(id);
         user.setName(fullName);
         return saveUser(user);
     }
 
     @Override
     @Transactional
-    public void deleteUser(Long id) {
-        var existingUser = getUserById(id);
+    public void deleteUser(Long userId) {
+        var existingUser = getUserById(userId);
         existingUser.getTokens().clear();
         existingUser.getFavoriteBooks().clear();
         userRepository.delete(existingUser);
+    }
+
+    @Override
+    public Set<BookDto> getUserFavouriteBooks(Long userId) {
+        var currentUser = getUserById(userId);
+        var favBooks = currentUser.getFavoriteBooks();
+        return BookDtoMapper.mapBookSetToDto(favBooks);
+    }
+
+    @Override
+    @Transactional
+    public Set<BookDto> addBookAsFavourite(Long userId, BookDto book) {
+        var user = getUserById(userId);
+        var userFavBooks = user.getFavoriteBooks();
+        var newBook = bookService.findById(book.getBookId());
+        userFavBooks.add(newBook);
+        user.setFavoriteBooks(userFavBooks);
+        return getUserFavouriteBooks(userId);
     }
 }

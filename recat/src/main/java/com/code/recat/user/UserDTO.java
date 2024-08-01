@@ -1,9 +1,10 @@
 package com.code.recat.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 public class UserDTO{
     private Long userId;

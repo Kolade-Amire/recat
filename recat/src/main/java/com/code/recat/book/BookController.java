@@ -1,6 +1,7 @@
 package com.code.recat.book;
 
 
+import lombok.RequiredArgsConstructor;
 import  org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,14 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/v1/books")
 public class BookController {
 
-    private final BookServiceImpl bookService;
+    private final BookService bookService;
 
-    public BookController(BookServiceImpl bookService) {
-        this.bookService = bookService;
-    }
 
     @PostMapping
     ResponseEntity<Book> addNewBook(@RequestBody BookRequest bookRequest){

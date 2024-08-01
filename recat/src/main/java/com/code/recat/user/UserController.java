@@ -1,13 +1,41 @@
 package com.code.recat.user;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.code.recat.book.BookDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping
+import java.util.Set;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("api/v1/user")
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
-    public UserController(UserServiceImpl userServiceImpl){this.userServiceImpl = userServiceImpl;}
+    @GetMapping("/{userId}")
+    ResponseEntity<UserDTO> viewUserProfile(@PathVariable Long userId) {
+        var user = userService.getUserProfile(userId);
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/{userId}")
+    ResponseEntity<Void> deleteUser(@PathVariable Long userId){
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{userId}/favourites")
+    ResponseEntity<Set<BookDto>> getFavouriteBooks(@PathVariable Long userId){
+        var favBooks = userService.getUserFavouriteBooks(userId);
+        return ResponseEntity.ok(favBooks);
+    }
+
+    @PutMapping
+    ResponseEntity<Set<BookDto>> addBookToFavourites(Long userId, BookDto book){
+        var favBooks = userService.addBookAsFavourite(userId, book);
+        return ResponseEntity.ok(favBooks);
+    }
+
 }
