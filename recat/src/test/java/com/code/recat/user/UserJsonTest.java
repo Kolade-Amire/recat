@@ -3,18 +3,19 @@ package com.code.recat.user;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.JsonContent;
 import org.springframework.core.io.Resource;
-
+import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JsonTest
+@RunWith(SpringRunner.class)
 public class UserJsonTest {
 
     @Autowired
@@ -62,8 +63,8 @@ public class UserJsonTest {
         JsonContent<UserTestDto> jsonNode = userJson.write(user);
         
         assertThat(jsonNode).isStrictlyEqualToJson(singleFile);
-        assertThat(jsonNode).hasJsonPathNumberValue("@.user_id");
-        assertThat(jsonNode).extractingJsonPathNumberValue("@.user_id").isEqualTo(1);
+        assertThat(jsonNode).hasJsonPathNumberValue("@.userId");
+        assertThat(jsonNode).extractingJsonPathNumberValue("@.userId").isEqualTo(1);
         assertThat(jsonNode).hasJsonPathStringValue("@.name");
         assertThat(jsonNode).extractingJsonPathStringValue("@.name").isEqualTo("Nate Giabucci");
         assertThat(jsonNode).hasJsonPathStringValue("@.username");
@@ -82,7 +83,7 @@ public class UserJsonTest {
     void userDeserializationTest() throws IOException {
         String expected = """
                 {
-                  "user_id": 1,
+                  "userId": 1,
                   "name": "Nate Giabucci",
                   "username": "ngiabucci0",
                   "email": "ngiabucci0@yelp.com",
@@ -123,7 +124,7 @@ public class UserJsonTest {
         String expected = """
                 [
                    {
-                     "user_id": 1,
+                     "userId": 1,
                      "name": "Nate Giabucci",
                      "username": "ngiabucci0",
                      "email": "ngiabucci0@yelp.com",
@@ -132,7 +133,7 @@ public class UserJsonTest {
                      "role": "USER"
                    },
                    {
-                     "user_id": 2,
+                     "userId": 2,
                      "name": "Rodolphe Prover",
                      "username": "rprover1",
                      "email": "rprover1@artisteer.com",
@@ -145,6 +146,4 @@ public class UserJsonTest {
 
         assertThat(userJsonList.parse(expected)).isEqualTo(users);
     }
-
-
 }

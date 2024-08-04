@@ -1,6 +1,6 @@
 [
   {
-    "user_id": 1,
+    "userId": 1,
     "name": "Nate Giabucci",
     "username": "ngiabucci0",
     "email": "ngiabucci0@yelp.com",
@@ -9,7 +9,7 @@
     "role": "USER"
   },
   {
-    "user_id": 2,
+    "userId": 2,
     "name": "Rodolphe Prover",
     "username": "rprover1",
     "email": "rprover1@artisteer.com",

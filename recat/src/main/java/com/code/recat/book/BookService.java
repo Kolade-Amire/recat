@@ -18,5 +18,5 @@ public interface BookService {
 
     BookDto findBookById(Long bookId);  //This method returns a book DTO
 
-    Book findById(Long id); //his return the original book entity
+    Book findById(Long id); //this returns the original book entity
 }

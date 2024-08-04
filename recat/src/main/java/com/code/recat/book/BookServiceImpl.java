@@ -33,10 +33,10 @@ public class BookServiceImpl implements BookService {
                 .title(bookRequest.getTitle())
                 .author(bookRequest.getAuthor())
                 .blurb(bookRequest.getBlurb())
-                .publicationYear(bookRequest.getPublication_year())
+                .publicationYear(bookRequest.getPublicationYear())
                 .genres(bookRequest.getGenres())
                 .isbn(bookRequest.getIsbn())
-                .coverImageUrl(bookRequest.getCover_image_url())
+                .coverImageUrl(bookRequest.getCoverImageUrl())
                 .build();
 
         return bookRepository.save(newBook);
@@ -66,10 +66,10 @@ public class BookServiceImpl implements BookService {
 
         if (bookRequest.getTitle() != null){ existingBook.setTitle(bookRequest.getTitle());}
         if (bookRequest.getBlurb() != null){ existingBook.setBlurb(bookRequest.getBlurb());}
-        if (bookRequest.getPublication_year() != null){ existingBook.setPublicationYear(bookRequest.getPublication_year());}
+        if (bookRequest.getPublicationYear() != null){ existingBook.setPublicationYear(bookRequest.getPublicationYear());}
         if (bookRequest.getGenres() != null){ existingBook.setGenres(bookRequest.getGenres());}
         if (bookRequest.getIsbn() != null){ existingBook.setIsbn(bookRequest.getIsbn());}
-        if (bookRequest.getCover_image_url() != null){ existingBook.setCoverImageUrl(bookRequest.getCover_image_url());}
+        if (bookRequest.getCoverImageUrl() != null){ existingBook.setCoverImageUrl(bookRequest.getCoverImageUrl());}
 
         return bookRepository.save(existingBook);
     }

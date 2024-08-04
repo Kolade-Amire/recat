@@ -2,11 +2,9 @@ package com.code.recat.book;
 
 
 import lombok.RequiredArgsConstructor;
-import  org.springframework.data.domain.Page;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,15 +15,21 @@ public class BookController {
 
 
     @PostMapping
-    ResponseEntity<Book> addNewBook(@RequestBody BookRequest bookRequest){
+    ResponseEntity<Book> createNewBook(@RequestBody BookRequest bookRequest){
         var createdBook = bookService.addNewBook(bookRequest);
         return ResponseEntity.ok(createdBook);
     }
 
     @GetMapping
-    ResponseEntity<List<BookDto>> getAllBooks(@RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
-        Page<BookDto> eventPage = bookService.findAllBooks(pageNum, pageSize);
-        return ResponseEntity.ok(eventPage.getContent());
+    ResponseEntity<Page<BookDto>> getAllBooks(@RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+        Page<BookDto> page = bookService.findAllBooks(pageNum, pageSize);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping
+    ResponseEntity<Page<BookDto>> searchBooksByTitleOrAuthorName(@RequestParam String searchQuery, @RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+        Page<BookDto> page = bookService.findMatchingBooksByTitleOrAuthorName(searchQuery, pageNum, pageSize);
+        return ResponseEntity.ok(page);
     }
 
     @PutMapping("/{bookId}")
@@ -49,6 +53,8 @@ public class BookController {
         BookDto book = bookService.findBookById(bookId);
         return ResponseEntity.ok(book);
     }
+
+    //TODO: get books by their genre
 
 
 }

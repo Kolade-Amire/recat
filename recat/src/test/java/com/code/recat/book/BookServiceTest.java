@@ -1,7 +1,10 @@
 package com.code.recat.book;
 
 import com.code.recat.author.Author;
+import com.code.recat.author.AuthorRequest;
+import com.code.recat.author.AuthorService;
 import com.code.recat.genre.Genre;
+import com.code.recat.genre.GenreService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -33,32 +37,42 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BookServiceTest {
 
     @Autowired
-    private BookServiceImpl bookService;
+    private BookService bookService;
     @Autowired
     private BookRepository bookRepository;
     @Autowired
+    private AuthorService authorService;
+    @Autowired
+    private GenreService genreService;
+    @Autowired
     DataSource dataSource;
 
-    private Book book1;
-    private Book book2;
+    private BookRequest book1;
+    private BookRequest book2;
     private Author author1;
+    private Genre testGenre;
 
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        author1 = new Author(10L, "Author One", LocalDate.now(), "Female", new HashSet<>());
-        var author2 = new Author(20L, "Author Two", LocalDate.now(), "Male", new HashSet<>());
 
-        book1 = new Book(1L, "Book One Title", author1, "Blurb for first book.", 2000, new HashSet<>(), "25362348-72", "https://coverimage1.com", new HashSet<>());
-        book2 = new Book(2L, "Another Book Title", author2, "Blurb for second book.", 2010, new HashSet<>() , "25485210-89", "https://coverimage2.com", new HashSet<>());
+        testGenre = genreService.addGenre("Fantasy");
+
+        author1 = authorService.addNewAuthor(new AuthorRequest("Author One", LocalDate.of(2024, 8, 2), "female"));
+
+
+        var author2 = authorService.addNewAuthor(new AuthorRequest("Author Two", LocalDate.of(2024, 8, 3), "male"));
+
+        book1 = new BookRequest("Book One Title", author1, "Blurb for first book.", 2000, Set.of(testGenre), "25362348-72", "https://coverimage1.com");
+        book2 = new BookRequest("Another Book Title", author2, "Blurb for second book.", 2010, Set.of(testGenre) , "25485210-89", "https://coverimage2.com");
 
     }
 
     @Test
     void shouldReturnAllBooksSortedInOrderOfTitle() {
-        bookRepository.save(book1);
-        bookRepository.save(book2);
+        bookService.addNewBook(book1);
+        bookService.addNewBook(book2);
 
         var page = bookService.findAllBooks(0, 10);
 
@@ -85,15 +99,11 @@ public class BookServiceTest {
 
     @Test
     @DirtiesContext
-    void shouldReturnMatchingBooksWhenSearchedByTitle() throws SQLException {
+    void shouldReturnMatchingBooksWhenSearchedByTitle() {
 
-        bookRepository.save(book1);
-        bookRepository.save(book2);
+        bookService.addNewBook(book1);
+        bookService.addNewBook(book2);
 
-        try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.execute("INSERT INTO AUTHORS (author_id, name, date_of_birth, gender) VALUES (10,'Test Author', '1970-01-01', 'Male');");
-        }
 
         var searchQuery = "Book One Title";
         var page = bookService.findMatchingBooksByTitleOrAuthorName(searchQuery, 0, 10);
@@ -101,31 +111,32 @@ public class BookServiceTest {
         System.out.println("Page = " + page.getContent());
 
         assertNotNull(page);
-//        assertThat(page).containsExactly(book1);
         assertThat(page.getContent().get(0).getTitle()).isEqualTo("Book One Title");
     }
 
     @Test
     @DirtiesContext
     void shouldUpdateExistingBookDetailsWithNewDetails() throws SQLException{
-        bookRepository.save(book1);
+        var existingBook = bookService.addNewBook(book1);
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
-            statement.execute("INSERT INTO GENRES (genre_id, name) VALUES (2,'Non-Fiction');");
+            statement.execute("INSERT INTO \"genres\" (\"name\") VALUES ('Non-Fiction');");
         }
 
+        var genre = genreService.getGenreByName("Non-Fiction");
 
 
-        var newBookRequest = new BookRequest("Modified Title", book1.getAuthor(),"Modified Blurb", book1.getPublicationYear(), Set.of(new Genre(2L, "Non-Fiction")), "25362348-72", "https://updatedCoverUrl.com");
 
-        var updatedBook = bookService.updateBook(book1.getBookId(), newBookRequest);
+        var newBookRequest = new BookRequest("Modified Title", book1.getAuthor(),"Modified Blurb", book1.getPublicationYear(), Set.of(genre), "25362348-72", "https://updatedCoverUrl.com");
+
+        var updatedBook = bookService.updateBook(existingBook.getBookId(), newBookRequest);
 
         assertNotNull(updatedBook);
         assertEquals(newBookRequest.getTitle(), updatedBook.getTitle());
         assertEquals(newBookRequest.getBlurb(), updatedBook.getBlurb());
         assertEquals(newBookRequest.getGenres(), updatedBook.getGenres());
-        assertEquals(newBookRequest.getCover_image_url(), updatedBook.getCoverImageUrl());
+        assertEquals(newBookRequest.getCoverImageUrl(), updatedBook.getCoverImageUrl());
 
 
     }
@@ -133,8 +144,8 @@ public class BookServiceTest {
     @Test
     @DirtiesContext
     void shouldDeleteExistingBookUsingBookId(){
-        bookRepository.save(book1);
-        var bookId = book1.getBookId();
+        var book = bookService.addNewBook(book1);
+        var bookId = book.getBookId();
 
         bookService.deleteBook(bookId);
         assertThrows(EntityNotFoundException.class, () -> bookService.deleteBook(bookId));

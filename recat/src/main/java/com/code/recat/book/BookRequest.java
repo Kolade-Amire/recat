@@ -16,8 +16,8 @@ public class BookRequest {
     private String title;
     private Author author;
     private String blurb;
-    private Integer publication_year;
+    private Integer publicationYear;
     private Set<Genre> genres;
     private String isbn;
-    private String cover_image_url;
+    private String coverImageUrl;
 }

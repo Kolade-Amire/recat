@@ -1,0 +1,2 @@
+insert into "authors" ("date_of_birth", "gender", "name") values ('2024-08-02','female', 'Author One');
+insert into "authors" ("date_of_birth", "gender", "name") values ('2024-08-03', 'male', 'Author Two');

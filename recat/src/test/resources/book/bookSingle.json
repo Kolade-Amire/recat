@@ -1,15 +1,22 @@
 {
-  "book_id": 1,
+  "bookId": 1,
   "title": "Catcher in the Rye",
-  "author_id": 61,
+  "author": {
+    "authorId": 61,
+    "name": "Harper Lee",
+    "dateOfBirth": "1950-07-03",
+    "gender": "Female",
+    "books": []
+  },
   "blurb": "Jonas discovers the truth about his dystopian society and seeks change.",
-  "publication_year": 2004,
+  "publicationYear": 2004,
   "genres": [
     {
-      "genre_id": 14,
+      "genreId": 14,
       "name": "Dystopian"
     }
   ],
   "isbn": "796013036-1",
-  "cover_image_url": "http://dummyimage.com/234x100.png/dddddd/000000"
+  "coverImageUrl": "https://dummyimage.com/234x100.png/dddddd/000000",
+  "comments": []
 }

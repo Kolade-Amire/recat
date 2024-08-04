@@ -1,7 +1,7 @@
 package com.code.recat.book.comment;
 
 import com.code.recat.book.BookServiceImpl;
-import com.code.recat.user.UserServiceImpl;
+import com.code.recat.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final BookServiceImpl bookService;
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @Override
     public Page<Comment> getAllComments(int pageNum, int pageSize, Long bookId) {
@@ -38,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public Comment addNewComment(String commentAuthorEmail, Long bookId, String content) {
-        var user = userServiceImpl.getUserByEmail(commentAuthorEmail);
+        var user = userService.getUserByEmail(commentAuthorEmail);
         var book = bookService.findById(bookId);
         var newComment = Comment.builder()
                 .book(book)
@@ -53,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment addNewReply(String commentAuthorEmail, Long commentId, String content) {
 
-        var user = userServiceImpl.getUserByEmail(commentAuthorEmail);
+        var user = userService.getUserByEmail(commentAuthorEmail);
 
         var comment = getComment(commentId);
 
