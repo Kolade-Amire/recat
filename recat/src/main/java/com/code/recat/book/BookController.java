@@ -1,23 +1,31 @@
 package com.code.recat.book;
 
 
+import com.code.recat.util.AppConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/books")
+@RequestMapping(AppConstants.BASE_URL + "/books")
 public class BookController {
 
     private final BookService bookService;
 
 
     @PostMapping
-    ResponseEntity<Book> createNewBook(@RequestBody BookRequest bookRequest){
+    ResponseEntity<Book> createNewBook(@RequestBody BookRequest bookRequest, UriComponentsBuilder ucb) {
         var createdBook = bookService.addNewBook(bookRequest);
-        return ResponseEntity.ok(createdBook);
+        URI newBookLocation = ucb
+                .path("/books/{id}")
+                .buildAndExpand(createdBook.getBookId())
+                .toUri();
+        return ResponseEntity.created(newBookLocation).body(createdBook);
     }
 
     @GetMapping
@@ -54,7 +62,7 @@ public class BookController {
         return ResponseEntity.ok(book);
     }
 
-    //TODO: get books by their genre
+    //TODO: get books by their genre tags
 
 
 }

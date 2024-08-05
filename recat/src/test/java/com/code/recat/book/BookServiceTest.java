@@ -8,17 +8,13 @@ import com.code.recat.genre.GenreService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,9 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
-@ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
 
     @Autowired
@@ -39,8 +33,7 @@ public class BookServiceTest {
     private AuthorService authorService;
     @Autowired
     private GenreService genreService;
-    @Autowired
-    DataSource dataSource;
+
 
     private BookRequest book1;
     private BookRequest book2;
