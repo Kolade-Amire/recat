@@ -26,7 +26,7 @@ public class BookController {
         return ResponseEntity.ok(page);
     }
 
-    @GetMapping
+    @GetMapping("/search")
     ResponseEntity<Page<BookDto>> searchBooksByTitleOrAuthorName(@RequestParam String searchQuery, @RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         Page<BookDto> page = bookService.findMatchingBooksByTitleOrAuthorName(searchQuery, pageNum, pageSize);
         return ResponseEntity.ok(page);

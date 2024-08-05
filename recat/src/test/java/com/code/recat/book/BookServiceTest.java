@@ -19,9 +19,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,8 +36,6 @@ public class BookServiceTest {
     @Autowired
     private BookService bookService;
     @Autowired
-    private BookRepository bookRepository;
-    @Autowired
     private AuthorService authorService;
     @Autowired
     private GenreService genreService;
@@ -50,14 +45,13 @@ public class BookServiceTest {
     private BookRequest book1;
     private BookRequest book2;
     private Author author1;
-    private Genre testGenre;
 
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        testGenre = genreService.addGenre("Fantasy");
+        Genre testGenre = genreService.addGenre("Fantasy");
 
         author1 = authorService.addNewAuthor(new AuthorRequest("Author One", LocalDate.of(2024, 8, 2), "female"));
 
@@ -108,7 +102,6 @@ public class BookServiceTest {
         var searchQuery = "Book One Title";
         var page = bookService.findMatchingBooksByTitleOrAuthorName(searchQuery, 0, 10);
 
-        System.out.println("Page = " + page.getContent());
 
         assertNotNull(page);
         assertThat(page.getContent().get(0).getTitle()).isEqualTo("Book One Title");
@@ -116,13 +109,10 @@ public class BookServiceTest {
 
     @Test
     @DirtiesContext
-    void shouldUpdateExistingBookDetailsWithNewDetails() throws SQLException{
+    void shouldUpdateExistingBookDetailsWithNewDetails(){
         var existingBook = bookService.addNewBook(book1);
 
-        try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.execute("INSERT INTO \"genres\" (\"name\") VALUES ('Non-Fiction');");
-        }
+        genreService.addGenre("Non-Fiction");
 
         var genre = genreService.getGenreByName("Non-Fiction");
 
@@ -149,7 +139,9 @@ public class BookServiceTest {
 
         bookService.deleteBook(bookId);
         assertThrows(EntityNotFoundException.class, () -> bookService.deleteBook(bookId));
-        assertThat(bookRepository.findById(bookId)).isNotPresent();
+        var exception = assertThrows(EntityNotFoundException.class ,() -> bookService.findBookById(bookId));
+
+        assertEquals("Book does not exist", exception.getMessage());
 
     }
 

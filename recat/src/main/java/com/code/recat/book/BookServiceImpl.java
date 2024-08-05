@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +69,7 @@ public class BookServiceImpl implements BookService {
         if (bookRequest.getTitle() != null){ existingBook.setTitle(bookRequest.getTitle());}
         if (bookRequest.getBlurb() != null){ existingBook.setBlurb(bookRequest.getBlurb());}
         if (bookRequest.getPublicationYear() != null){ existingBook.setPublicationYear(bookRequest.getPublicationYear());}
-        if (bookRequest.getGenres() != null){ existingBook.setGenres(bookRequest.getGenres());}
+        if (bookRequest.getGenres() != null){ existingBook.setGenres(new HashSet<>(bookRequest.getGenres()));}
         if (bookRequest.getIsbn() != null){ existingBook.setIsbn(bookRequest.getIsbn());}
         if (bookRequest.getCoverImageUrl() != null){ existingBook.setCoverImageUrl(bookRequest.getCoverImageUrl());}
 
