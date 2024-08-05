@@ -1,7 +1,9 @@
 package com.code.recat.book;
 
+import com.code.recat.author.Author;
 import org.springframework.data.domain.Page;
 
+import java.util.Set;
 
 
 public interface BookService {
@@ -19,4 +21,6 @@ public interface BookService {
     BookDto findBookById(Long bookId);  //This method returns a book DTO
 
     Book findById(Long id); //this returns the original book entity
+
+    Set<Book> addBookToAuthorProfile(Author author, Long bookId);
 }

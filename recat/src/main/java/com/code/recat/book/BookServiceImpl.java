@@ -1,6 +1,8 @@
 package com.code.recat.book;
 
 
+import com.code.recat.author.Author;
+import com.code.recat.author.AuthorService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Set;
 
 
 @Service
@@ -18,6 +21,8 @@ import java.util.HashSet;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final AuthorService authorService;
+
 
 
     @Override
@@ -30,6 +35,8 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book addNewBook(BookRequest bookRequest) {
+
+//        var author = authorService.getAuthorFromDto(bookRequest.getAuthor());
 
         var newBook = Book.builder()
                 .title(bookRequest.getTitle())
@@ -87,5 +94,18 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
     }
 
+    @Override
+    public Set<Book> addBookToAuthorProfile(Author author, Long bookId) {
+
+        var existingAuthorBooks = author.getBooks();
+
+        var newBook = findById(bookId);
+        existingAuthorBooks.add(newBook);
+
+        author.setBooks(existingAuthorBooks);
+        authorService.saveAuthor(author);
+
+        return existingAuthorBooks;
+    }
 
 }

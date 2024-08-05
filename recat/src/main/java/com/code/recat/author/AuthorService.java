@@ -17,5 +17,10 @@ public interface AuthorService {
 
     void deleteAuthor(Long authorId);
 
-    Set<Book> addBookToAuthorProfile(Long authorId, Long bookId);
+//    Set<Book> addBookToAuthorProfile(Long authorId, Long bookId);
+
+    Author getAuthorFromDto(AuthorDto authorDto);
+
+    //for internal use only
+    Author saveAuthor(Author author);
 }

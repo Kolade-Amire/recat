@@ -1,6 +1,7 @@
 package com.code.recat.book;
 
 import com.code.recat.author.Author;
+import com.code.recat.author.AuthorDto;
 import com.code.recat.genre.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

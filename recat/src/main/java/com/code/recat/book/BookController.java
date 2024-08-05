@@ -22,7 +22,7 @@ public class BookController {
     ResponseEntity<Book> createNewBook(@RequestBody BookRequest bookRequest, UriComponentsBuilder ucb) {
         var createdBook = bookService.addNewBook(bookRequest);
         URI newBookLocation = ucb
-                .path("/books/{id}")
+                .path(AppConstants.BASE_URL + "/books/{id}")
                 .buildAndExpand(createdBook.getBookId())
                 .toUri();
         return ResponseEntity.created(newBookLocation).body(createdBook);

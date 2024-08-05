@@ -1,6 +1,7 @@
 package com.code.recat.author;
 
 import com.code.recat.book.Book;
+import com.code.recat.book.BookService;
 import com.code.recat.book.BookServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -17,7 +18,6 @@ import java.util.Set;
 public class AuthorServiceImpl implements AuthorService{
 
     private final AuthorRepository authorRepository;
-    private final BookServiceImpl bookService;
 
     @Override
     public Page<Author> findAllAuthors(int pageNum, int pageSize) {
@@ -64,14 +64,24 @@ public class AuthorServiceImpl implements AuthorService{
         authorRepository.delete(author);
     }
 
-    @Override
-    public Set<Book> addBookToAuthorProfile(Long authorId, Long bookId) {
-        var author = getAuthor(authorId);
-        var existingAuthorBooks = author.getBooks();
-        var book = bookService.findById(bookId);
-        existingAuthorBooks.add(book);
+//    @Override
+//    public Set<Book> addBookToAuthorProfile(Long authorId, Long bookId) {
+//        var author = getAuthor(authorId);
+//        var existingAuthorBooks = author.getBooks();
+//        var book = bookService.findById(bookId);
+//        existingAuthorBooks.add(book);
+//
+//        return existingAuthorBooks;
+//    }
 
-        return existingAuthorBooks;
+    @Override
+    public Author getAuthorFromDto(AuthorDto authorDto) {
+        return getAuthor(authorDto.getAuthorId());
     }
 
+    @Override
+    public Author saveAuthor(Author author) {
+        return authorRepository.save(author);
+
+    }
 }

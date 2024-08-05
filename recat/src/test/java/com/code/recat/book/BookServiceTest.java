@@ -1,6 +1,7 @@
 package com.code.recat.book;
 
 import com.code.recat.author.Author;
+import com.code.recat.author.AuthorDto;
 import com.code.recat.author.AuthorRequest;
 import com.code.recat.author.AuthorService;
 import com.code.recat.genre.Genre;
@@ -52,7 +53,8 @@ public class BookServiceTest {
         var author2 = authorService.addNewAuthor(new AuthorRequest("Author Two", LocalDate.of(2024, 8, 3), "male"));
 
         book1 = new BookRequest("Book One Title", author1, "Blurb for first book.", 2000, Set.of(testGenre), "25362348-72", "https://coverimage1.com");
-        book2 = new BookRequest("Another Book Title", author2, "Blurb for second book.", 2010, Set.of(testGenre) , "25485210-89", "https://coverimage2.com");
+
+        book2 = new BookRequest("Another Book Title", author2, "Blurb for second book.", 2010, Set.of(testGenre), "25485210-89", "https://coverimage2.com");
 
     }
 

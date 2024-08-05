@@ -1,12 +1,14 @@
 package com.code.recat.book;
 
 import com.code.recat.author.Author;
+import com.code.recat.author.AuthorDto;
 import com.code.recat.author.AuthorRequest;
 import com.code.recat.author.AuthorService;
 import com.code.recat.genre.Genre;
 import com.code.recat.genre.GenreService;
 import com.code.recat.util.AppConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,7 @@ public class BookControllerTest {
         var author2 = authorService.addNewAuthor(new AuthorRequest("Author Two", LocalDate.of(2024, 8, 3), "male"));
 
         book1 = new BookRequest("Book One Title", author1, "Blurb for first book.", 2000, Set.of(testGenre), "25362348-72", "https://coverimage1.com");
+
         BookRequest book2 = new BookRequest("Another Book Title", author2, "Blurb for second book.", 2010, Set.of(testGenre), "25485210-89", "https://coverimage2.com");
 
     }
@@ -80,6 +83,8 @@ public class BookControllerTest {
     @DirtiesContext
     void shouldCreateAndSaveANewBook() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
 
         String location = this.mvc.perform(post(AppConstants.BASE_URL + "/books")
                         .with(csrf())
@@ -94,8 +99,8 @@ public class BookControllerTest {
 
         this.mvc.perform(get(location))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("A new Book"))
-                .andExpect(jsonPath("$.isbn").value("1234567-890"));
+                .andExpect(jsonPath("$.title").value("Book One Title"))
+                .andExpect(jsonPath("$.isbn").value("25362348-72"));
     }
 
 }
