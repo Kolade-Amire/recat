@@ -1,7 +1,6 @@
 package com.code.recat.book;
 
 import com.code.recat.author.Author;
-import com.code.recat.author.AuthorDto;
 import com.code.recat.author.AuthorRequest;
 import com.code.recat.author.AuthorService;
 import com.code.recat.genre.Genre;
@@ -37,9 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @WithMockUser(username = "stephamire@gmail.com", roles = "USER")
 public class BookControllerTest {
-
-    @Autowired
-    private BookController bookController;
 
     @Autowired
     private BookService bookService;
