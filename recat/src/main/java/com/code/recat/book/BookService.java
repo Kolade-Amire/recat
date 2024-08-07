@@ -14,7 +14,7 @@ public interface BookService {
 
     Page<BookViewDto> findMatchingBooksByTitleOrAuthorName(String searchQuery,int pageNumber, int pageSize);
 
-    Book updateBook(Long bookId, BookRequest bookRequest);
+    BookViewDto updateBook(Long bookId, BookRequest bookRequest);
 
     void deleteBook(Long bookId);
 

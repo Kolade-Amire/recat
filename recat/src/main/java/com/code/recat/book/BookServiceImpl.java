@@ -76,7 +76,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public Book updateBook(Long bookId, BookRequest bookRequest) {
+    public BookViewDto updateBook(Long bookId, BookRequest bookRequest) {
 
         var existingBook = findById(bookId);
 
@@ -99,7 +99,9 @@ public class BookServiceImpl implements BookService {
             existingBook.setCoverImageUrl(bookRequest.getCoverImageUrl());
         }
 
-        return bookRepository.save(existingBook);
+        var book = bookRepository.save(existingBook);
+
+        return BookDtoMapper.mapBookToDto(book);
     }
 
 

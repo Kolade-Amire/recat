@@ -19,15 +19,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -38,8 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(username = "stephamire@gmail.com", roles = "USER")
 public class BookControllerTest {
 
-    @Autowired
-    private BookController bookController;
     @Autowired
     private BookService bookService;
     @Autowired
@@ -56,7 +52,7 @@ public class BookControllerTest {
     void setUp() {
         Genre testGenre = genreService.addGenre("Fantasy");
 
-        Author author1 = authorService.addNewAuthor(new AuthorRequest("Author One", LocalDate.of(2024, 8, 2), "female"));
+        var author1 = authorService.addNewAuthor(new AuthorRequest("Author One", LocalDate.of(2024, 8, 2), "female"));
 
 
         var author2 = authorService.addNewAuthor(new AuthorRequest("Author Two", LocalDate.of(2024, 8, 3), "male"));
@@ -68,10 +64,11 @@ public class BookControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void shouldReturnASavedBookWhenRequestedById() throws Exception {
         bookService.addNewBook(book1);
 
-        var result = this.mvc.perform(get(AppConstants.BASE_URL + "/books/1"))
+         this.mvc.perform(get(AppConstants.BASE_URL + "/books/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("Book One Title"));
@@ -114,6 +111,58 @@ public class BookControllerTest {
                     .andExpect(jsonPath("$.totalElements").value(2))
                     .andExpect(jsonPath("$.content[0].title").value("Another Book Title"))
                     .andExpect(jsonPath("$.content[1].title").value("Book One Title"));
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldReturnBooksThatMatchTitleOrAuthorName() throws Exception {
+        bookService.addNewBook(book1);
+        bookService.addNewBook(book2);
+
+        this.mvc.perform(
+                get(AppConstants.BASE_URL + "/books/search?searchQuery=Author"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(2));
+
+        this.mvc.perform(
+                        get(AppConstants.BASE_URL + "/books/search?searchQuery=Another"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldUpdateBookThatExistsWithNewDetails() throws Exception {
+        bookService.addNewBook(book1);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        var bookUpdateRequest = BookRequest.builder()
+                .title("Updated Title")
+                .blurb("Updated Blurb")
+                .build();
+
+
+        this.mvc.perform(
+                put(AppConstants.BASE_URL + "/books/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(bookUpdateRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.title").value("Updated Title"))
+                .andExpect(jsonPath("$.blurb").value("Updated Blurb"));
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldDeleteExistingBook() throws Exception {
+        bookService.addNewBook(book1);
+
+        this.mvc.perform(delete(AppConstants.BASE_URL + "/books/1"))
+                .andExpect(status().isNoContent());
+
+        this.mvc.perform(get(AppConstants.BASE_URL + "/books/1"))
+                .andExpect(status().isNotFound());
     }
 
 }
