@@ -3,6 +3,7 @@ package com.code.recat.book;
 import com.code.recat.author.Author;
 import com.code.recat.book.comment.Comment;
 import com.code.recat.genre.Genre;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +33,7 @@ public class Book{
         private String blurb;
         private Integer publicationYear;
 
-        @ManyToMany
+        @ManyToMany(fetch = FetchType.LAZY)
         @JoinTable(
                 name = "book_genre",
                 joinColumns = @JoinColumn(name = "book_id"),
@@ -45,5 +46,19 @@ public class Book{
 
         @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
         private Set<Comment> comments;
+
+        @Override
+        public String toString(){
+                return "Book{" +
+                        "bookId=" + bookId +
+                        ", title='" + title + '\'' +
+                        ", Author='" + author.toString() + '\'' +
+                        ", blurb='" + blurb + '\'' +
+                        ", publicationYear='" + publicationYear + '\'' +
+                        ", genres=" + genres.toString() +
+                        ", isbn=" + isbn +
+                        ", coverImageUrl=" + coverImageUrl +
+                        '}';
+        }
 }
 

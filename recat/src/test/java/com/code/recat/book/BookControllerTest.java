@@ -19,6 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -38,6 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BookControllerTest {
 
     @Autowired
+    private BookController bookController;
+    @Autowired
     private BookService bookService;
     @Autowired
     private AuthorService authorService;
@@ -47,6 +50,7 @@ public class BookControllerTest {
     @Autowired
     private MockMvc mvc;
     private BookRequest book1;
+    private BookRequest book2;
 
     @BeforeEach
     void setUp() {
@@ -59,7 +63,7 @@ public class BookControllerTest {
 
         book1 = new BookRequest("Book One Title", author1, "Blurb for first book.", 2000, Set.of(testGenre), "25362348-72", "https://coverimage1.com");
 
-        BookRequest book2 = new BookRequest("Another Book Title", author2, "Blurb for second book.", 2010, Set.of(testGenre), "25485210-89", "https://coverimage2.com");
+        book2 = new BookRequest("Another Book Title", author2, "Blurb for second book.", 2010, Set.of(testGenre), "25485210-89", "https://coverimage2.com");
 
     }
 
@@ -67,12 +71,12 @@ public class BookControllerTest {
     void shouldReturnASavedBookWhenRequestedById() throws Exception {
         bookService.addNewBook(book1);
 
-        this.mvc.perform(get(AppConstants.BASE_URL + "/books/1"))
+        var result = this.mvc.perform(get(AppConstants.BASE_URL + "/books/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.bookId").value(1))
-                .andExpect(jsonPath("$.title").value("Book One Title"))
+                .andExpect(jsonPath("$.title").value("Book One Title"));
 
-        ;
+
     }
 
     @Test
@@ -97,6 +101,19 @@ public class BookControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Book One Title"))
                 .andExpect(jsonPath("$.isbn").value("25362348-72"));
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldReturnAllBooksOrderedByTitle() throws Exception {
+            bookService.addNewBook(book1);
+            bookService.addNewBook(book2);
+
+            this.mvc.perform(get(AppConstants.BASE_URL + "/books"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.length()").value(3))
+                    .andExpect(jsonPath("$[0].title").value("Another Book Title"))
+                    .andExpect(jsonPath("$[1].title").value("Book One Title"));
     }
 
 }

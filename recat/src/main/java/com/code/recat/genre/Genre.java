@@ -20,4 +20,12 @@ public class Genre{
         @SequenceGenerator(name = "genre_seq", sequenceName = "public.genres_seq", allocationSize = 1)
         private Long genreId;
         private String name;
+
+        @Override
+        public String toString(){
+                return "Genre{" +
+                        "genreId=" + genreId +
+                        ", name='" + name + '\'' +
+                        '}';
+        }
 }

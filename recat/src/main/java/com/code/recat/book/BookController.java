@@ -19,9 +19,9 @@ public class BookController {
 
 
     @PostMapping
-    ResponseEntity<Book> createNewBook(@RequestBody BookRequest bookRequest, UriComponentsBuilder ucb) {
+    ResponseEntity<Book> createNewBook(@RequestBody BookRequest bookRequest, UriComponentsBuilder uriComponentsBuilder) {
         var createdBook = bookService.addNewBook(bookRequest);
-        URI newBookLocation = ucb
+        URI newBookLocation = uriComponentsBuilder
                 .path(AppConstants.BASE_URL + "/books/{id}")
                 .buildAndExpand(createdBook.getBookId())
                 .toUri();

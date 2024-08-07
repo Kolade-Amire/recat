@@ -2,7 +2,6 @@ package com.code.recat.config;
 
 import com.code.recat.audit.ApplicationAuditAware;
 import com.code.recat.user.UserService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,6 @@ public class ApplicationConfig {
     private final UserService userService;
 
     @Bean
-    @Transactional
     public UserDetailsService userDetailsService(){
         return userService::getUserWithTokensByEmail;
     }

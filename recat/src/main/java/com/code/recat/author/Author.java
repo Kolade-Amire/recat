@@ -28,4 +28,14 @@ public class Author {
 
     @OneToMany(mappedBy = "author")
     private Set<Book> books;
+
+    @Override
+    public String toString(){
+        return "Author{" +
+                "authorId=" + authorId +
+                ", name='" + name + '\'' +
+                ", dateOfBirth='" + dateOfBirth.toString() + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
 }
