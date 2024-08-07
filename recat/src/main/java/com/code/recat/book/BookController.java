@@ -29,36 +29,36 @@ public class BookController {
     }
 
     @GetMapping
-    ResponseEntity<Page<BookDto>> getAllBooks(@RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
-        Page<BookDto> page = bookService.findAllBooks(pageNum, pageSize);
+    ResponseEntity<Page<BookViewDto>> getAllBooks(@RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+        Page<BookViewDto> page = bookService.findAllBooks(pageNum, pageSize);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/search")
-    ResponseEntity<Page<BookDto>> searchBooksByTitleOrAuthorName(@RequestParam String searchQuery, @RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
-        Page<BookDto> page = bookService.findMatchingBooksByTitleOrAuthorName(searchQuery, pageNum, pageSize);
+    ResponseEntity<Page<BookViewDto>> searchBooksByTitleOrAuthorName(@RequestParam String searchQuery, @RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+        Page<BookViewDto> page = bookService.findMatchingBooksByTitleOrAuthorName(searchQuery, pageNum, pageSize);
         return ResponseEntity.ok(page);
     }
 
-    @PutMapping("/{bookId}")
+    @PutMapping("/{id}")
     ResponseEntity<Book> updateBook(
-            @PathVariable Long bookId,
+            @PathVariable Long id,
             @RequestBody BookRequest bookRequest
     ) {
 
-        Book updatedBook = bookService.updateBook(bookId, bookRequest);
+        Book updatedBook = bookService.updateBook(id, bookRequest);
         return ResponseEntity.ok(updatedBook);
     }
 
-    @DeleteMapping("/{bookId}")
-    ResponseEntity<Void> deleteBook(@PathVariable Long bookId) {
-        bookService.deleteBook(bookId);
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{bookId}")
-    ResponseEntity<BookDto> findBookById(@PathVariable Long bookId) {
-        BookDto book = bookService.findBookById(bookId);
+    @GetMapping("/{id}")
+    ResponseEntity<BookViewDto> findBookById(@PathVariable Long id) {
+        var book = bookService.findBookForView(id);
         return ResponseEntity.ok(book);
     }
 

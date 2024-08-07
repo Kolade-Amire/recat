@@ -111,9 +111,9 @@ public class BookControllerTest {
 
             this.mvc.perform(get(AppConstants.BASE_URL + "/books"))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.length()").value(3))
-                    .andExpect(jsonPath("$[0].title").value("Another Book Title"))
-                    .andExpect(jsonPath("$[1].title").value("Book One Title"));
+                    .andExpect(jsonPath("$.totalElements").value(2))
+                    .andExpect(jsonPath("$.content[0].title").value("Another Book Title"))
+                    .andExpect(jsonPath("$.content[1].title").value("Book One Title"));
     }
 
 }

@@ -1,16 +1,11 @@
 package com.code.recat.author;
 
-import com.code.recat.book.Book;
-import com.code.recat.book.BookService;
-import com.code.recat.book.BookServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 
 @Service
@@ -76,12 +71,17 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     public Author getAuthorFromDto(AuthorDto authorDto) {
-        return getAuthor(authorDto.getAuthorId());
+        return getAuthor(authorDto.getId());
     }
 
     @Override
     public Author saveAuthor(Author author) {
         return authorRepository.save(author);
 
+    }
+
+    @Override
+    public Author getAuthorByName(String authorName) {
+        return authorRepository.findAuthorByNameIgnoreCase(authorName);
     }
 }

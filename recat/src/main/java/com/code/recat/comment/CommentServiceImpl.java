@@ -1,4 +1,4 @@
-package com.code.recat.book.comment;
+package com.code.recat.comment;
 
 import com.code.recat.book.BookServiceImpl;
 import com.code.recat.user.UserService;

@@ -1,9 +1,6 @@
 package com.code.recat.user;
 
-import com.code.recat.book.Book;
-import com.code.recat.book.BookDto;
-import com.code.recat.book.BookDtoMapper;
-import com.code.recat.book.BookService;
+import com.code.recat.book.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +22,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User getUserByEmail(String email) throws UsernameNotFoundException {
-
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("User does not exist")
         );
@@ -76,7 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<BookDto> getUserFavouriteBooks(Long userId) {
+    public Set<BookViewDto> getUserFavouriteBooks(Long userId) {
         var currentUser = getUserById(userId);
         var favBooks = currentUser.getFavoriteBooks();
         return BookDtoMapper.mapBookSetToDto(favBooks);
@@ -84,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Set<BookDto> addBookAsFavourite(Long userId, BookDto book) {
+    public Set<BookViewDto> addBookAsFavourite(Long userId, BookDto book) {
         var user = getUserById(userId);
         var userFavBooks = user.getFavoriteBooks();
         var newBook = bookService.findById(book.getBookId());

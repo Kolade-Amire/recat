@@ -1,23 +1,25 @@
 package com.code.recat.book;
 
-import com.code.recat.genre.Genre;
+import com.code.recat.author.AuthorDto;
+import com.code.recat.comment.CommentDto;
+import com.code.recat.genre.GenreDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Data
-public class BookRequest {
+public class BookViewDto {
+    private Long id;
     private String title;
-    private String authorName;
+    private AuthorDto author;
     private String blurb;
     private Integer publicationYear;
-    private Set<Genre> genres;
+    private Set<GenreDto> genres;
     private String isbn;
     private String coverImageUrl;
+    private Set<CommentDto> comments;
 }

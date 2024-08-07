@@ -1,11 +1,13 @@
-package com.code.recat.author;
+package com.code.recat.genre;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
-@AllArgsConstructor
 @Data
-public class AuthorDto {
+@Builder
+@AllArgsConstructor
+public class GenreDto {
     private Long id;
     private String name;
 }

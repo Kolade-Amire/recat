@@ -1,15 +1,15 @@
 package com.code.recat.book;
 
 import com.code.recat.author.Author;
-import com.code.recat.book.comment.Comment;
+import com.code.recat.comment.Comment;
 import com.code.recat.genre.Genre;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -39,7 +39,7 @@ public class Book{
                 joinColumns = @JoinColumn(name = "book_id"),
                 inverseJoinColumns = @JoinColumn(name = "genre_id")
         )
-        private Set<Genre> genres;
+        private Set<Genre> genres = new HashSet<>();
 
         private String isbn;
         private String coverImageUrl;

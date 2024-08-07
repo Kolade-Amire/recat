@@ -23,4 +23,6 @@ public interface AuthorService {
 
     //for internal use only
     Author saveAuthor(Author author);
+
+    Author getAuthorByName(String authorName);
 }

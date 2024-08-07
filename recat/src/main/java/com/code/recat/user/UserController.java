@@ -1,6 +1,7 @@
 package com.code.recat.user;
 
 import com.code.recat.book.BookDto;
+import com.code.recat.book.BookViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,13 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/favourites")
-    ResponseEntity<Set<BookDto>> getFavouriteBooks(@PathVariable Long userId){
+    ResponseEntity<Set<BookViewDto>> getFavouriteBooks(@PathVariable Long userId){
         var favBooks = userService.getUserFavouriteBooks(userId);
         return ResponseEntity.ok(favBooks);
     }
 
     @PutMapping
-    ResponseEntity<Set<BookDto>> addBookToFavourites(Long userId, BookDto book){
+    ResponseEntity<Set<BookViewDto>> addBookToFavourites(Long userId, BookDto book){
         var favBooks = userService.addBookAsFavourite(userId, book);
         return ResponseEntity.ok(favBooks);
     }

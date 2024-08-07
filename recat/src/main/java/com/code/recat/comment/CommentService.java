@@ -1,4 +1,4 @@
-package com.code.recat.book.comment;
+package com.code.recat.comment;
 
 import org.springframework.data.domain.Page;
 

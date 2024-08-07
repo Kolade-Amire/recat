@@ -26,7 +26,7 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public Page<BookDto> findAllBooks(int pageNumber, int pageSize) {
+    public Page<BookViewDto> findAllBooks(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         var book = bookRepository.findAllByOrderByTitle(pageable);
         return BookDtoMapper.mapBookPageToDto(book);
@@ -36,11 +36,11 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public Book addNewBook(BookRequest bookRequest) {
 
-//        var author = authorService.getAuthorFromDto(bookRequest.getAuthor());
+        var author = authorService.getAuthorByName(bookRequest.getAuthorName());
 
         var newBook = Book.builder()
                 .title(bookRequest.getTitle())
-                .author(bookRequest.getAuthor())
+                .author(author)
                 .blurb(bookRequest.getBlurb())
                 .publicationYear(bookRequest.getPublicationYear())
                 .genres(bookRequest.getGenres())
@@ -52,7 +52,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<BookDto> findMatchingBooksByTitleOrAuthorName(String searchQuery, int pageNumber, int pageSize) {
+    public Page<BookViewDto> findMatchingBooksByTitleOrAuthorName(String searchQuery, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         var books = bookRepository.searchBooksByTitleOrAuthorName(searchQuery, pageable);
         return BookDtoMapper.mapBookPageToDto(books);
@@ -83,9 +83,17 @@ public class BookServiceImpl implements BookService {
         return bookRepository.save(existingBook);
     }
 
-    @Override //this method returns a book DTO (for use in the view layer)
-    public BookDto findBookById(Long bookId) {
-        var book = findById(bookId);
+//    @Override //this method returns a book DTO (for use in the view layer)
+//    public BookDto findBookById(Long bookId) {
+//        var book = findById(bookId);
+//        return BookDtoMapper.mapBookToDto(book);
+//    }
+
+    @Override
+    @Transactional
+    public BookViewDto findBookForView(Long id) {
+        System.out.println("Fetching book with ID: " + id);
+        var book = bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
         return BookDtoMapper.mapBookToDto(book);
     }
 
