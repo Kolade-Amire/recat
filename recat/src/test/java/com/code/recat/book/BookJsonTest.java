@@ -47,14 +47,14 @@ public class BookJsonTest {
                 .name("Harper Lee")
                 .dateOfBirth(LocalDate.of(1950, 7, 3 ))
                 .gender("Female")
-                .books(new HashSet<>()).build();
+                .build();
 
         var author2 = Author.builder()
                 .authorId(83L)
                 .name("Random Author")
                 .dateOfBirth(LocalDate.of(1960, 8, 5 ))
                 .gender("Male")
-                .books(new HashSet<>()).build();
+                .build();
 
         books = Arrays.array(
                 Book.builder()

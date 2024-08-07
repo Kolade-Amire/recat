@@ -24,5 +24,5 @@ public interface BookService {
 
     BookViewDto findBookForView(Long id);
 
-    Set<Book> addBookToAuthorProfile(Author author, Long bookId);
+//    Set<Book> addBookToAuthorProfile(Author author, Long bookId);
 }

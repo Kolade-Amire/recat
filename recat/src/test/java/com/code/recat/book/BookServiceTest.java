@@ -38,7 +38,7 @@ public class BookServiceTest {
 
     private BookRequest book1;
     private BookRequest book2;
-    private Author author1;
+    private AuthorRequest author1;
     private Genre testGenre;
 
 
@@ -48,7 +48,7 @@ public class BookServiceTest {
 
         testGenre = genreService.addGenre("Fantasy");
 
-        author1 = authorService.addNewAuthor(new AuthorRequest("Author One", LocalDate.of(2024, 8, 2), "female"));
+        author1 = new AuthorRequest("Author One", LocalDate.of(2024, 8, 2), "female");
 
 
         var author2 = authorService.addNewAuthor(new AuthorRequest("Author Two", LocalDate.of(2024, 8, 3), "male"));
@@ -60,7 +60,9 @@ public class BookServiceTest {
     }
 
     @Test
+    @DirtiesContext
     void shouldReturnAllBooksSortedInOrderOfTitle() {
+        authorService.addNewAuthor(author1);
         bookService.addNewBook(book1);
         bookService.addNewBook(book2);
 
@@ -75,7 +77,9 @@ public class BookServiceTest {
     @DirtiesContext
     void shouldAddANewBook() {
 
-        var newBookRequest = new BookRequest( "New Book Title", author1.getName(), "Blurb for New book.", 2020, new HashSet<>(), "25362348-72", "https://coverimagefornewbook.com");
+        authorService.addNewAuthor(author1);
+
+        var newBookRequest = new BookRequest( "New Book Title", author1.getName(), "Blurb for New book.", 2020, Set.of(testGenre), "25362348-72", "https://coverimagefornewbook.com");
 
         var savedBook = bookService.addNewBook(newBookRequest);
 
@@ -90,6 +94,8 @@ public class BookServiceTest {
     @Test
     @DirtiesContext
     void shouldReturnMatchingBooksWhenSearchedByTitle() {
+
+        authorService.addNewAuthor(author1);
 
         bookService.addNewBook(book1);
         bookService.addNewBook(book2);
@@ -106,6 +112,7 @@ public class BookServiceTest {
     @Test
     @DirtiesContext
     void shouldReturnBookForViewWhenSearchedById() {
+        authorService.addNewAuthor(author1);
         bookService.addNewBook(book1);
 
         var setOfTestGenre = Set.of(new GenreDto(testGenre.getGenreId(), testGenre.getName()));
@@ -121,17 +128,17 @@ public class BookServiceTest {
     @Test
     @DirtiesContext
     void shouldUpdateExistingBookDetailsWithNewDetails(){
-        var existingBook = bookService.addNewBook(book1);
+        authorService.addNewAuthor(author1);
+        bookService.addNewBook(book1);
 
-        genreService.addGenre("Non-Fiction");
-
-        var genre = genreService.getGenreByName("Non-Fiction");
-
+        var newGenre = genreService.addGenre("Non-Fiction");
 
 
-        var newBookRequest = new BookRequest("Modified Title", book1.getAuthorName(),"Modified Blurb", book1.getPublicationYear(), Set.of(genre), "25362348-72", "https://updatedCoverUrl.com");
 
-        var updatedBook = bookService.updateBook(existingBook.getBookId(), newBookRequest);
+
+        var newBookRequest = new BookRequest("Modified Title", book1.getAuthorName(),"Modified Blurb", book1.getPublicationYear(), Set.of(newGenre), "25362348-72", "https://updatedCoverUrl.com");
+
+        var updatedBook = bookService.updateBook(1L, newBookRequest);
 
         assertNotNull(updatedBook);
         assertEquals(newBookRequest.getTitle(), updatedBook.getTitle());
@@ -145,6 +152,7 @@ public class BookServiceTest {
     @Test
     @DirtiesContext
     void shouldDeleteExistingBookUsingBookId(){
+        authorService.addNewAuthor(author1);
         var book = bookService.addNewBook(book1);
         var bookId = book.getBookId();
 

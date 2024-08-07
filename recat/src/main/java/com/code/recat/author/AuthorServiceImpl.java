@@ -55,7 +55,6 @@ public class AuthorServiceImpl implements AuthorService{
     @Transactional
     public void deleteAuthor(Long authorId) {
         var author = getAuthor(authorId);
-        author.getBooks().clear();
         authorRepository.delete(author);
     }
 
@@ -81,6 +80,7 @@ public class AuthorServiceImpl implements AuthorService{
     }
 
     @Override
+    @Transactional
     public Author getAuthorByName(String authorName) {
         return authorRepository.findAuthorByNameIgnoreCase(authorName).orElseThrow(
                 () -> new EntityNotFoundException("Author not found.")

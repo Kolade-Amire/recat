@@ -73,7 +73,7 @@ public class BookControllerTest {
 
         var result = this.mvc.perform(get(AppConstants.BASE_URL + "/books/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.bookId").value(1))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("Book One Title"));
 
 

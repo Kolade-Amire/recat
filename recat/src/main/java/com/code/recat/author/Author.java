@@ -26,9 +26,6 @@ public class Author {
     private LocalDate dateOfBirth;
     private String gender;
 
-    @OneToMany(mappedBy = "author")
-    private Set<Book> books;
-
     @Override
     public String toString(){
         return "Author{" +
