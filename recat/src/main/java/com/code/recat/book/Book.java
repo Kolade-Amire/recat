@@ -33,31 +33,32 @@ public class Book{
         private String blurb;
         private Integer publicationYear;
 
-        @ManyToMany(fetch = FetchType.LAZY)
+        @ManyToMany(cascade = CascadeType.ALL)
         @JoinTable(
                 name = "book_genre",
                 joinColumns = @JoinColumn(name = "book_id"),
                 inverseJoinColumns = @JoinColumn(name = "genre_id")
         )
-        private Set<Genre> genres = new HashSet<>();
+        private Set<Genre> genres;
 
         private String isbn;
         private String coverImageUrl;
 
         @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-        private Set<Comment> comments;
+        private Set<Comment> comments = new HashSet<>();
 
         @Override
         public String toString(){
                 return "Book{" +
                         "bookId=" + bookId +
                         ", title='" + title + '\'' +
-                        ", Author='" + author.toString() + '\'' +
+                        ", Author='" + author + '\'' +
                         ", blurb='" + blurb + '\'' +
                         ", publicationYear='" + publicationYear + '\'' +
-                        ", genres=" + genres.toString() +
-                        ", isbn=" + isbn +
-                        ", coverImageUrl=" + coverImageUrl +
+                        ", genres=" + genres +  '\'' +
+                        ", isbn=" + isbn +  '\'' +
+                        ", coverImageUrl=" + coverImageUrl +  '\'' +
+                        ", comments=" + comments +  '\'' +
                         '}';
         }
 }

@@ -24,8 +24,6 @@ public class Genre{
         @SequenceGenerator(name = "genre_seq", sequenceName = "public.genres_seq", allocationSize = 1)
         private Long genreId;
         private String name;
-        @ManyToMany(mappedBy = "genres")
-        private Set<Book> books = new HashSet<>();
 
         @Override
         public String toString(){

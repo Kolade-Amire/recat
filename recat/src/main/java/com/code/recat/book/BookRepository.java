@@ -1,5 +1,6 @@
 package com.code.recat.book;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,10 +21,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "OR LOWER(a.name) LIKE LOWER(CONCAT('%', :searchQuery, '%'))")
     Page<Book> searchBooksByTitleOrAuthorName(@Param("searchQuery") String searchQuery, Pageable pageable);
 
-    @Query("SELECT b FROM Book b " +
-            "JOIN FETCH b.author a " +
-            "JOIN FETCH b.genres g " +
-            "JOIN FETCH b.comments c " +
+    @Query("SELECT DISTINCT b FROM Book b " +
+            "LEFT JOIN FETCH b.genres g " +
+            "LEFT JOIN FETCH b.comments c " +
             "WHERE b.bookId = :bookId")
+    @Transactional
     Optional<Book> findBookForView(@Param("bookId") Long bookId);
+
 }

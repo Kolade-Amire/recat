@@ -82,6 +82,8 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     public Author getAuthorByName(String authorName) {
-        return authorRepository.findAuthorByNameIgnoreCase(authorName);
+        return authorRepository.findAuthorByNameIgnoreCase(authorName).orElseThrow(
+                () -> new EntityNotFoundException("Author not found.")
+        );
     }
 }

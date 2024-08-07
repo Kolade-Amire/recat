@@ -13,6 +13,7 @@ public class GenreDtoMapper {
     }
 
     public static Set<GenreDto> mapGenreSetToDto(Set<Genre> genres) {
+
         return genres.stream().map(
                 GenreDtoMapper::mapGenreToDto
         ).collect(Collectors.toSet());

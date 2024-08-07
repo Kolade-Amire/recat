@@ -83,21 +83,21 @@ public class BookServiceImpl implements BookService {
         return bookRepository.save(existingBook);
     }
 
-//    @Override //this method returns a book DTO (for use in the view layer)
-//    public BookDto findBookById(Long bookId) {
-//        var book = findById(bookId);
-//        return BookDtoMapper.mapBookToDto(book);
-//    }
 
     @Override
     @Transactional
     public BookViewDto findBookForView(Long id) {
         System.out.println("Fetching book with ID: " + id);
-        var book = bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
+        var book = bookRepository.findBookForView(id)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Book does not exist")
+                );
+
+        System.out.println("Genres: " + book.getGenres());
         return BookDtoMapper.mapBookToDto(book);
     }
 
-    @Override //this method is for internal use only (NOT exposed to the view layer)
+    @Override
     public Book findById(Long bookId){
         return bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
     }

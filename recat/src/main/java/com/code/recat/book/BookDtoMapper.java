@@ -30,6 +30,8 @@ public class BookDtoMapper {
 
         var genreDtos = GenreDtoMapper.mapGenreSetToDto(book.getGenres());
 
+        var commentDtos = CommentDtoMapper.mapCommentsToDtos(book.getComments());
+
         return BookViewDto.builder()
                 .id(book.getBookId())
                 .title(book.getTitle())
@@ -39,7 +41,7 @@ public class BookDtoMapper {
                 .genres(genreDtos)
                 .isbn(book.getIsbn())
                 .coverImageUrl(book.getCoverImageUrl())
-                .comments(CommentDtoMapper.mapCommentsToDtos(book.getComments()))
+                .comments(commentDtos)
                 .build();
     }
 
