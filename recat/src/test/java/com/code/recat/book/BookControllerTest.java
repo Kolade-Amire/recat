@@ -1,6 +1,5 @@
 package com.code.recat.book;
 
-import com.code.recat.author.Author;
 import com.code.recat.author.AuthorRequest;
 import com.code.recat.author.AuthorService;
 import com.code.recat.genre.Genre;
@@ -36,8 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(username = "stephamire@gmail.com", roles = "USER")
 public class BookControllerTest {
 
-    @Autowired
-    private BookService bookService;
+
     @Autowired
     private AuthorService authorService;
     @Autowired
@@ -66,7 +64,17 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldReturnASavedBookWhenRequestedById() throws Exception {
-        bookService.addNewBook(book1);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+
+        this.mvc.perform(post(AppConstants.BASE_URL + "/books")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book1))
+        );
+
+
 
          this.mvc.perform(get(AppConstants.BASE_URL + "/books/1"))
                 .andExpect(status().isOk())
@@ -103,8 +111,21 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldReturnAllBooksOrderedByTitle() throws Exception {
-            bookService.addNewBook(book1);
-            bookService.addNewBook(book2);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+
+        this.mvc.perform(post(AppConstants.BASE_URL + "/books")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book1))
+        );
+
+        this.mvc.perform(post(AppConstants.BASE_URL + "/books")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book2))
+        );
 
             this.mvc.perform(get(AppConstants.BASE_URL + "/books"))
                     .andExpect(status().isOk())
@@ -116,8 +137,24 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldReturnBooksThatMatchTitleOrAuthorName() throws Exception {
-        bookService.addNewBook(book1);
-        bookService.addNewBook(book2);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+
+        this.mvc.perform(post(AppConstants.BASE_URL + "/books")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book1))
+        );
+
+        this.mvc.perform(post(AppConstants.BASE_URL + "/books")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book2))
+        );
+
+
+
 
         this.mvc.perform(
                 get(AppConstants.BASE_URL + "/books/search?searchQuery=Author"))
@@ -133,9 +170,17 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldUpdateBookThatExistsWithNewDetails() throws Exception {
-        bookService.addNewBook(book1);
-
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+
+        this.mvc.perform(post(AppConstants.BASE_URL + "/books")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book1))
+        );
+
+
 
         var bookUpdateRequest = BookRequest.builder()
                 .title("Updated Title")
@@ -156,7 +201,16 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldDeleteExistingBook() throws Exception {
-        bookService.addNewBook(book1);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+
+        this.mvc.perform(post(AppConstants.BASE_URL + "/books")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book1))
+        );
+
 
         this.mvc.perform(delete(AppConstants.BASE_URL + "/books/1"))
                 .andExpect(status().isNoContent());
