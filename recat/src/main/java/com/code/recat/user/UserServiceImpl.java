@@ -41,13 +41,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserProfile(Long id) {
+    public UserDTO getUserProfile(Integer id) {
         var user = getUserById(id);
         return UserMapper.mapUserToDto(user);
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User does not exist")
         );
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateName(Long id, UserRequest userRequest) {
+    public User updateName(Integer id, UserRequest userRequest) {
         var fullName = userRequest.getFirstName() + " " + userRequest.getLastName();
         var user = getUserById(id);
         user.setName(fullName);
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(Long userId) {
+    public void deleteUser(Integer userId) {
         var existingUser = getUserById(userId);
         existingUser.getTokens().clear();
         existingUser.getFavoriteBooks().clear();
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<BookViewDto> getUserFavouriteBooks(Long userId) {
+    public Set<BookViewDto> getUserFavouriteBooks(Integer userId) {
         var currentUser = getUserById(userId);
         var favBooks = currentUser.getFavoriteBooks();
         return BookDtoMapper.mapBookSetToDto(favBooks);
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Set<BookViewDto> addBookAsFavourite(Long userId, BookDto book) {
+    public Set<BookViewDto> addBookAsFavourite(Integer userId, BookDto book) {
         var user = getUserById(userId);
         var userFavBooks = user.getFavoriteBooks();
         var newBook = bookService.findById(book.getBookId());

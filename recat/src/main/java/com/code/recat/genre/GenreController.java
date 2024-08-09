@@ -1,7 +1,5 @@
 package com.code.recat.genre;
 
-import com.code.recat.book.Book;
-import com.code.recat.book.BookRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,7 @@ public class GenreController {
 
 
     @GetMapping("/{id}")
-    ResponseEntity<Genre> getGenreById (@PathVariable Long id){
+    ResponseEntity<Genre> getGenreById (@PathVariable Integer id){
         var genre =  service.getGenreById(id);
         return ResponseEntity.ok(genre);
     }
@@ -41,14 +39,14 @@ public class GenreController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Void> deleteGenre(@PathVariable Long id) {
+    ResponseEntity<Void> deleteGenre(@PathVariable Integer id) {
         service.deleteGenre(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
     ResponseEntity<Genre> updateGenre(
-            @PathVariable Long id,
+            @PathVariable Integer id,
             @RequestBody String name
     ) {
 

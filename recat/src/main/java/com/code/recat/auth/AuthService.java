@@ -35,7 +35,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthResponse register (RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
 
         var fullName = concatenateFullName(request.getFirstname(), request.getLastname());
         var password = doPasswordsMatch(request.getPassword(), request.getConfirmPassword());
@@ -56,7 +56,7 @@ public class AuthService {
                 HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
                 HttpStatus.CREATED.getReasonPhrase(),
-                "User registered successfully."
+                SecurityConstants.REGISTERED_MESSAGE
         );
 
         var savedUser = userService.saveUser(user);
@@ -87,7 +87,7 @@ public class AuthService {
                 HttpStatus.OK.value(),
                 HttpStatus.OK,
                 HttpStatus.OK.getReasonPhrase(),
-                "User authenticated successfully."
+                SecurityConstants.AUTHENTICATED_MESSAGE
         );
         return AuthResponse.builder()
                 .accessToken(jwtToken)
@@ -124,10 +124,10 @@ public class AuthService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
-        if (authHeader == null ||!authHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+        if (authHeader == null || !authHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             return;
         }
-        refreshToken = authHeader.substring(7);
+        refreshToken = authHeader.substring(SecurityConstants.TOKEN_PREFIX.length());
         userEmail = jwtService.extractUsername(refreshToken);
         if (userEmail != null) {
             var user = userService.getUserWithTokensByEmail(userEmail);
@@ -144,14 +144,14 @@ public class AuthService {
         }
     }
 
-    public String doPasswordsMatch(String p1 , String p2){
-        if (!p1.equals(p2)){
+    public String doPasswordsMatch(String p1, String p2) {
+        if (!p1.equals(p2)) {
             throw new PasswordsDoNotMatchException("Passwords do not match");
-        }
-        else return p2;
+        } else return p2;
     }
 
-    public String concatenateFullName(String firstname, String lastname){
+    public String concatenateFullName(String firstname, String lastname) {
         return firstname + " " + lastname;
+
     }
 }

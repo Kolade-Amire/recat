@@ -21,7 +21,7 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_seq")
     @Column(nullable = false, updatable = false)
     @SequenceGenerator(name = "author_seq", sequenceName = "public.authors_author_id_seq", allocationSize = 1)
-    private Long authorId;
+    private Integer authorId;
     private String name;
     private LocalDate dateOfBirth;
     private String gender;

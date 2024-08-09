@@ -43,14 +43,14 @@ public class BookJsonTest {
     @BeforeEach
     void setUp() {
         var author1 = Author.builder()
-                .authorId(61L)
+                .authorId(61)
                 .name("Harper Lee")
                 .dateOfBirth(LocalDate.of(1950, 7, 3 ))
                 .gender("Female")
                 .build();
 
         var author2 = Author.builder()
-                .authorId(83L)
+                .authorId(83)
                 .name("Random Author")
                 .dateOfBirth(LocalDate.of(1960, 8, 5 ))
                 .gender("Male")
@@ -58,22 +58,22 @@ public class BookJsonTest {
 
         books = Arrays.array(
                 Book.builder()
-                        .bookId(1L)
+                        .bookId(1)
                         .title("Catcher in the Rye")
                         .author(author1)
                         .blurb("Jonas discovers the truth about his dystopian society and seeks change.")
                         .publicationYear(2004)
-                        .genres(Set.of(new Genre(14L, "Dystopian")))
+                        .genres(Set.of(new Genre(14, "Dystopian")))
                         .isbn("796013036-1")
                         .coverImageUrl("https://dummyimage.com/234x100.png/dddddd/000000")
                         .comments(new HashSet<>())
                         .build(),
-                Book.builder().bookId(2L)
+                Book.builder().bookId(2)
                         .title("The Stranger")
                         .author(author2)
                         .blurb("Katniss Everdeen fights for survival in a dystopian society.")
                         .publicationYear(1985)
-                        .genres(Set.of(new Genre(10L, "Thriller")))
+                        .genres(Set.of(new Genre(10, "Thriller")))
                         .isbn("184252720-7")
                         .coverImageUrl("https://dummyimage.com/236x100.png/cc0000/ffffff")
                         .comments(new HashSet<>())
@@ -117,8 +117,7 @@ public class BookJsonTest {
                              "authorId": 61,
                              "name": "Harper Lee",
                              "dateOfBirth": "1950-07-03",
-                             "gender": "Female",
-                             "books": []
+                             "gender": "Female"
                            },
                            "blurb": "Jonas discovers the truth about his dystopian society and seeks change.",
                            "publicationYear": 2004,
@@ -164,8 +163,7 @@ public class BookJsonTest {
                               "authorId": 61,
                               "name": "Harper Lee",
                               "dateOfBirth": "1950-07-03",
-                              "gender": "Female",
-                              "books": []
+                              "gender": "Female"
                             },
                             "blurb": "Jonas discovers the truth about his dystopian society and seeks change.",
                             "publicationYear": 2004,
@@ -186,8 +184,7 @@ public class BookJsonTest {
                               "authorId": 83,
                               "name": "Random Author",
                               "dateOfBirth": "1960-08-05",
-                              "gender": "Male",
-                              "books": []
+                              "gender": "Male"
                             },
                             "blurb": "Katniss Everdeen fights for survival in a dystopian society.",
                             "publicationYear": 1985,

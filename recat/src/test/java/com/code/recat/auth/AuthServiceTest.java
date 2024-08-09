@@ -4,36 +4,39 @@ package com.code.recat.auth;
 import com.code.recat.exception.PasswordsDoNotMatchException;
 import com.code.recat.user.Role;
 import com.code.recat.user.User;
-import com.code.recat.user.UserRepository;
+import com.code.recat.user.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
-@ExtendWith(MockitoExtension.class)
-public class AuthTests {
+public class AuthServiceTest {
 
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
     @MockBean
     private PasswordEncoder passwordEncoder;
     @MockBean
@@ -45,8 +48,11 @@ public class AuthTests {
     private RegisterRequest registerRequest;
     private RegisterRequest savedUserRequest;
 
-    public AuthTests() {
-    }
+    @Mock
+    private HttpServletRequest request;
+    @Mock
+    private HttpServletResponse response;
+
 
 
     @BeforeEach
@@ -73,11 +79,13 @@ public class AuthTests {
                 .isLocked(false)
                 .build();
 
-        userRepository.save(existingUser);
+
+        userService.saveUser(existingUser);
 
     }
 
     @Test
+    @DirtiesContext
     void shouldTestIfNewUserIsRegisteredSuccessfully() {
 
         AuthResponse authResponse = authService.register(registerRequest);
@@ -89,6 +97,7 @@ public class AuthTests {
     }
 
     @Test
+    @DirtiesContext
     void shouldTestIfPasswordsDoNotMatch() {
 
         var wrongRequest = new RegisterRequest("Ope", "Amire", "opeamire@gmail.com", "password123", "wrong",
@@ -98,6 +107,7 @@ public class AuthTests {
     }
 
     @Test
+    @DirtiesContext
     void shouldTestIfValidUserIsAuthenticatedSuccessfully() {
 
 
@@ -111,9 +121,25 @@ public class AuthTests {
 
 
     @Test
-    void shouldReturnNoSuchElementExceptionWhenProvidedWithWrongUserDetails() {
+    @DirtiesContext
+    void shouldReturnUsernameNotFoundExceptionWhenProvidedWithWrongUserDetails() {
         AuthRequest request = new AuthRequest("john.doe@example.com", "password");
-        assertThrows(NoSuchElementException.class, () -> authService.authenticate(request));
+        assertThrows(UsernameNotFoundException.class, () -> authService.authenticate(request));
+
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldRefreshTokenSuccessfully() throws IOException {
+        AuthRequest authRequest = new AuthRequest(savedUserRequest.getEmail(), savedUserRequest.getPassword());
+        AuthResponse authResponse = authService.authenticate(authRequest);
+
+        var authHeader = "Bearer " + authResponse.getRefreshToken();
+
+        authService.refreshToken(request, response);
+
+        assertNotNull(authHeader);
+        assertEquals("Bearer " + authHeader, authResponse.getResponse().getMessage());
 
     }
 

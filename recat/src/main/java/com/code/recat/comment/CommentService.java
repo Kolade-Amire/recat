@@ -4,16 +4,16 @@ import org.springframework.data.domain.Page;
 
 public interface CommentService {
 
-    Page<Comment> getAllComments(int pageNum, int pageSize, Long bookId);
+    Page<Comment> getAllComments(int pageNum, int pageSize, Integer bookId);
 
-    Comment getComment(Long commentId);
+    Comment getComment(Integer commentId);
 
-    Comment addNewComment(String commentAuthorEmail, Long bookId, String content);
+    Comment addNewComment(String commentAuthorEmail, Integer bookId, String content);
 
-    Comment addNewReply(String commentAuthorEmail, Long commentId, String content);
+    Comment addNewReply(String commentAuthorEmail, Integer commentId, String content);
 
-    void deleteComment(Long commentId);
+    void deleteComment(Integer commentId);
 
-    Comment updateComment(Long commentAuthorId, Long commentId, String content);
+    Comment updateComment(Integer commentAuthorId, Integer commentId, String content);
 
 }

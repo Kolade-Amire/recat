@@ -5,8 +5,7 @@
     "authorId": 61,
     "name": "Harper Lee",
     "dateOfBirth": "1950-07-03",
-    "gender": "Female",
-    "books": []
+    "gender": "Female"
   },
   "blurb": "Jonas discovers the truth about his dystopian society and seeks change.",
   "publicationYear": 2004,

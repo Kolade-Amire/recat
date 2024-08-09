@@ -29,7 +29,7 @@ public class User implements UserDetails {
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
         @SequenceGenerator(name = "user_seq", sequenceName = "public.users_seq", allocationSize = 1)
         @Column(nullable = false, updatable = false)
-        private Long userId;
+        private Integer userId;
         private String name;
         private String username;
         private String password;

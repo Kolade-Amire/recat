@@ -13,17 +13,17 @@ public interface UserService {
 
     User saveUser(User user);
 
-    User getUserById (Long id);
+    User getUserById (Integer id);
 
-    User updateName (Long id, UserRequest userRequest);
+    User updateName (Integer id, UserRequest userRequest);
 
-    void deleteUser (Long id);
+    void deleteUser (Integer id);
 
-    Set<BookViewDto> getUserFavouriteBooks(Long userId);
+    Set<BookViewDto> getUserFavouriteBooks(Integer userId);
 
-    Set<BookViewDto> addBookAsFavourite(Long userId, BookDto book);
+    Set<BookViewDto> addBookAsFavourite(Integer userId, BookDto book);
 
-    UserDTO getUserProfile (Long id);
+    UserDTO getUserProfile (Integer id);
 
 
 }

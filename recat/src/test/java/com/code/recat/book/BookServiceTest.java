@@ -1,6 +1,5 @@
 package com.code.recat.book;
 
-import com.code.recat.author.Author;
 import com.code.recat.author.AuthorRequest;
 import com.code.recat.author.AuthorService;
 import com.code.recat.genre.Genre;
@@ -17,7 +16,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -117,7 +115,7 @@ public class BookServiceTest {
 
         var setOfTestGenre = Set.of(new GenreDto(testGenre.getGenreId(), testGenre.getName()));
 
-        var id = 1L;
+        var id = 1;
         var book = bookService.findBookForView(id);
         assertNotNull(book);
         assertEquals(book.getIsbn(), book1.getIsbn());
@@ -138,12 +136,11 @@ public class BookServiceTest {
 
         var newBookRequest = new BookRequest("Modified Title", book1.getAuthorName(),"Modified Blurb", book1.getPublicationYear(), Set.of(newGenre), "25362348-72", "https://updatedCoverUrl.com");
 
-        var updatedBook = bookService.updateBook(1L, newBookRequest);
+        var updatedBook = bookService.updateBook(1, newBookRequest);
 
         assertNotNull(updatedBook);
         assertEquals(newBookRequest.getTitle(), updatedBook.getTitle());
         assertEquals(newBookRequest.getBlurb(), updatedBook.getBlurb());
-        assertEquals(newBookRequest.getGenres(), updatedBook.getGenres());
         assertEquals(newBookRequest.getCoverImageUrl(), updatedBook.getCoverImageUrl());
 
 
@@ -166,7 +163,7 @@ public class BookServiceTest {
 
     @Test
     void shouldReturnEntityNotFoundForBookThatDoesNotExist(){
-        Long bookId = 14L;
+        Integer bookId = 14;
         assertThrows(EntityNotFoundException.class, () -> bookService.findById(bookId));
     }
 

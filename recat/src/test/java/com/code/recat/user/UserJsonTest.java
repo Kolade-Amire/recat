@@ -36,7 +36,7 @@ public class UserJsonTest {
     void setUp() {
         users = Arrays.array(
                 UserTestDto.builder()
-                        .userId(1L)
+                        .userId(1)
                         .name("Nate Giabucci")
                         .username("ngiabucci0")
                         .email("ngiabucci0@yelp.com")
@@ -45,7 +45,7 @@ public class UserJsonTest {
                         .role(Role.USER)
                         .build(),
                 UserTestDto.builder()
-                        .userId(2L)
+                        .userId(2)
                         .name("Rodolphe Prover")
                         .username("rprover1")
                         .email("rprover1@artisteer.com")
@@ -94,7 +94,7 @@ public class UserJsonTest {
                 """;
 
         UserTestDto newUser = new UserTestDto(
-                1L,
+                1,
                 "Nate Giabucci",
                 "ngiabucci0",
                 "ngiabucci0@yelp.com",

@@ -3,6 +3,7 @@ package com.code.recat.user;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum Permissions {
     ADMIN_READ("admin:read"),
@@ -18,6 +19,5 @@ public enum Permissions {
     ;
 
 
-    @Getter
     private final String permission;
 }

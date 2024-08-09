@@ -23,7 +23,7 @@ public class Book{
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "books_seq")
         @Column(nullable = false, updatable = false)
         @SequenceGenerator(name = "books_seq", sequenceName = "public.books_seq", allocationSize = 1)
-        private Long bookId;
+        private Integer bookId;
         private String title;
 
         @ManyToOne

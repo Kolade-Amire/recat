@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class TokenDTO {
-    private Long id;
+    private Integer id;
     private String token;
     private TokenType tokenType;
     private boolean revoked;

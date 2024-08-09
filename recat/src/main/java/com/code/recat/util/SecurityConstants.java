@@ -13,8 +13,11 @@ public class SecurityConstants {
     public static final String TOKEN_CANNOT_BE_VERIFIED = "Token cannot be verified";
     public static final String FORBIDDEN_MESSAGE = "You need to log in to access this page";
     public static final String ACCESS_DENIED = "You do not have permission to access this page";
+    public static final String AUTHENTICATED_MESSAGE = "User authenticated successfully";
+    public static final String REGISTERED_MESSAGE = "User registered successfully";
+
     public static final String[] PUBLIC_URLS = {
-            "api/v1/auth/**", "/h2-console/**", "/v2/api-docs",
+            AppConstants.BASE_URL + "/auth/**", "/h2-console/**", "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
             "/swagger-resources",

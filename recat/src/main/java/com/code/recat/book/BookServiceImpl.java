@@ -67,7 +67,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void deleteBook(Long bookId) {
+    public void deleteBook(Integer bookId) {
         var book = findById(bookId);
         book.getGenres().clear();
         book.getComments().clear();
@@ -76,7 +76,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookViewDto updateBook(Long bookId, BookRequest bookRequest) {
+    public BookViewDto updateBook(Integer bookId, BookRequest bookRequest) {
 
         var existingBook = findById(bookId);
 
@@ -107,7 +107,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookViewDto findBookForView(Long id) {
+    public BookViewDto findBookForView(Integer id) {
         System.out.println("Fetching book with ID: " + id);
         var book = bookRepository.findBookForView(id)
                 .orElseThrow(
@@ -119,7 +119,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(Long bookId) {
+    public Book findById(Integer bookId) {
         return bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book does not exist"));
     }
 

@@ -14,7 +14,7 @@ public class TokenService {
     private final TokenRepository tokenRepository;
 
 
-    public List<Token> findAllValidTokensByUser(Long userId){
+    public List<Token> findAllValidTokensByUser(Integer userId){
      return tokenRepository.findAllValidTokensByUser(userId);
     }
 

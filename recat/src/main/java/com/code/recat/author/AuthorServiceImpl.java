@@ -21,7 +21,7 @@ public class AuthorServiceImpl implements AuthorService{
     }
 
     @Override
-    public Author getAuthor(Long authorId) {
+    public Author getAuthor(Integer authorId) {
         return authorRepository.findById(authorId).orElseThrow(
                 () -> new EntityNotFoundException("Author not found.")
         );
@@ -41,7 +41,7 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     @Transactional
-    public Author updateAuthor(Long authorId, AuthorRequest author) {
+    public Author updateAuthor(Integer authorId, AuthorRequest author) {
         var existingAuthor = getAuthor(authorId);
         if(author.getName() != null){existingAuthor.setName(author.getName());}
         if(author.getGender() != null){existingAuthor.setGender(author.getGender());}
@@ -53,20 +53,10 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     @Transactional
-    public void deleteAuthor(Long authorId) {
+    public void deleteAuthor(Integer authorId) {
         var author = getAuthor(authorId);
         authorRepository.delete(author);
     }
-
-//    @Override
-//    public Set<Book> addBookToAuthorProfile(Long authorId, Long bookId) {
-//        var author = getAuthor(authorId);
-//        var existingAuthorBooks = author.getBooks();
-//        var book = bookService.findById(bookId);
-//        existingAuthorBooks.add(book);
-//
-//        return existingAuthorBooks;
-//    }
 
     @Override
     public Author getAuthorFromDto(AuthorDto authorDto) {

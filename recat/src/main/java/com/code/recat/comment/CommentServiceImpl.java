@@ -22,13 +22,13 @@ public class CommentServiceImpl implements CommentService {
     private final UserService userService;
 
     @Override
-    public Page<Comment> getAllComments(int pageNum, int pageSize, Long bookId) {
+    public Page<Comment> getAllComments(int pageNum, int pageSize, Integer bookId) {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
         return commentRepository.findAllByOrderByCreatedAtDesc(pageable, bookId);
     }
 
     @Override
-    public Comment getComment(Long commentId) {
+    public Comment getComment(Integer commentId) {
         return commentRepository.findById(commentId).orElseThrow(
                 () -> new EntityNotFoundException("Comment does not exist")
         );
@@ -37,7 +37,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public Comment addNewComment(String commentAuthorEmail, Long bookId, String content) {
+    public Comment addNewComment(String commentAuthorEmail, Integer bookId, String content) {
         var user = userService.getUserByEmail(commentAuthorEmail);
         var book = bookService.findById(bookId);
         var newComment = Comment.builder()
@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment addNewReply(String commentAuthorEmail, Long commentId, String content) {
+    public Comment addNewReply(String commentAuthorEmail, Integer commentId, String content) {
 
         var user = userService.getUserByEmail(commentAuthorEmail);
 
@@ -70,14 +70,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Integer commentId) {
         var comment = getComment(commentId);
         commentRepository.delete(comment);
     }
 
     @Override
     @Transactional
-    public Comment updateComment(Long commentAuthorId, Long commentId, String content) {
+    public Comment updateComment(Integer commentAuthorId, Integer commentId, String content) {
         var existingComment = getComment(commentId);
 
         if(content != null){

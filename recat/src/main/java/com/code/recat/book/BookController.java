@@ -42,7 +42,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     ResponseEntity<BookViewDto> updateBook(
-            @PathVariable Long id,
+            @PathVariable Integer id,
             @RequestBody BookRequest bookRequest
     ) {
 
@@ -51,13 +51,13 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+    ResponseEntity<Void> deleteBook(@PathVariable Integer id) {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<BookViewDto> findBookById(@PathVariable Long id) {
+    ResponseEntity<BookViewDto> findBookById(@PathVariable Integer id) {
         var book = bookService.findBookForView(id);
         return ResponseEntity.ok(book);
     }

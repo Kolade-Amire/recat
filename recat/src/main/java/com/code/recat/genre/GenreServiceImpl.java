@@ -15,7 +15,7 @@ public class GenreServiceImpl implements GenreService{
 
 
     @Override
-    public Genre getGenreById(Long id) {
+    public Genre getGenreById(Integer id) {
 
         return repository.findById(id)
                 .orElseThrow(
@@ -47,13 +47,13 @@ public class GenreServiceImpl implements GenreService{
     }
 
     @Override
-    public void deleteGenre(Long id) {
+    public void deleteGenre(Integer id) {
         var genre = getGenreById(id);
         repository.delete(genre);
     }
 
     @Override
-    public Genre updateGenre(Long id, String name) {
+    public Genre updateGenre(Integer id, String name) {
         var genre = getGenreById(id);
         genre.setName(name);
         return repository.save(genre);

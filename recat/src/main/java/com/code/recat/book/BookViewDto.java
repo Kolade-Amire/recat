@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 @Data
 public class BookViewDto {
-    private Long id;
+    private Integer id;
     private String title;
     private AuthorDto author;
     private String blurb;

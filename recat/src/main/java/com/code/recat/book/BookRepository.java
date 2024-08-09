@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long> {
+public interface BookRepository extends JpaRepository<Book, Integer> {
 
     Page<Book> findAllByOrderByTitle(Pageable pageable);
 
@@ -26,6 +26,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "LEFT JOIN FETCH b.comments c " +
             "WHERE b.bookId = :bookId")
     @Transactional
-    Optional<Book> findBookForView(@Param("bookId") Long bookId);
+    Optional<Book> findBookForView(@Param("bookId") Integer bookId);
 
 }

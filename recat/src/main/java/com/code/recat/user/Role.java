@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import static com.code.recat.user.Permissions.*;
 
 
+@Getter
 @RequiredArgsConstructor
 public enum Role {
 
@@ -40,7 +41,6 @@ public enum Role {
     )
     ;
 
-    @Getter
     private final Set<Permissions> permissions;
     public List<SimpleGrantedAuthority> getAuthorities() {
         var authorities = getPermissions()

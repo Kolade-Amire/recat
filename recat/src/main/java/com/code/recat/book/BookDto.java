@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 @Data
 public class BookDto {
-    private Long bookId;
+    private Integer bookId;
     private String title;
     private AuthorDto author;
     private String blurb;

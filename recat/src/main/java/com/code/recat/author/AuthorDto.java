@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 @Builder
 public class AuthorDto {
-    private Long id;
+    private Integer id;
     private String name;
 }

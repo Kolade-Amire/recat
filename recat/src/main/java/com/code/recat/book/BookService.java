@@ -14,15 +14,12 @@ public interface BookService {
 
     Page<BookViewDto> findMatchingBooksByTitleOrAuthorName(String searchQuery,int pageNumber, int pageSize);
 
-    BookViewDto updateBook(Long bookId, BookRequest bookRequest);
+    BookViewDto updateBook(Integer bookId, BookRequest bookRequest);
 
-    void deleteBook(Long bookId);
+    void deleteBook(Integer bookId);
 
-//    BookDto findBookById(Long bookId);  //This method returns a book DTO
+    Book findById(Integer id); //this returns the original book entity
 
-    Book findById(Long id); //this returns the original book entity
+    BookViewDto findBookForView(Integer id);
 
-    BookViewDto findBookForView(Long id);
-
-//    Set<Book> addBookToAuthorProfile(Author author, Long bookId);
 }

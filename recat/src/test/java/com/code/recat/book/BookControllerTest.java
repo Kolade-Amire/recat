@@ -29,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest
-@AutoConfigureTestDatabase
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @WithMockUser(username = "stephamire@gmail.com", roles = "USER")

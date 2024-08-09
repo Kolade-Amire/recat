@@ -3,7 +3,6 @@ package com.code.recat.user;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -11,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,15 +36,15 @@ public class UserServiceTest {
     @BeforeEach
     void setup (){
 
-         newUser = new User(99L, "Kolade Amire", "koladeam", "password123", "koladeamire20@gmail.com", "Male", Role.USER, LocalDateTime.now(),new HashSet<>(), true, false, new ArrayList<>());
+         newUser = new User(99, "Kolade Amire", "koladeam", "password123", "koladeamire20@gmail.com", "Male", Role.USER, LocalDateTime.now(),new HashSet<>(), true, false, new ArrayList<>());
 
 
         List<UserTestDto> users = List.of(
-                UserTestDto.builder().userId(1L).name("Nate Giabucci").username("ngiabucci0")
+                UserTestDto.builder().userId(1).name("Nate Giabucci").username("ngiabucci0")
                         .email("ngiabucci0@yelp.com").gender("female").password("uP0~!$hpmIQ#~8")
                         .role(Role.USER)
                         .build(),
-                UserTestDto.builder().userId(2L).name("Rodolphe Prover").username("rprover1")
+                UserTestDto.builder().userId(2).name("Rodolphe Prover").username("rprover1")
                         .email("rprover1@artisteer.com").gender("male").password("password(")
                         .role(Role.ADMIN)
                         .build()
@@ -57,7 +55,7 @@ public class UserServiceTest {
     @Test
     void shouldCreateANewUser(){
 
-        User newUser = new User(99L, "Kolade Amire", "koladeam", "password123", "koladeamire20@gmail.com", "Male", Role.USER, LocalDateTime.now(),new HashSet<>(), true, false, new ArrayList<>());
+        User newUser = new User(99, "Kolade Amire", "koladeam", "password123", "koladeamire20@gmail.com", "Male", Role.USER, LocalDateTime.now(),new HashSet<>(), true, false, new ArrayList<>());
 
         User createdUser = userService.saveUser(newUser);
 

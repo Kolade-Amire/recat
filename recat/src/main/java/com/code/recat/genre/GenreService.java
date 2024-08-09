@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 
 public interface GenreService {
 
-    Genre getGenreById(Long id);
+    Genre getGenreById(Integer id);
 
     Genre getGenreByName(String name);
 
@@ -12,7 +12,7 @@ public interface GenreService {
 
     Page<Genre> getAllGenres(int pageNum, int pageSize);
 
-    void deleteGenre(Long id);
+    void deleteGenre(Integer id);
 
-    Genre updateGenre(Long id, String name);
+    Genre updateGenre(Integer id, String name);
 }

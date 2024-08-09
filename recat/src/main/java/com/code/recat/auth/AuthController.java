@@ -2,6 +2,7 @@ package com.code.recat.auth;
 
 
 import com.code.recat.config.LogoutService;
+import com.code.recat.util.AppConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@RequestMapping("/api/v1/auth")
+@RequestMapping(AppConstants.BASE_URL + "/auth")
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
@@ -45,6 +46,8 @@ public class AuthController {
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         logoutService.logout(request, response, authentication);
     }
+
+
 
 
 

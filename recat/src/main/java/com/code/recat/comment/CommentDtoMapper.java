@@ -10,7 +10,7 @@ public class CommentDtoMapper {
         return mapCommentToDto(comment, new HashSet<>());
     }
 
-    private static CommentDto mapCommentToDto(Comment comment, Set<Long> visitedComments) {
+    private static CommentDto mapCommentToDto(Comment comment, Set<Integer> visitedComments) {
         if (comment == null || visitedComments.contains(comment.getId())) {
             return null;
         }

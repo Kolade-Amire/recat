@@ -16,25 +16,25 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{userId}")
-    ResponseEntity<UserDTO> viewUserProfile(@PathVariable Long userId) {
+    ResponseEntity<UserDTO> viewUserProfile(@PathVariable Integer userId) {
         var user = userService.getUserProfile(userId);
         return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{userId}")
-    ResponseEntity<Void> deleteUser(@PathVariable Long userId){
+    ResponseEntity<Void> deleteUser(@PathVariable Integer userId){
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{userId}/favourites")
-    ResponseEntity<Set<BookViewDto>> getFavouriteBooks(@PathVariable Long userId){
+    ResponseEntity<Set<BookViewDto>> getFavouriteBooks(@PathVariable Integer userId){
         var favBooks = userService.getUserFavouriteBooks(userId);
         return ResponseEntity.ok(favBooks);
     }
 
     @PutMapping
-    ResponseEntity<Set<BookViewDto>> addBookToFavourites(Long userId, BookDto book){
+    ResponseEntity<Set<BookViewDto>> addBookToFavourites(Integer userId, BookDto book){
         var favBooks = userService.addBookAsFavourite(userId, book);
         return ResponseEntity.ok(favBooks);
     }

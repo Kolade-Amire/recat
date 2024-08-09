@@ -22,7 +22,7 @@ public class Genre{
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genre_seq")
         @Column(nullable = false, updatable = false)
         @SequenceGenerator(name = "genre_seq", sequenceName = "public.genres_seq", allocationSize = 1)
-        private Long genreId;
+        private Integer genreId;
         private String name;
 
         @Override

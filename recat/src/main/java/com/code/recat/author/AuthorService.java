@@ -9,15 +9,13 @@ public interface AuthorService {
 
     Page<Author> findAllAuthors(int pageNum, int pageSize);
 
-    Author getAuthor(Long authorId);
+    Author getAuthor(Integer authorId);
 
     Author addNewAuthor(AuthorRequest newAuthor);
 
-    Author updateAuthor(Long authorId, AuthorRequest author);
+    Author updateAuthor(Integer authorId, AuthorRequest author);
 
-    void deleteAuthor(Long authorId);
-
-//    Set<Book> addBookToAuthorProfile(Long authorId, Long bookId);
+    void deleteAuthor(Integer authorId);
 
     Author getAuthorFromDto(AuthorDto authorDto);
 
