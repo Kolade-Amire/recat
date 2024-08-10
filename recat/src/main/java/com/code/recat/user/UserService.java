@@ -1,6 +1,5 @@
 package com.code.recat.user;
 
-import com.code.recat.book.Book;
 import com.code.recat.book.BookDto;
 import com.code.recat.book.BookViewDto;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +14,7 @@ public interface UserService {
 
     User getUserById (Integer id);
 
-    User updateName (Integer id, UserRequest userRequest);
+    User updateUserDetails(Integer id, UserRequest userRequest);
 
     void deleteUser (Integer id);
 

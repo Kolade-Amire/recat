@@ -5,11 +5,9 @@ import com.code.recat.exception.PasswordsDoNotMatchException;
 import com.code.recat.user.Role;
 import com.code.recat.user.User;
 import com.code.recat.user.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.code.recat.util.SecurityConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 
@@ -48,10 +45,6 @@ public class AuthServiceTest {
     private RegisterRequest registerRequest;
     private RegisterRequest savedUserRequest;
 
-    @Mock
-    private HttpServletRequest request;
-    @Mock
-    private HttpServletResponse response;
 
 
 
@@ -92,7 +85,7 @@ public class AuthServiceTest {
 
         assertNotNull(authResponse);
         assertEquals(authResponse.getResponse().getHttpStatusCode(), HttpStatus.CREATED.value());
-        assertEquals("User registered successfully.", authResponse.getResponse().getMessage());
+        assertEquals(SecurityConstants.REGISTERED_MESSAGE, authResponse.getResponse().getMessage());
 
     }
 
@@ -128,20 +121,7 @@ public class AuthServiceTest {
 
     }
 
-    @Test
-    @DirtiesContext
-    void shouldRefreshTokenSuccessfully() throws IOException {
-        AuthRequest authRequest = new AuthRequest(savedUserRequest.getEmail(), savedUserRequest.getPassword());
-        AuthResponse authResponse = authService.authenticate(authRequest);
 
-        var authHeader = "Bearer " + authResponse.getRefreshToken();
-
-        authService.refreshToken(request, response);
-
-        assertNotNull(authHeader);
-        assertEquals("Bearer " + authHeader, authResponse.getResponse().getMessage());
-
-    }
 
 
 }

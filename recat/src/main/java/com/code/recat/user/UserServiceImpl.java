@@ -55,10 +55,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateName(Integer id, UserRequest userRequest) {
-        var fullName = userRequest.getFirstName() + " " + userRequest.getLastName();
+    public User updateUserDetails(Integer id, UserRequest userRequest) {
+
         var user = getUserById(id);
-        user.setName(fullName);
+
+        if(userRequest.getFirstName() != null || userRequest.getLastName() != null){
+            var fullName = userRequest.getFirstName() + " " + userRequest.getLastName();
+            user.setName(fullName);
+        }
+        if(userRequest.getUsername() != null){
+            user.setUsername(userRequest.getUsername());
+        }
+
         return saveUser(user);
     }
 

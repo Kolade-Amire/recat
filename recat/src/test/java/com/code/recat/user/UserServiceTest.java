@@ -2,11 +2,8 @@ package com.code.recat.user;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -16,48 +13,55 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
 @AutoConfigureTestDatabase
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
-@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
-    private User newUser;
 
-    @Autowired
+    @Autowiredgit add
     private UserService userService;
+
+    private User user;
 
 
     @BeforeEach
-    void setup (){
+    void setup() {
 
-         newUser = new User(99, "Kolade Amire", "koladeam", "password123", "koladeamire20@gmail.com", "Male", Role.USER, LocalDateTime.now(),new HashSet<>(), true, false, new ArrayList<>());
+        user = User.builder()
+                .name("Kolade Amire")
+                .username("koladeam")
+                .password("password123")
+                .email("koladeamire20@gmail.com")
+                .gender("Male").role(Role.USER)
+                .dateJoined(LocalDateTime.now())
+                .favoriteBooks(new HashSet<>())
+                .tokens(new ArrayList<>())
+                .build();
+        var savedUser = userService.saveUser(user);
 
-
-        List<UserTestDto> users = List.of(
-                UserTestDto.builder().userId(1).name("Nate Giabucci").username("ngiabucci0")
-                        .email("ngiabucci0@yelp.com").gender("female").password("uP0~!$hpmIQ#~8")
-                        .role(Role.USER)
-                        .build(),
-                UserTestDto.builder().userId(2).name("Rodolphe Prover").username("rprover1")
-                        .email("rprover1@artisteer.com").gender("male").password("password(")
-                        .role(Role.ADMIN)
-                        .build()
-        );
 
     }
 
     @Test
-    void shouldCreateANewUser(){
+    @DirtiesContext
+    void shouldCreateANewUser() {
 
-        User newUser = new User(99, "Kolade Amire", "koladeam", "password123", "koladeamire20@gmail.com", "Male", Role.USER, LocalDateTime.now(),new HashSet<>(), true, false, new ArrayList<>());
+        User newUser = User.builder()
+                .name("Ope Amire")
+                .username("helenope")
+                .password("password123")
+                .email("helenamire@gmail.com")
+                .gender("female").role(Role.USER)
+                .dateJoined(LocalDateTime.now())
+                .favoriteBooks(new HashSet<>())
+                .tokens(new ArrayList<>())
+                .build();
 
-        User createdUser = userService.saveUser(newUser);
+        var createdUser = userService.saveUser(newUser);
 
         assertEquals(newUser, createdUser);
         assertEquals(newUser.getUserId(), createdUser.getUserId());
@@ -67,16 +71,60 @@ public class UserServiceTest {
 
     @Test
     @DirtiesContext
-    void shouldReturnSavedUserByEmail(){
-        var savedUser = userService.saveUser(newUser);
+    void shouldReturnSavedUserByEmail() {
 
-
-        String email = "koladeamire20@gmail.com";
+        String email = user.getEmail();
         var result = userService.getUserByEmail(email);
 
         assertNotNull(result);
-        assertEquals(savedUser.getEmail(), result.getEmail());
-        assertEquals(savedUser.getUserId(), result.getUserId());
+        assertEquals(user.getEmail(), result.getEmail());
+        assertEquals(user.getUserId(), result.getUserId());
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldReturnSavedUserProfile() {
+
+        var id = user.getUserId();
+        var result = userService.getUserProfile(id);
+
+        assertNotNull(result);
+        assertEquals(user.getEmail(), result.getEmail());
+        assertEquals(user.getUserId(), result.getUserId());
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldReturnSavedUserById() {
+
+        Integer id = user.getUserId();
+        var result = userService.getUserById(id);
+
+        assertNotNull(result);
+        assertEquals(user.getName(), result.getName());
+        assertEquals(user.getUserId(), result.getUserId());
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldUpdateUserDetails() {
+
+        var updateRequest = UserRequest.builder()
+                .firstName("Stephen")
+                .lastName("Amire")
+                .username("stephamire")
+                .build();
+        var newName = updateRequest.getFirstName() + " " + updateRequest.getLastName();
+
+        var updatedUser = userService.updateUserDetails(user.getUserId(), updateRequest);
+
+        assertNotNull(updatedUser);
+        assertEquals(user.getUserId(), updatedUser.getUserId());
+        assertNotEquals(user.getName(), updatedUser.getName());
+        assertEquals(updateRequest.getUsername(), updatedUser.getProfileName());
+        assertEquals(newName, updatedUser.getName());
+
+
     }
 
 
