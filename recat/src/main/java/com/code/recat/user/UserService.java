@@ -19,7 +19,7 @@ public interface UserService {
 
     Set<BookViewDto> getUserFavouriteBooks(Integer userId);
 
-    Set<BookViewDto> addBookAsFavourite(Integer userId, Integer bookId);
+    Set<BookViewDto> addBookAsFavourite(Integer userId, BookViewDto book);
 
     UserDTO getUserProfile (Integer id);
 

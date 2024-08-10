@@ -28,10 +28,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
-@WithMockUser(username = "stephamire@gmail.com", roles = "USER")
+    @SpringBootTest
+    @AutoConfigureMockMvc
+    @ActiveProfiles("test")
+    @WithMockUser(username = "stephamire@gmail.com", roles = "USER")
 public class BookControllerTest {
 
 

@@ -2,7 +2,6 @@ package com.code.recat.user;
 
 import com.code.recat.author.AuthorRequest;
 import com.code.recat.author.AuthorService;
-import com.code.recat.book.BookDtoMapper;
 import com.code.recat.book.BookRequest;
 import com.code.recat.book.BookService;
 import com.code.recat.genre.GenreService;
@@ -19,7 +18,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,7 +56,8 @@ public class UserServiceTest {
                 .favoriteBooks(new HashSet<>())
                 .tokens(new ArrayList<>())
                 .build();
-        var savedUser = userService.saveUser(user);
+
+        userService.saveUser(user);
 
 
     }
@@ -107,7 +106,7 @@ public class UserServiceTest {
 
         assertNotNull(result);
         assertEquals(user.getEmail(), result.getEmail());
-        assertEquals(user.getUserId(), result.getUserId());
+        assertEquals(user.getUserId(), result.getId());
     }
 
     @Test
@@ -164,13 +163,15 @@ public class UserServiceTest {
         var book1 = new BookRequest("Book One Title", author1.getName(), "Blurb for first book.", 2000, Set.of(testGenre), "25362348-72", "https://coverimage1.com");
 
         //add book to database
-       var existingBook = bookService.addNewBook(book1);
+       var addedBook = bookService.addNewBook(book1);
+        //get book
+       var existingBook = bookService.findBookForView(addedBook.getBookId());
 
         //add book as favourite for test user
-        var userFavBooks = userService.addBookAsFavourite(user.getUserId(), existingBook.getBookId());
+        var userFavBooks = userService.addBookAsFavourite(user.getUserId(), existingBook);
 
         assertNotNull(userFavBooks);
-        assertThat(userFavBooks).isEqualTo(Set.of(BookDtoMapper.mapBookToDto(existingBook)));
+        assertThat(userFavBooks).isEqualTo(Set.of(existingBook));
 
     }
 
@@ -187,15 +188,17 @@ public class UserServiceTest {
         var book1 = new BookRequest("Book One Title", author1.getName(), "Blurb for first book.", 2000, Set.of(testGenre), "25362348-72", "https://coverimage1.com");
 
         //add book to database
-        var existingBook = bookService.addNewBook(book1);
+        var addedBook = bookService.addNewBook(book1);
+        //get book
+        var existingBook = bookService.findBookForView(addedBook.getBookId());
 
         //add book as favourite for test user
-        userService.addBookAsFavourite(user.getUserId(), existingBook.getBookId());
+        userService.addBookAsFavourite(user.getUserId(), existingBook);
 
         var userFavBooks = userService.getUserFavouriteBooks(user.getUserId());
 
         assertNotNull(userFavBooks);
-        assertThat(userFavBooks).isEqualTo(Set.of(BookDtoMapper.mapBookToDto(existingBook)));
+        assertThat(userFavBooks).isEqualTo(Set.of(existingBook));
 
 
 
