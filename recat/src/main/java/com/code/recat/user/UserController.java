@@ -1,6 +1,5 @@
 package com.code.recat.user;
 
-import com.code.recat.book.BookDto;
 import com.code.recat.book.BookViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +33,8 @@ public class UserController {
     }
 
     @PutMapping
-    ResponseEntity<Set<BookViewDto>> addBookToFavourites(Integer userId, BookDto book){
-        var favBooks = userService.addBookAsFavourite(userId, book);
+    ResponseEntity<Set<BookViewDto>> addBookToFavourites(Integer userId, Integer bookId){
+        var favBooks = userService.addBookAsFavourite(userId, bookId);
         return ResponseEntity.ok(favBooks);
     }
 

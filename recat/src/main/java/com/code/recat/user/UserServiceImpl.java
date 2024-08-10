@@ -88,14 +88,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Set<BookViewDto> addBookAsFavourite(Integer userId, BookDto book) {
+    public Set<BookViewDto> addBookAsFavourite(Integer userId, Integer bookId) {
         var user = getUserById(userId);
         var userFavBooks = user.getFavoriteBooks();
-        var newBook = bookService.findById(book.getBookId());
+        var newBook = bookService.findById(bookId);
         userFavBooks.add(newBook);
         user.setFavoriteBooks(userFavBooks);
         return getUserFavouriteBooks(userId);
     }
+
+
 }
 
 

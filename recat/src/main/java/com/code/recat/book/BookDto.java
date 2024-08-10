@@ -12,8 +12,6 @@ public class BookDto {
     private Integer bookId;
     private String title;
     private AuthorDto author;
-    private String blurb;
     private Integer publicationYear;
-    private String isbn;
     private String coverImageUrl;
 }

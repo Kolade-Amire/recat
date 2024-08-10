@@ -1,5 +1,12 @@
 package com.code.recat.user;
 
+import com.code.recat.author.AuthorRequest;
+import com.code.recat.author.AuthorService;
+import com.code.recat.book.BookDtoMapper;
+import com.code.recat.book.BookRequest;
+import com.code.recat.book.BookService;
+import com.code.recat.genre.GenreService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +15,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -22,10 +32,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceTest {
 
 
-    @Autowiredgit add
+    @Autowired
     private UserService userService;
 
     private User user;
+
+    @Autowired
+    private BookService bookService;
+    @Autowired
+    private AuthorService authorService;
+    @Autowired
+    private GenreService genreService;
 
 
     @BeforeEach
@@ -123,6 +140,63 @@ public class UserServiceTest {
         assertNotEquals(user.getName(), updatedUser.getName());
         assertEquals(updateRequest.getUsername(), updatedUser.getProfileName());
         assertEquals(newName, updatedUser.getName());
+
+
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldDeleteUser() {
+        userService.deleteUser(user.getUserId());
+        assertThrows(EntityNotFoundException.class, () -> userService.getUserById(user.getUserId()));
+
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldAddBookAsFavourite() {
+        //Setting up an existing book
+        var testGenre = genreService.addGenre("Fantasy");
+
+        var author1 = new AuthorRequest("Author One", LocalDate.of(2024, 8, 2), "female");
+        authorService.addNewAuthor(author1);
+
+        var book1 = new BookRequest("Book One Title", author1.getName(), "Blurb for first book.", 2000, Set.of(testGenre), "25362348-72", "https://coverimage1.com");
+
+        //add book to database
+       var existingBook = bookService.addNewBook(book1);
+
+        //add book as favourite for test user
+        var userFavBooks = userService.addBookAsFavourite(user.getUserId(), existingBook.getBookId());
+
+        assertNotNull(userFavBooks);
+        assertThat(userFavBooks).isEqualTo(Set.of(BookDtoMapper.mapBookToDto(existingBook)));
+
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldGetUserFavouriteBooks() {
+
+        //Setting up an existing book
+        var testGenre = genreService.addGenre("Fantasy");
+
+        var author1 = new AuthorRequest("Author One", LocalDate.of(2024, 8, 2), "female");
+        authorService.addNewAuthor(author1);
+
+        var book1 = new BookRequest("Book One Title", author1.getName(), "Blurb for first book.", 2000, Set.of(testGenre), "25362348-72", "https://coverimage1.com");
+
+        //add book to database
+        var existingBook = bookService.addNewBook(book1);
+
+        //add book as favourite for test user
+        userService.addBookAsFavourite(user.getUserId(), existingBook.getBookId());
+
+        var userFavBooks = userService.getUserFavouriteBooks(user.getUserId());
+
+        assertNotNull(userFavBooks);
+        assertThat(userFavBooks).isEqualTo(Set.of(BookDtoMapper.mapBookToDto(existingBook)));
+
 
 
     }

@@ -1,6 +1,5 @@
 package com.code.recat.user;
 
-import com.code.recat.book.BookDto;
 import com.code.recat.book.BookViewDto;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -20,7 +19,7 @@ public interface UserService {
 
     Set<BookViewDto> getUserFavouriteBooks(Integer userId);
 
-    Set<BookViewDto> addBookAsFavourite(Integer userId, BookDto book);
+    Set<BookViewDto> addBookAsFavourite(Integer userId, Integer bookId);
 
     UserDTO getUserProfile (Integer id);
 
