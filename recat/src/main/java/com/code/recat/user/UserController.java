@@ -33,14 +33,15 @@ public class UserController {
         return ResponseEntity.ok(favBooks);
     }
 
+    //TODO this endpoint still needs some clarification
     @PutMapping("/{userId}/favourites")
-    ResponseEntity<Set<BookViewDto>> addBookToFavourites(@PathVariable Integer userId, BookViewDto book){
+    ResponseEntity<Set<BookViewDto>> addBookToFavourites(@PathVariable Integer userId, @RequestBody BookViewDto book){
         var favBooks = userService.addBookAsFavourite(userId, book);
         return ResponseEntity.ok(favBooks);
     }
 
     @PutMapping("/{userId}")
-    ResponseEntity<UserDTO> updateUserProfile(@PathVariable Integer userId, UserRequest request){
+    ResponseEntity<UserDTO> updateUserProfile(@PathVariable Integer userId, @RequestBody UserRequest request){
         userService.updateUserDetails(userId, request);
         var updatedUser = userService.getUserProfile(userId);
         return  ResponseEntity.ok(updatedUser);

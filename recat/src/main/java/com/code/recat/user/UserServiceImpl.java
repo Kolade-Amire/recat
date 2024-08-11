@@ -59,9 +59,11 @@ public class UserServiceImpl implements UserService {
 
         var user = getUserById(id);
 
-        if(userRequest.getFirstName() != null || userRequest.getLastName() != null){
+        if(userRequest.getFirstName() != null && userRequest.getLastName() != null){
             var fullName = userRequest.getFirstName() + " " + userRequest.getLastName();
             user.setName(fullName);
+        } else if (userRequest.getFirstName() != null) {
+            var fullName = userRequest.getFirstName() + " " + user.getName();
         }
         if(userRequest.getUsername() != null){
             user.setUsername(userRequest.getUsername());

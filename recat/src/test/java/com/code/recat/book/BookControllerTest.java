@@ -10,7 +10,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -39,6 +38,9 @@ public class BookControllerTest {
     private AuthorService authorService;
     @Autowired
     private GenreService genreService;
+    @Autowired
+    private ObjectMapper objectMapper;
+
 
     @Autowired
     private MockMvc mvc;
@@ -47,6 +49,8 @@ public class BookControllerTest {
 
     @BeforeEach
     void setUp() {
+        objectMapper.registerModule(new JavaTimeModule());
+
         Genre testGenre = genreService.addGenre("Fantasy");
 
         var author1 = authorService.addNewAuthor(new AuthorRequest("Author One", LocalDate.of(2024, 8, 2), "female"));
@@ -63,9 +67,6 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldReturnASavedBookWhenRequestedById() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
 
         this.mvc.perform(post(AppConstants.BASE_URL + "/books")
                 .with(csrf())
@@ -86,9 +87,6 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldCreateAndSaveANewBook() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
 
         String location = this.mvc.perform(post(AppConstants.BASE_URL + "/books")
                         .with(csrf())
@@ -110,9 +108,6 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldReturnAllBooksOrderedByTitle() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
 
         this.mvc.perform(post(AppConstants.BASE_URL + "/books")
                 .with(csrf())
@@ -136,9 +131,6 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldReturnBooksThatMatchTitleOrAuthorName() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
 
         this.mvc.perform(post(AppConstants.BASE_URL + "/books")
                 .with(csrf())
@@ -169,8 +161,6 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldUpdateBookThatExistsWithNewDetails() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
 
 
         this.mvc.perform(post(AppConstants.BASE_URL + "/books")
@@ -200,8 +190,6 @@ public class BookControllerTest {
     @Test
     @DirtiesContext
     void shouldDeleteExistingBook() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
 
 
         this.mvc.perform(post(AppConstants.BASE_URL + "/books")
