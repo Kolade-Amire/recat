@@ -20,7 +20,7 @@ public class AuthorServiceImpl implements AuthorService{
     @Override
     public Page<AuthorDto> findAllAuthors(int pageNum, int pageSize) {
         var pageable = PageRequest.of(pageNum, pageSize);
-        var authors = authorRepository.getAllByOrderByName(pageable);
+        var authors = authorRepository.getAllByOrderByNameAsc(pageable);
          var authorDtos = authors.stream().map(
                  AuthorDtoMapper::mapAuthorToDto
         ).collect(Collectors.toList());
@@ -43,7 +43,7 @@ public class AuthorServiceImpl implements AuthorService{
                 .dateOfBirth(authorRequest.getDateOfBirth())
                 .build();
 
-        return authorRepository.save(newAuthor);
+        return saveAuthor(newAuthor);
     }
 
     @Override

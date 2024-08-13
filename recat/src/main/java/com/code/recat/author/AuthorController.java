@@ -17,9 +17,8 @@ public class AuthorController {
 
 
     @GetMapping
-    public Page<AuthorDto> getAuthors(@RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+    public ResponseEntity<Page<AuthorDto>> getAuthors(@RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         Page<AuthorDto> page = authorService.findAllAuthors(pageNum, pageSize);
         return ResponseEntity.ok(page);
-
     }
 }

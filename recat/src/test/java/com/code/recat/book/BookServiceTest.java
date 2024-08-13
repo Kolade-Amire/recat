@@ -57,19 +57,6 @@ public class BookServiceTest {
 
     }
 
-    @Test
-    @DirtiesContext
-    void shouldReturnAllBooksSortedInOrderOfTitle() {
-        authorService.addNewAuthor(author1);
-        bookService.addNewBook(book1);
-        bookService.addNewBook(book2);
-
-        var page = bookService.findAllBooks(0, 10);
-
-        assertNotNull(page);
-        assertEquals(2, page.getTotalElements());
-        assertEquals("Another Book Title", page.getContent().get(0).getTitle());
-    }
 
     @Test
     @DirtiesContext
@@ -88,6 +75,23 @@ public class BookServiceTest {
         System.out.println("book created with id: " + savedBook.getBookId());
 
     }
+
+
+    @Test
+    @DirtiesContext
+    void shouldReturnAllBooksSortedInOrderOfTitle() {
+        authorService.addNewAuthor(author1);
+        bookService.addNewBook(book1);
+        bookService.addNewBook(book2);
+
+        var page = bookService.findAllBooks(0, 10);
+
+        assertNotNull(page);
+        assertEquals(2, page.getTotalElements());
+        assertEquals("Another Book Title", page.getContent().get(0).getTitle());
+    }
+
+
 
     @Test
     @DirtiesContext
