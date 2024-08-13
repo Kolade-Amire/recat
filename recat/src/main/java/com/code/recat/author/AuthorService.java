@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface AuthorService {
 
-    Page<Author> findAllAuthors(int pageNum, int pageSize);
+    Page<AuthorDto> findAllAuthors(int pageNum, int pageSize);
 
     Author getAuthor(Integer authorId);
 

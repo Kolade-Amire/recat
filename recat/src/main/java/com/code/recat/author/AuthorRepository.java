@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface AuthorRepository extends JpaRepository<Author, Integer> {
     Page<Author> getAllByOrderByName(Pageable pageable);
 
-    @Query("SELECT a FROM Author a WHERE LOWER(a.name) = LOWER(:authorName)")
+    @Query("SELECT a FROM Author a WHERE LOWER(a.name) LIKE LOWER(CONCAT('%', :authorName, '%'))")
     Optional<Author> findAuthorByNameIgnoreCase(String authorName);
 }

@@ -124,7 +124,7 @@ public class UserServiceTest {
     @Test
     @DirtiesContext
     void shouldUpdateUserDetails() {
-
+    var id = user.getUserId();
         var updateRequest = UserRequest.builder()
                 .firstName("Stephen")
                 .lastName("Amire")
@@ -132,7 +132,7 @@ public class UserServiceTest {
                 .build();
         var newName = updateRequest.getFirstName() + " " + updateRequest.getLastName();
 
-        var updatedUser = userService.updateUserDetails(user.getUserId(), updateRequest);
+        var updatedUser = userService.updateUserDetails(id, updateRequest);
 
         assertNotNull(updatedUser);
         assertEquals(user.getUserId(), updatedUser.getUserId());
@@ -201,10 +201,6 @@ public class UserServiceTest {
         assertThat(userFavBooks).isEqualTo(Set.of(existingBook));
 
 
-
     }
-
-
-
 
 }

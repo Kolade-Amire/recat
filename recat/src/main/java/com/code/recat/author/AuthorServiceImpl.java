@@ -4,8 +4,11 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 
 @Service
@@ -15,9 +18,13 @@ public class AuthorServiceImpl implements AuthorService{
     private final AuthorRepository authorRepository;
 
     @Override
-    public Page<Author> findAllAuthors(int pageNum, int pageSize) {
+    public Page<AuthorDto> findAllAuthors(int pageNum, int pageSize) {
         var pageable = PageRequest.of(pageNum, pageSize);
-        return authorRepository.getAllByOrderByName(pageable);
+        var authors = authorRepository.getAllByOrderByName(pageable);
+         var authorDtos = authors.stream().map(
+                 AuthorDtoMapper::mapAuthorToDto
+        ).collect(Collectors.toList());
+        return new PageImpl<>(authorDtos, pageable, authorDtos.size());
     }
 
     @Override

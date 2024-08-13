@@ -33,7 +33,7 @@ public class UserController {
         return ResponseEntity.ok(favBooks);
     }
 
-    //TODO this endpoint still needs some clarification
+
     @PutMapping("/{userId}/favourites")
     ResponseEntity<Set<BookViewDto>> addBookToFavourites(@PathVariable Integer userId, @RequestBody BookViewDto book){
         var favBooks = userService.addBookAsFavourite(userId, book);
