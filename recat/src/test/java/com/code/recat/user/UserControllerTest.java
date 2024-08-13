@@ -160,6 +160,7 @@ public class UserControllerTest {
     void shouldUpdateUserProfile() throws Exception {
         UserRequest request = UserRequest.builder()
                 .firstName("Stephen")
+                .lastName("Amire")
                 .username("stephamire")
                 .build();
 
@@ -170,6 +171,7 @@ public class UserControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("Stephen Amire"))
+                .andExpect(jsonPath("$.username").value("stephamire"))
                 .andExpect(jsonPath("$.email").value(user.getEmail()));
     }
 
