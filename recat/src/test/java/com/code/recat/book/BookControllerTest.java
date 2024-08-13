@@ -27,10 +27,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-    @SpringBootTest
-    @AutoConfigureMockMvc
-    @ActiveProfiles("test")
-    @WithMockUser(username = "stephamire@gmail.com", roles = "USER")
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@WithMockUser(username = "stephamire@gmail.com", roles = "USER")
 public class BookControllerTest {
 
 
@@ -75,8 +75,7 @@ public class BookControllerTest {
         );
 
 
-
-         this.mvc.perform(get(AppConstants.BASE_URL + "/books/1"))
+        this.mvc.perform(get(AppConstants.BASE_URL + "/books/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("Book One Title"));
@@ -121,11 +120,11 @@ public class BookControllerTest {
                 .content(objectMapper.writeValueAsString(book2))
         );
 
-            this.mvc.perform(get(AppConstants.BASE_URL + "/books"))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.totalElements").value(2))
-                    .andExpect(jsonPath("$.content[0].title").value("Another Book Title"))
-                    .andExpect(jsonPath("$.content[1].title").value("Book One Title"));
+        this.mvc.perform(get(AppConstants.BASE_URL + "/books"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(2))
+                .andExpect(jsonPath("$.content[0].title").value("Another Book Title"))
+                .andExpect(jsonPath("$.content[1].title").value("Book One Title"));
     }
 
     @Test
@@ -145,10 +144,8 @@ public class BookControllerTest {
         );
 
 
-
-
         this.mvc.perform(
-                get(AppConstants.BASE_URL + "/books/search?searchQuery=Author"))
+                        get(AppConstants.BASE_URL + "/books/search?searchQuery=Author"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElements").value(2));
 
@@ -170,7 +167,6 @@ public class BookControllerTest {
         );
 
 
-
         var bookUpdateRequest = BookRequest.builder()
                 .title("Updated Title")
                 .blurb("Updated Blurb")
@@ -178,9 +174,9 @@ public class BookControllerTest {
 
 
         this.mvc.perform(
-                put(AppConstants.BASE_URL + "/books/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookUpdateRequest)))
+                        put(AppConstants.BASE_URL + "/books/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(bookUpdateRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("Updated Title"))

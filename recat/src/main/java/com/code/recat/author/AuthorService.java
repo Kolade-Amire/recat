@@ -1,19 +1,18 @@
 package com.code.recat.author;
 
-import com.code.recat.book.Book;
 import org.springframework.data.domain.Page;
-
-import java.util.Set;
 
 public interface AuthorService {
 
     Page<AuthorDto> findAllAuthors(int pageNum, int pageSize);
 
-    Author getAuthor(Integer authorId);
+    Author getAuthorById(Integer authorId);
 
-    Author addNewAuthor(AuthorRequest newAuthor);
+    AuthorDto addNewAuthor(AuthorRequest newAuthor);
 
-    Author updateAuthor(Integer authorId, AuthorRequest author);
+    Author getAuthorByName(String authorName);
+
+    AuthorDto updateAuthor(Integer authorId, AuthorRequest author);
 
     void deleteAuthor(Integer authorId);
 
@@ -22,5 +21,5 @@ public interface AuthorService {
     //for internal use only
     Author saveAuthor(Author author);
 
-    Author getAuthorByName(String authorName);
+    Page<AuthorDto> searchAuthorsByName(String authorName);
 }

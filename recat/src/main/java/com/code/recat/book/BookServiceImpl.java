@@ -1,7 +1,6 @@
 package com.code.recat.book;
 
 
-import com.code.recat.author.Author;
 import com.code.recat.author.AuthorService;
 import com.code.recat.genre.Genre;
 import com.code.recat.genre.GenreService;
@@ -39,7 +38,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public Book addNewBook(BookRequest bookRequest) {
 
-        var author = authorService.getAuthorByName(bookRequest.getAuthorName());
+        var author = authorService.searchAuthorsByName(bookRequest.getAuthorName());
 
         Set<Genre> managedGenres = bookRequest.getGenres().stream().map(
                 genre -> genreService.getGenreById(genre.getGenreId())

@@ -58,9 +58,21 @@ public class AuthorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElements").value(2))
                 .andExpect(jsonPath("$.content[0].name").value("Author2 Name"))
-                .andExpect(jsonPath("$.content[0].name").value("Author2 Name"));
+                .andExpect(jsonPath("$.content[1].name").value("Yet AnotherAuthor"));
 
 
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldGetAuthorById() throws Exception {
+        authorService.addNewAuthor(author1);
+
+        this.mvc.perform(get(AppConstants.BASE_URL + "/authors/1")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Yet AnotherAuthor"));
     }
 
 }

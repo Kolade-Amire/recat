@@ -55,4 +55,25 @@ public class AuthorServiceTest {
         assertEquals("Yet AnotherAuthor", authors.getContent().get(1).getName());
 
     }
+
+    @Test
+    @DirtiesContext
+    void shouldGetAuthorByIdById(){
+        authorRepository.save(author1);
+
+        var author = authorService.getAuthorById(1);
+
+        assertNotNull(author);
+        assertEquals(1, author.getAuthorId());
+        assertEquals("Yet AnotherAuthor", author.getName());
+        assertEquals("Male", author.getGender());
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldUpdateAuthor(){
+        authorRepository.save(author1);
+
+
+    }
 }

@@ -14,7 +14,9 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
     Page<Author> getAllByOrderByNameAsc(Pageable pageable);
 
     @Query("SELECT a FROM Author a WHERE LOWER(a.name) LIKE LOWER(CONCAT('%', :authorName, '%'))")
-    Optional<Author> findAuthorByNameIgnoreCase(String authorName);
+    Page<Author> searchAuthorsByName(String authorName); //returns all authors with names that contain the search string
+
+    Optional<Author> getAuthorByNameIgnoreCase(String name);
 
 
 }

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AuthorServiceImpl implements AuthorService{
+public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
 
@@ -21,53 +21,66 @@ public class AuthorServiceImpl implements AuthorService{
     public Page<AuthorDto> findAllAuthors(int pageNum, int pageSize) {
         var pageable = PageRequest.of(pageNum, pageSize);
         var authors = authorRepository.getAllByOrderByNameAsc(pageable);
-         var authorDtos = authors.stream().map(
-                 AuthorDtoMapper::mapAuthorToDto
+        var authorDtos = authors.stream().map(
+                AuthorDtoMapper::mapAuthorToDto
         ).collect(Collectors.toList());
         return new PageImpl<>(authorDtos, pageable, authorDtos.size());
     }
 
     @Override
-    public Author getAuthor(Integer authorId) {
+    public Author getAuthorById(Integer authorId) {
         return authorRepository.findById(authorId).orElseThrow(
-                () -> new EntityNotFoundException("Author not found.")
+                () -> new EntityNotFoundException("Author does not exist")
         );
     }
 
     @Override
+    public Author getAuthorByName(String name) {
+        return authorRepository.getAuthorByNameIgnoreCase(name).orElseThrow(() -> new EntityNotFoundException("Author does not exist"));
+    }
+
+    @Override
     @Transactional
-    public Author addNewAuthor(AuthorRequest authorRequest) {
-        var newAuthor = Author.builder()
+    public AuthorDto addNewAuthor(AuthorRequest authorRequest) {
+        var newAuthorRequest = Author.builder()
                 .name(authorRequest.getName())
                 .gender(authorRequest.getGender())
                 .dateOfBirth(authorRequest.getDateOfBirth())
                 .build();
 
-        return saveAuthor(newAuthor);
+        var savedAuthor = saveAuthor(newAuthorRequest);
+        return AuthorDtoMapper.mapAuthorToDto(savedAuthor);
     }
 
     @Override
     @Transactional
-    public Author updateAuthor(Integer authorId, AuthorRequest author) {
-        var existingAuthor = getAuthor(authorId);
-        if(author.getName() != null){existingAuthor.setName(author.getName());}
-        if(author.getGender() != null){existingAuthor.setGender(author.getGender());}
-        if(author.getDateOfBirth() != null){existingAuthor.setDateOfBirth(author.getDateOfBirth());}
+    public AuthorDto updateAuthor(Integer authorId, AuthorRequest author) {
+        var existingAuthor = getAuthorById(authorId);
+        if (author.getName() != null) {
+            existingAuthor.setName(author.getName());
+        }
+        if (author.getGender() != null) {
+            existingAuthor.setGender(author.getGender());
+        }
+        if (author.getDateOfBirth() != null) {
+            existingAuthor.setDateOfBirth(author.getDateOfBirth());
+        }
 
-        return authorRepository.save(existingAuthor);
+        var updatedAuthor = authorRepository.save(existingAuthor);
+        return AuthorDtoMapper.mapAuthorToDto(updatedAuthor);
 
     }
 
     @Override
     @Transactional
     public void deleteAuthor(Integer authorId) {
-        var author = getAuthor(authorId);
+        var author = getAuthorById(authorId);
         authorRepository.delete(author);
     }
 
     @Override
     public Author getAuthorFromDto(AuthorDto authorDto) {
-        return getAuthor(authorDto.getId());
+        return getAuthorById(authorDto.getId());
     }
 
     @Override
@@ -78,9 +91,11 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     @Transactional
-    public Author getAuthorByName(String authorName) {
-        return authorRepository.findAuthorByNameIgnoreCase(authorName).orElseThrow(
-                () -> new EntityNotFoundException("Author not found.")
-        );
+    public Page<AuthorDto> searchAuthorsByName(String authorName) {
+        var authors = authorRepository.searchAuthorsByName(authorName);
+        return new PageImpl<>(authors.stream().map(
+                AuthorDtoMapper::mapAuthorToDto
+        ).collect(Collectors.toList()));
+
     }
 }

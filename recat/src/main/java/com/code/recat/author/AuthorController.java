@@ -4,10 +4,7 @@ import com.code.recat.util.AppConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,4 +18,12 @@ public class AuthorController {
         Page<AuthorDto> page = authorService.findAllAuthors(pageNum, pageSize);
         return ResponseEntity.ok(page);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Integer id) {
+        var author = authorService.getAuthorById(id);
+        return ResponseEntity.ok(AuthorDtoMapper.mapAuthorToDto(author));
+    }
+
+
 }
