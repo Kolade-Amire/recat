@@ -38,7 +38,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public Book addNewBook(BookRequest bookRequest) {
 
-        var author = authorService.searchAuthorsByName(bookRequest.getAuthorName());
+        var author = authorService.getAuthorByName(bookRequest.getAuthorName());
 
         Set<Genre> managedGenres = bookRequest.getGenres().stream().map(
                 genre -> genreService.getGenreById(genre.getGenreId())

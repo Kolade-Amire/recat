@@ -21,5 +21,5 @@ public interface AuthorService {
     //for internal use only
     Author saveAuthor(Author author);
 
-    Page<AuthorDto> searchAuthorsByName(String authorName);
+    Page<AuthorDto> searchAuthorsByName(int pageNum, int pageSize, String authorName);
 }

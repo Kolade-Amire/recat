@@ -1,5 +1,6 @@
 package com.code.recat.author;
 
+import com.code.recat.util.AppConstants;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,13 +31,13 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author getAuthorById(Integer authorId) {
         return authorRepository.findById(authorId).orElseThrow(
-                () -> new EntityNotFoundException("Author does not exist")
+                () -> new EntityNotFoundException(AppConstants.AUTHOR_NOT_FOUND)
         );
     }
 
     @Override
     public Author getAuthorByName(String name) {
-        return authorRepository.getAuthorByNameIgnoreCase(name).orElseThrow(() -> new EntityNotFoundException("Author does not exist"));
+        return authorRepository.getAuthorByNameIgnoreCase(name).orElseThrow(() -> new EntityNotFoundException(AppConstants.AUTHOR_NOT_FOUND));
     }
 
     @Override
@@ -91,8 +92,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public Page<AuthorDto> searchAuthorsByName(String authorName) {
-        var authors = authorRepository.searchAuthorsByName(authorName);
+    public Page<AuthorDto> searchAuthorsByName(int pageNum, int pageSize, String authorName) {
+        var page = PageRequest.of(pageNum, pageSize);
+        var authors = authorRepository.searchAuthorsByName(page,authorName);
         return new PageImpl<>(authors.stream().map(
                 AuthorDtoMapper::mapAuthorToDto
         ).collect(Collectors.toList()));
