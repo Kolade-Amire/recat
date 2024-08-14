@@ -135,7 +135,7 @@ public class AuthorServiceTest {
 
         var searchQuery = "Author";
 
-        var page = authorService.searchAuthorsByName(1, 10, searchQuery);
+        var page = authorService.searchAuthorsByName(0, 10, searchQuery);
 
         assertNotNull(page);
         assertEquals(2, page.getTotalElements());

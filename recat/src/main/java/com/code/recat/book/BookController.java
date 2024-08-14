@@ -17,7 +17,7 @@ public class BookController {
 
     private final BookService bookService;
 
-
+    //TODO: look into why this endpoint does not return a BookViewDto and the vulnerability issue
     @PostMapping
     ResponseEntity<Book> createNewBook(@RequestBody BookRequest bookRequest, UriComponentsBuilder uriComponentsBuilder) {
         var createdBook = bookService.addNewBook(bookRequest);

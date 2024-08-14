@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +26,20 @@ public class AuthorController {
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Integer id) {
         var author = authorService.getAuthorById(id);
         return ResponseEntity.ok(AuthorDtoMapper.mapAuthorToDto(author));
+    }
+
+    //TODO: look into the vulnerability issue
+    @PostMapping
+    public ResponseEntity<AuthorDto> createNewAuthor(@RequestBody AuthorRequest authorRequest, UriComponentsBuilder uriComponentsBuilder) {
+        var createdAuthor = authorService.addNewAuthor(authorRequest);
+
+        URI newAuthorLocation = uriComponentsBuilder
+                .path(AppConstants.BASE_URL + "/authors/{id}")
+                .buildAndExpand(createdAuthor.getId())
+                .toUri();
+
+        return ResponseEntity.created(newAuthorLocation).body(createdAuthor);
+
     }
 
 
