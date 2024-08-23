@@ -26,6 +26,8 @@ public class Author {
     private LocalDate dateOfBirth;
     private String gender;
 
+    //TODO: reference book entity here too!
+
     @Override
     public String toString(){
         return "Author{" +
