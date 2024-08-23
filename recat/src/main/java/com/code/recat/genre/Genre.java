@@ -1,21 +1,19 @@
 package com.code.recat.genre;
 
-import com.code.recat.book.Book;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "genres")
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 public class Genre{
         @Id
@@ -31,5 +29,21 @@ public class Genre{
                         "genreId=" + genreId +
                         ", name='" + name + '\'' +
                         '}';
+        }
+
+        @Override
+        public final boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null) return false;
+                Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+                Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+                if (thisEffectiveClass != oEffectiveClass) return false;
+                Genre genre = (Genre) o;
+                return getGenreId() != null && Objects.equals(getGenreId(), genre.getGenreId());
+        }
+
+        @Override
+        public final int hashCode() {
+                return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
         }
 }

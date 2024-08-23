@@ -4,19 +4,20 @@ import com.code.recat.author.Author;
 import com.code.recat.comment.Comment;
 import com.code.recat.genre.Genre;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "books")
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 public class Book{
         @Id
@@ -33,7 +34,7 @@ public class Book{
         private String blurb;
         private Integer publicationYear;
 
-        @ManyToMany(cascade = CascadeType.ALL)
+        @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
         @JoinTable(
                 name = "book_genre",
                 joinColumns = @JoinColumn(name = "book_id"),
@@ -45,6 +46,7 @@ public class Book{
         private String coverImageUrl;
 
         @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+        @ToString.Exclude
         private Set<Comment> comments = new HashSet<>();
 
         @Override
@@ -60,6 +62,22 @@ public class Book{
                         ", coverImageUrl=" + coverImageUrl +  '\'' +
                         ", comments=" + comments +  '\'' +
                         '}';
+        }
+
+        @Override
+        public final boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null) return false;
+                Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+                Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+                if (thisEffectiveClass != oEffectiveClass) return false;
+                Book book = (Book) o;
+                return getBookId() != null && Objects.equals(getBookId(), book.getBookId());
+        }
+
+        @Override
+        public final int hashCode() {
+                return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
         }
 }
 
