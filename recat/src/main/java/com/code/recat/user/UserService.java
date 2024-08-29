@@ -7,6 +7,7 @@ import java.util.Set;
 
 public interface UserService {
     User getUserByEmail(String email) throws UsernameNotFoundException;
+
     User getUserWithTokensByEmail(String email) throws UsernameNotFoundException;
 
     User saveUser(User user);
@@ -19,7 +20,7 @@ public interface UserService {
 
     Set<BookViewDto> getUserFavouriteBooks(Integer userId);
 
-    Set<BookViewDto> addBookAsFavourite(Integer userId, BookViewDto book);
+    Set<BookViewDto>addBookAsFavourite(Integer userId, BookViewDto book);
 
     UserDTO getUserProfile (Integer id);
 
